@@ -1,7 +1,7 @@
 UUnit gebruiken
 ===============
 
-Voor testen gebruiken we [UUnit][https://github.com/pboechat/uunit/]. De code ervan komt in de repository.
+Voor testen gebruiken we [UUnit][uunit]. De code ervan komt in de repository.
 
 Algemeen
 --------
@@ -29,13 +29,17 @@ Voor `Equals` wordt voor `float`/`Vector3` een precisie gebruikt.
 Voorbeeld test class
 --------------------
 
-  using UnityEngine;
-  using System.Collections;
+    using UnityEngine;
+    using System.Collections;
 
-  public class Test : UUnitTestCase {
-  
-  	[UUnitTest]
-  	public void Test1() {
-  		UUnitAssert.True(true);
-  	}
-  }
+    public class Test : UUnitTestCase {
+
+        [UUnitTest]
+        public void Test1() {
+            UUnitAssert.True(true);
+        }
+    }
+
+
+
+ [uunit]: https://github.com/pboechat/uunit/
