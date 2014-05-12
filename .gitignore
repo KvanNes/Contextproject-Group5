@@ -1,0 +1,9 @@
+# Gebaseerd op http://stackoverflow.com/a/18225479
+/GameProject/Temp
+/GameProject/obj
+/GameProject/library
+/GameProject/Assets/test-results
+/GameProject/Assets/test-results.meta
+/GameProject/*.csproj
+/GameProject/*.unityproj
+/GameProject/*.sln
