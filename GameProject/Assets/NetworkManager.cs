@@ -13,11 +13,11 @@ public class NetworkManager : MonoBehaviour {
     private bool refreshing;
     private HostData[] hostData;
     
-    private const string gameName = "CGCookie_DuoDrive";
-    private GameObject playerPrefab = null;
-    private Transform spawnObject = null;
+    public string gameName = "CGCookie_DuoDrive";
+    public GameObject playerPrefab = null;
+    public Transform spawnObject = null;
     
-    private void Start(){
+    void Start(){
         Application.runInBackground = true;
         btnX = Screen.width * 0.05f;
         btnY = Screen.height * 0.05f;
@@ -35,7 +35,7 @@ public class NetworkManager : MonoBehaviour {
         refreshing = true;
     }
     
-    private void Update() {
+    void Update() {
         if(refreshing) {
             if(MasterServer.PollHostList().Length > 0) {
                 refreshing = false;
@@ -45,32 +45,32 @@ public class NetworkManager : MonoBehaviour {
         }
     }
     
-    private void spawnPlayer() {
+    void spawnPlayer() {
         Vector3 pos = spawnObject.position + new Vector3(Random.value * 1f, 0, 0);
         Network.Instantiate(playerPrefab, pos, Quaternion.identity, 0);
     }
     
-    private void OnServerInitialized(){
+    void OnServerInitialized(){
         Debug.Log("Server Initialized!");
         spawnPlayer();
     }
     
-    private void OnConnectedToServer(){
+    void OnConnectedToServer(){
         spawnPlayer();
     }
     
-    private void OnPlayerDisconnected(NetworkPlayer player) {
+    void OnPlayerDisconnected(NetworkPlayer player) {
         Network.RemoveRPCs(player);
         Network.DestroyPlayerObjects(player);
     }
     
-    private void OnMasterServerEvent(MasterServerEvent mse){
+    void OnMasterServerEvent(MasterServerEvent mse){
         if(mse == MasterServerEvent.RegistrationSucceeded) {
             Debug.Log("Registered Server!");
         }
     }
     
-    private void OnGUI(){
+    void OnGUI(){
         if(!Network.isClient && !Network.isServer) {
             if(GUI.Button( new Rect(btnX, btnY, btnW, btnH), "Start Server")) {
                 Debug.Log("Starting Server");
