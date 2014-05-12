@@ -7,3 +7,6 @@
 /GameProject/*.csproj
 /GameProject/*.unityproj
 /GameProject/*.sln
+/GameProject/*_Data
+/GameProject/*.exe
+/GameProject/GameProject.userprefs
