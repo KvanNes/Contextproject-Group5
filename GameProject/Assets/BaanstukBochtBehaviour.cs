@@ -14,13 +14,11 @@ public class BaanstukBochtBehaviour : BaanBehaviour {
 		new Vector2(unit - margin, unit)
 	};
 	
-	// Use this for initialization
 	protected new void Start () {
 		addEdges(pointsAbove, pointsBelow);
 	}
 	
-	// Update is called once per frame
-	void Update () {
+    private void Update () {
 
 	}
 }

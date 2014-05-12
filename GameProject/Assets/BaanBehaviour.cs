@@ -3,10 +3,10 @@ using System.Collections;
 
 public class BaanBehaviour : MonoBehaviour {
 	
-	public const float unit = 750f / 2500f;
-	public const float margin = (150f - 50f) / 2500f;
-	public const float m = unit / 2f;
-	public static Vector2[] moveCenter(Vector2[] input) {
+    protected const float unit = 750f / 2500f;
+    protected const float margin = (150f - 50f) / 2500f;
+    private const float m = unit / 2f;
+    private static Vector2[] moveCenter(Vector2[] input) {
 		Vector2[] res = new Vector2[input.Length];
 		for (int i = 0; i < input.Length; i++) {
 			res[i] = input[i] - new Vector2(m, m);
@@ -32,7 +32,7 @@ public class BaanBehaviour : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+    private void Update () {
+	    
 	}
 }

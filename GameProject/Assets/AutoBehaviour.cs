@@ -4,35 +4,36 @@ using System;
 
 public class AutoBehaviour : MonoBehaviour {
 
-	const int queueSize = 6;
-	Queue lastRotations = new Queue(queueSize);
-	Queue lastPositions = new Queue(queueSize);
-	bool stay = false;
-	float speed = 0f;
-	float acceleration = 0.02f;
-	float backAcceleration = 0.02f;
-	const float minSpeed = -0.03f;
-	const float maxSpeed = 0.07f;
-	const float maxAcceleration = 0.005f;
-	const float minAcceleration = 0.005f;
-	const float accelerationIncrease = 1f;
-	const float accelerationDecrease = 1f;
+    private const int queueSize = 2;
+    private Queue lastRotations = new Queue(queueSize);
+    private Queue lastPositions = new Queue(queueSize);
+    private float speed = 0f;
+    private float acceleration = 0.02f;
+    private float backAcceleration = 0.02f;
+    private const float minSpeed = -0.03f;
+    private const float maxSpeed = 0.07f;
+    private const float maxAcceleration = 0.005f;
+    private const float minAcceleration = 0.005f;
+    private const float accelerationIncrease = 1f;
+    private const float accelerationDecrease = 1f;
 	
-	Quaternion copy(Quaternion v) {
+	private Quaternion copy(Quaternion v) {
 		return new Quaternion(v.x, v.y, v.z, v.w);
 	}
 
-	Vector3 copy(Vector3 v) {
+    private Vector3 copy(Vector3 v) {
 		return new Vector3(v.x, v.y, v.z);
 	}
 	
-	// Use this for initialization
-	void Start () {
+	private void Start () {
 		
 	}
 
-	// Update is called once per frame
-	void Update () {
+    private void Update () {
+        if(!networkView.isMine) {
+            return;
+        }
+
 		float dt = Time.deltaTime;
 
 		if (lastPositions.Count > queueSize) {
@@ -78,20 +79,18 @@ public class AutoBehaviour : MonoBehaviour {
             rotate(-1, speed);
 		}
 
-		if (!stay) {
-			transform.Translate(speed / 10, 0, 0);
-		}
+		transform.Translate(speed / 10, 0, 0);
 
 		Camera.main.transform.position = transform.position;
 		Camera.main.transform.Translate(new Vector3(0, 0, -2));
 	}
 
-    void rotate(int factor, float speed) {
+    private void rotate(int factor, float speed) {
         float angle = factor * Mathf.Min(3, speed * 50f);
         transform.Rotate(new Vector3(0, 0, angle));
     }
 
-	void recover() {
+    private void recover() {
 		try {
 			transform.rotation = (Quaternion) lastRotations.Dequeue();
 			transform.position = (Vector3) lastPositions.Dequeue();
@@ -100,13 +99,12 @@ public class AutoBehaviour : MonoBehaviour {
 		}
 	}
 	
-	void OnTriggerEnter2D(Collider2D col) {
-		stay = true;
-		speed = 0;
+    private void OnTriggerEnter2D(Collider2D col) {
+		speed = -speed / 1.2f;
 		recover();
 	}
 	
-	void OnTriggerExit2D(Collider2D col) {
-		stay = false;
+    private void OnTriggerExit2D(Collider2D col) {
+        
 	}
 }
