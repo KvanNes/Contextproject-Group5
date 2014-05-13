@@ -1,8 +1,32 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
+\usepackage{glossaries}
+
+\makeglossaries
+\newglossaryentry{MoSCoW}{
+name = MoSCoW,
+description = { Technique to reach a common understanding on the importance of each requirement. M = Must, S = Should, C = Could, W = Wont }
+}
+\newglossaryentry{acceleration player}{
+name = {Acceleration Player},
+description = { The player that can only accelerate or decelerate that means, this player cannot steer }
+}
+\newglossaryentry{steering player}{
+name = {Steering Player},
+description = { The player that can only steer left or right that means, this player cannot accelerate or decelerate}
+}
+\newglossaryentry{Gyroscope}{
+name = gyroscope,
+description = {device used for measuring or maintaining orientation, often built-in to smartphones}
+}
+\newglossaryentry{Ghosts}{
+name = Ghosts,
+description = {You see another players shape (ghost) in a transparant color, you cannot collide with it. It is used to show how well your opponents are doing}
+}
+
 
 \title{Product Planning}
-\author{Ramin Erfani}
+\author{Contextgroup 5}
 \date{May 2014}
 
 \begin{document}
@@ -12,9 +36,54 @@
 \section{Introduction}
 \section{Product}
 \subsection{High-level product backlog}
+Our game basically consists of two parts: The \gls{steering player} and the \gls{acceleration player}. The steering player has a limited view of the track and therefore has a hard time steering. In order to accomplish his successful steering this player has to cooperate with the acceleration player which has a complete overview of the track. However this player can only accelerate or decelerate. As both players control the same car they have to be connected in a network. \\\\
+Translating the above to a high-level product backlog gives us the following items
+\begin{itemize}
+	\item Create different interfaces for both players
+	\item Create control events for both players
+	\item Glue both players with a network.
+\end{itemize}
+A backlog containing, in detail, all features that can be expected, along with their planning of being implemented is listed below in subsection: Roadmap
 \subsection{Roadmap}
+This section of the report will contain the features that we designed. We have divided these features according to the \gls{MoSCoW} model to give a brief overview of the features and their priority's. The features that must and should be implemented are planned into sprints, which sprint is stated between brackets.
+\subsubsection{Must haves}
+The following features are essential and will be implemented.
+\begin{itemize}
+	\item Race track and Car (Sprint 1)
+	\item Network server to implement online player interaction (Sprint 2)
+	\item Different controls for different roles (\gls{steering player} and \gls{acceleration player}) including different User Interfaces (Sprint 4)
+	\item Road sprites (including tricking ones) (Sprint 1)
+    \item Steering player must have minimal vision of the track (Sprint 1)
+    \item Acceleration player is able to see the whole track (Sprint 3)
+    \item Playable on android (Sprint 5)
+\end{itemize}
+\subsubsection{Should haves}
+The following features are not essential to a minimal game, but will definitely improve gameplay.
+\begin{itemize}
+    \item Tag teams can match up (Sprint 6)  
+    \item Random tracks to delete track learning factor (Sprint 5)
+    \item Steering should be done with \gls{Gyroscope} (Sprint 7)
+\end{itemize}
+\subsubsection{Could haves}
+The following features will only be implemented if time allows us to do so.
+\begin{itemize}
+    \item \gls{Ghosts} of other tag teams to see what position you are in 
+    \item Match position during the game
+    \item Several car sprites
+    \item Track times according to random track length.
+    \item Drop objects on track to harass other players.
+\end{itemize}
+\subsubsection{Wont haves}
+These features will not be implemented as they do not improve gameplay relative to the time they cost.
+\begin{itemize}
+    \item A second mode: ranked mode
+    \item Multi-platform interaction.
+\end{itemize}
 The intended planning will be shown below in a brief overview.
 \section{Product Backlog}
+For this section, a number of user stories will be told in regards to: features, defects,  technical improvements and know-how acquisition. There will also be a section with the initial release plan.
+\subsubsection{User stories of features}
+\
 \section{Definition of Done}
 The last section of this report will explain in detail when the endproduct can be considered done. This section will particularly handle the DoD of a feature, sprint and release.
 \subsection{Backlog Items}
@@ -43,5 +112,6 @@ A release is considered done, when all the checklist points below are true.
 	\item (End)user tests passed
 	\item Code documented and satisfies coding standards.
 \end{itemize}
-\section{Glossary}
+\clearpage
+\printglossaries
 \end{document}
