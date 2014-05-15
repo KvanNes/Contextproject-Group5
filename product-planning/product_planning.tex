@@ -11,8 +11,6 @@
 \usepackage{graphicx}
 \usepackage{color}
 \usepackage[section]{placeins}
-\usepackage{datatool}
-\usepackage{glossaries}
 
 \urlstyle{same}
 \linespread{1.1}
@@ -36,13 +34,17 @@
 \begin{center}
 TI2805 Contextproject, 2013/2014, TU Delft\\
 Group 5, Computer Games\\
-Version 2
+Version 1 (draft)
 \end{center}
 
 \newpage
 
 \section*{Abstract}
-The product we are making is called DuoDrive, which is a racing game where people have to work together to win. This document will go over the planning that we have made for this product. The planning consists of a high-level product backlog, a roadmap, a list of features sorted according to the MoSCoW method, user stories and a Definition of Done.
+The product we are making is called DuoDrive, which is a racing game where people have to work together to win. This document will go over the planning that we have made for this product. The planning consists of a high-level product backlog, a roadmap, a list of features sorted according to the MoSCoW method (Wikipedia), user stories and a Definition of Done.
+
+\newpage
+
+\tableofcontents
 
 \newpage
 
@@ -194,13 +196,17 @@ A release is considered done, when all the checklist points below are checked an
 You see another player's shape (ghost) in a transparent color. You can not collide with the ghost. It can be used i.e. to show how well your opponents are doing.
 \item[Gyroscope] \hfill \\
 Device used for measuring or maintaining orientation, often built into smartphones.
-\item[MoSCoW] \hfill \\
+\item[MoSCoW] (Wikipedia) \hfill \\
 Technique to reach a common understanding on the importance of each requirement. M = Must, S = Should, C = Could, W = Won't.
 \item[Steering Player] \hfill \\
 The player that can only steer left or right. This player can not accelerate or decelerate.
 \item[Throttling Player] \hfill \\
-The player that controls the throttle and can only accelerate or decelerate. This player can not steer.
+The player that controls the throttle and can only accelerate or decelerate. This player cannot control the steering wheel.
 
 \end{description}
+
+\section*{References}
+MoSCoW method. (n.d.). In Wikipedia. Retrieved May 15, 2014, from \url{http://en.wikipedia.org/wiki/MoSCoW_method}
+
 
 \end{document}
