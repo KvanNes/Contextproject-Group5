@@ -33,15 +33,28 @@
 \begin{center}
 TI2805 Contextproject, 2013/2014, TU Delft\\
 Group 5, Computer Games\\
-Version 1 \emph{TODODODODO}
+Version 1 (draft)
 \end{center}
 \clearpage
+
+
+\section*{Abstract}
+
+
+
+\clearpage
+\tableofcontents
+
+\clearpage
+
 
 \section{Introduction}
 In this document we will describe the architecture of the system that we will be creating during the Computer Games Contextproject. The architecture will be explained in a form containing high level components with the sub-components and sub-systems. This will give more insight in what the system is composed of and how the several elements of the system work together. 
 
+
 \subsection{Design goals}
-There are five design goals that will be maintained throughout the project:
+There are four design goals that will be maintained throughout the project:
+
 \begin{description}
 \item[Availability] \hfill \\
     During this project our product will be \emph{continuously integrated} with the goal of having a working product running at any time. This allows us and the client to test and work with the product at any time, even before the final release.
@@ -49,36 +62,37 @@ After the final release we will want to make sure that the server is up as much 
 \item[Replayability] \hfill \\
     A design goal that we consider to be specific for our product is replayability. We want the players to enjoy the game in such a way that the game will be replayable in both the short and long term. We want the players to find our product memorable, so they may even look forward to playing the game the next time. To reach this goal, the game should make a solid first impression, after which elements such as randomness and other unpredictable events will keep the game interesting to play.
 \item[Usability] \hfill \\
-    The game is designed in such a way that without, or with few, instructions the player will be able to play the game. After a few minutes, or even seconds, the player will have learned how to work with the system and play the game even better. The physics in the game are set to make the user experience better and making the efficiency of playing the game at its best.\\ Moreover, with feedback given during the game, the user will be able to see progress and see how well he is playing the game.
-    
+    The game is designed in such a way that without, or with few, instructions the player will be able to play the game. After a few minutes, or even seconds, the player will have learned how to work with the system and play the game even better. The physics in the game are set to make the user experience better and making the efficiency of playing the game at its best. \\
+		Moreover, with feedback given during the game, the user will be able to see progress and see how well he is playing the game.
 \item[Performance] \hfill \\
-    The system will have a central server which is situated in the same room/building/area as the players who are playing the game. Also all the players should be connected on the same network as the server is. Since the server will be the machine sending and receiving the data of the players, it is necessary that the connection between the player and the server is fast enough. This is needed to ensure that the players will not encounter any \emph{latency issues}. \\
+    The system will have a central server which is situated in the same room/building/area as the players who are playing the game. Also, all the players should be connected on the same network as the server is. Since the server will be the machine sending and receiving the data of the players, it is necessary that the connection between the player and the server is fast enough. This is needed to ensure that the players will not encounter any \emph{latency issues}. \\
     In a future release we might implement a system where some of the server's calculations will be calculated locally on the player's device. This will take load off the server and may improve the connection speed throughout the game.
     
 \end{description}
 
 \newpage
 
+
 \section{Software Architecture Views}
-This chapter will discuss the architecture of the system and how it is decomposed. In the first paragraph the subsystems will be decomposed and every subsystem will be explained. In the second paragraph the relations and mapping between the hardware and software will be elaborated upon. In the last paragraph, the data management will be explained.
+This chapter will discuss the architecture of the system and how it is decomposed. In the first paragraph the subsystems will be decomposed and we explain each subsystem. In the second paragraph we will elaborate upon the relations and mapping between hardware and software. In the last paragraph the data management will be explained.
+
 
 \subsection{Subsystem Decomposition}
-The software architecture of the system consists of three different subsystems. It consists of the server, the system for the steerer and the system for the player who controls the throttle. The different subsystems are explained in this section.\\
+The software architecture of the system consists of three different subsystems: the server, the system for the steering player, and the system for the player who controls the throttle. These different subsystems are explained in this section.
+
 \begin{itemize}
 \item Server \hfill \\
-    The server in the system maintains the data flow. It will send the data of the positions of the cars to all players, so that every player has a near real-item experience, in which they are able to see other players' positions. All data sent by a player will first be sent to the server, which distributes it to the other players. There is no player to player data flow at this moment. \\
-    
-\item Steerer system \hfill \\
-    This system will only contain the view that the steerer should be able to see. That will be a limited view of the track and not being able to control the throttle. It will only have the ability to steer using a \emph{gyroscope} available in the device of the player. \\
-    
+    The server in the system maintains the data flow. It will send the data of the positions of the cars to all players, so that every player has a near real-time experience, where they can see other players' positions. All data sent by a player will first be sent to the server, which distributes it to the other players. There is no player to player data flow at this moment.
+\item Steering player system \hfill \\
+    The system for the steering player will only contain the view that the steering player should see. This will be a limited view of the track and not being able to control the throttle. It will only have the ability to steer using a \emph{gyroscope} available in the device of the player.
 \item Throttler system \hfill \\
-    In this system the abilities to perform certain actions is also limited. The player will only be able to control the throttle. So accelerate forward and/or backward and hit the brake. By limiting the view and possibilities to perform actions the communication will be enforced. \\
-
+    In the throttler system the abilities to perform certain actions is also limited. The player will only be able to control the throttle, i.e. accelerating forward or backward, and hitting the brake. By limiting the view and the possibilities to perform actions, communication will be enforced.
 \end{itemize}
+
 
 \subsection{Hardware/Software Mapping}
 The hardware used is very various in terms of the player-held device. That device must have Android running and must contain a \emph{gyroscope} and \emph{accelerometer}. The only other piece of hardware that will be required is a central computer that will serve as a central server. \\
-The software that is being used on the described hardware is the same. Depending on the functionality, so either being a steerer, throttler or server, the interface will change. However, the server has a simplistic interface which will make it possible to start or end the server.
+The software that is being used on the described hardware is the same. Depending on the functionality, so either being a steering player, throttler, or server, the interface will be different. The server has a simplistic interface which will make it possible to start or end the server.
 
 
 \subsection{Persistent Data Management}
@@ -86,16 +100,28 @@ Persistent data management is not needed in our product. There is no data that n
 
 \newpage
 
+
 \section{Glossary}
 \begin{description}
-\item[Continuous Integration] \hfill \\
-Continuous integration is the practice, in software engineering, of merging all developer working copies with a shared mainline several times a day/week. This type of integration is used to make sure a working copy is always available at any moment during a software engineering project.
+\item[Continuous Integration] (Wikipedia, 2014) \hfill \\
+Continuous integration is the practice, in software engineering, of merging all developer working copies with a shared mainline several times a day. This type of integration is used to make sure a working copy is always available at any moment during a software engineering project.
 \item[Latency Issues] \hfill \\
 In a network, latency is the amount of time a packet needs to get from one point to another, i.e. from a server to a client. Latency issues arise when a packet takes too long to arrive at the endpoint, the fluency of the program may be compromised, because packets may take too long or be dropped completely. 
-\item[Gyroscope] \hfill \\
+\item[Gyroscope] (The American Heritage® Dictionary of the English Language, Fourth Edition)\hfill \\
 A device consisting of a wheel or disc mounted so that it can spin rapidly about an axis which is itself free to alter in direction. The orientation of the axis is not affected by tilting of the mounting, so gyroscopes can be used to provide stability or maintain a reference direction in navigation systems, automatic pilots and stabilizers.
-\item[Accelerometer] \hfill \\
+\item[Accelerometer] (Oxford dictionary (British \& World English)) \hfill \\
 An instrument for measuring the acceleration of a moving or vibrating body.
 \end{description}
+
+
+\clearpage
+
+\section*{References}
+Accelerometer. (n.d.) Oxford dictionary (British \& World English). Retrieved May 15, 2014, from \url{http://www.oxforddictionaries.com/definition/english/accelerometer}
+\newline \newline
+Continuous integration. (n.d.). In \textit{Wikipedia}. Retrieved May 15, 2014, from \url{http://en.wikipedia.org/wiki/Continuous_integration}
+\newline \newline
+Gyroscope. (n.d.) The American Heritage® Dictionary of the English Language, Fourth Edition. (2003). Retrieved May 15, 2014, from \url{http://www.thefreedictionary.com/gyroscope}
+
 
 \end{document}
