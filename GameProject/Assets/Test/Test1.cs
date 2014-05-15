@@ -11,5 +11,10 @@ namespace AssemblyCSharp {
 		public void TestA() {
 			Assert.True(true);
 		}
+
+        [Test]
+        public void TestB() {
+            Assert.False(true);
+        }
 	}
 }
