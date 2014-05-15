@@ -34,6 +34,10 @@ description = {You see another players shape (ghost) in a transparant color, you
 \maketitle
 
 \section{Introduction}
+The product that we are making is a game. This is not a casual game, but a game were interaction with another player is vital for winning the game. But winning is not why we are making this game. We are making this game because we want that people can engage in a fun activity while waiting for someone or something.\\
+The concept of the game is as follows:\\
+It is essentially a race game, but the twist is that two people will control the car. One person will be in control of steering and the other person will be in control of the throttle. The game will be played on two different screens. The person that is in control of the steering has limited view, thus cannot completely see where he is going. The person can see how fast the car must go, this information needs to be passed over to the player who controls the throttle. This player can see where the steering player has to go and needs to inform the other player.\\
+To get this idea to a final product we will need a proper planning. First of we will talk about the product itself, after that the product backlog is the subject. Third we will talk about the definition of done. At the and there is a glossary.
 \section{Product}
 \subsection{High-level product backlog}
 Our game basically consists of two parts: The \gls{steering player} and the \gls{acceleration player}. The steering player has a limited view of the track and therefore has a hard time steering. In order to accomplish his successful steering this player has to cooperate with the acceleration player which has a complete overview of the track. However this player can only accelerate or decelerate. As both players control the same car they have to be connected in a network. \\\\
@@ -82,8 +86,57 @@ These features will not be implemented as they do not improve gameplay relative 
 The intended planning will be shown below in a brief overview.
 \section{Product Backlog}
 For this section, a number of user stories will be told in regards to: features, defects,  technical improvements and know-how acquisition. There will also be a section with the initial release plan.
-\subsubsection{User stories of features}
-\
+\subsection{User stories of features}
+As a player,\\
+Who controls the wheels,\\
+I can steer the car\\
+\\
+As a player,\\
+Who controls the throttle,\\
+I can determine the speed of the car\\
+\\
+As a player,\\
+Who controls the steering,\\
+I can see when the speed of car needs adjustment\\
+\\
+As a player,\\
+Who controls the throttle,\\
+I can see when the car needs steering\\
+\\
+As a player,\\
+Who wants to start a game,\\
+And there is no game available,\\
+I can start a new game\\
+\\
+As a player,\\
+Who wants to start a game,\\
+And there is a game available,\\
+I can join that game\\
+\subsection{User stories of know-how acquisition}
+As a player who controls the throttle,\\
+And I see a corner coming up,\\
+I know I have to tell my teammate to steer,\\
+Or else we won’t win the game\\
+\\
+As a player who controls the steering,\\
+And I see that we need to slow down/speed up,\\
+I know that I need to tell my teammate to adjust the speed,\\
+Or else we won’t win the game.\\
+\subsection{Initial release plan}
+For our project we will have some milestones.\\
+\begin{itemize}
+\item network implementation finished
+\item gyroscope control
+\item different controls for each player
+\end{itemize}
+These features will we see as milestones for out project. Also in this order.
+The Minimal release features(MRF) per release are all the same. The MRFs consists of:
+\begin{itemize}
+\item The release must have a track with a car, that has limited vision
+\item It must also have network capabilities
+\item The car must have seperate controls before we can release it
+\end{itemize}
+If those features are not done we cannot release the game.
 \section{Definition of Done}
 The last section of this report will explain in detail when the endproduct can be considered done. This section will particularly handle the DoD of a feature, sprint and release.
 \subsection{Backlog Items}
