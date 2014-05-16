@@ -1,12 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System;
 
 public class AutoBehaviour : MonoBehaviour {
 
     // These are used to recover to the last position/rotation when a
     // collision occurs.
-    private Quaternion lastRotation = Quaternion.identity;
-    private Vector3 lastPosition = Vector3.zero;
+    private const int QUEUE_SIZE = 3;
+    private Queue<Quaternion> lastRotations = new Queue<Quaternion>(QUEUE_SIZE);
+    private Queue<Vector3> lastPositions = new Queue<Vector3>(QUEUE_SIZE);
+    
+    private bool isColliding = false;
 
     // The current speed and acceleration of this car.
     private float speed = 0f;
@@ -39,11 +44,27 @@ public class AutoBehaviour : MonoBehaviour {
         float angle = factor * Mathf.Min(3, speed * 50f);
         transform.Rotate(new Vector3(0, 0, angle));
     }
-    
-    // Recover last position and rotation.
-    private void recover() {
-        transform.rotation = lastRotation;
-        transform.position = lastPosition;
+
+    // Store current position and rotation.
+    private void storeConfiguration() {
+        if(lastRotations.Count >= 3) {
+            lastRotations.Dequeue();
+        }
+        if(lastPositions.Count >= 3) {
+            lastPositions.Dequeue();
+        }
+        lastRotations.Enqueue(copy(transform.rotation));
+        lastPositions.Enqueue(copy(transform.position));
+    }
+
+    // Restore last position and rotation.
+    private void restoreConfiguration() {
+        try {
+            transform.rotation = copy(lastRotations.Dequeue());
+            transform.position = copy(lastPositions.Dequeue());
+        } catch(InvalidOperationException) {
+            // Ignore if not possible.
+        }
     }
 
     private enum speedAction {
@@ -119,8 +140,7 @@ public class AutoBehaviour : MonoBehaviour {
             return;
         }
 
-		lastRotation = copy(transform.rotation);
-		lastPosition = copy(transform.position);
+        storeConfiguration();
 
         // Make sure speed is in constrained interval.
         speed = forceInInterval(speed, minSpeed, maxSpeed);
@@ -128,7 +148,7 @@ public class AutoBehaviour : MonoBehaviour {
         if (getSpeedAction() == speedAction.speedUp) {
             applySpeedUpDown(Time.deltaTime, accelerationIncrease, 10, 5);
         } else if (getSpeedAction() == speedAction.speedDown) {
-            applySpeedUpDown(Time.deltaTime, accelerationDecrease, 10, 20);
+            applySpeedUpDown(Time.deltaTime, -accelerationDecrease, 10, 20);
 		} else {
 			if (speed > 0) {
                 applyFriction(Time.deltaTime, -0.05f);
@@ -145,7 +165,7 @@ public class AutoBehaviour : MonoBehaviour {
 		}
 
         // Move the car according to current speed.
-		transform.Translate(speed / 10, 0, 0);
+		transform.Translate(speed * Time.deltaTime * 8f, 0, 0);
 
         // Move camera along with car.
 		Camera.main.transform.position = transform.position;
@@ -154,7 +174,10 @@ public class AutoBehaviour : MonoBehaviour {
 	
     // Occurs when bumping into something (another car, or a track border).
     private void OnTriggerEnter2D(Collider2D col) {
-		speed = -(speed + 0.005f) / 1.2f;
-		recover();
+        if (networkView.isMine) {
+            // Go back a little.
+            speed = -(speed + Mathf.Sign(speed) * 0.005f) / 1.2f;
+            restoreConfiguration();
+        }
 	}
 }
