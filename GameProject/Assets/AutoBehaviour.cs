@@ -10,8 +10,6 @@ public class AutoBehaviour : MonoBehaviour {
     private const int QUEUE_SIZE = 3;
     private Queue<Quaternion> lastRotations = new Queue<Quaternion>(QUEUE_SIZE);
     private Queue<Vector3> lastPositions = new Queue<Vector3>(QUEUE_SIZE);
-    
-    private bool isColliding = false;
 
     // The current speed and acceleration of this car.
     private float speed = 0f;
@@ -28,15 +26,15 @@ public class AutoBehaviour : MonoBehaviour {
     private float forceInInterval(float x, float min, float max) {
         return Mathf.Min(Mathf.Max(min, x), max);
     }
-	
+
     // Copies (clones) a Quaternion.
-	private Quaternion copy(Quaternion v) {
-		return new Quaternion(v.x, v.y, v.z, v.w);
-	}
+    private Quaternion copy(Quaternion v) {
+        return new Quaternion(v.x, v.y, v.z, v.w);
+    }
 
     // Copies (clones) a Vector3.
     private Vector3 copy(Vector3 v) {
-		return new Vector3(v.x, v.y, v.z);
+        return new Vector3(v.x, v.y, v.z);
     }
     
     // Rotate (steer) this car.
@@ -73,19 +71,28 @@ public class AutoBehaviour : MonoBehaviour {
         noAction
     };
 
+    private enum steerAction {
+        steerLeft,
+        steerRight,
+        noAction
+    };
+
     private speedAction getSpeedAction() {
         int separatingColumn = Screen.width / 2;
-
-        // When mouse is pressed: check whether on left/right half.
-        if (Input.mousePresent && Input.GetMouseButton(0)) {
-            return Input.mousePosition.x >= separatingColumn
-                ? speedAction.speedDown : speedAction.speedUp;
-        }
+        int separatingRow = Screen.height / 2;
 
         // When touching with one finger: check whether on left/right half.
-        if (Input.touchCount == 1) {
-            return Input.GetTouch(0).position.x >= separatingColumn
-                ? speedAction.speedDown : speedAction.speedUp;
+        if (Input.touchCount >= 1) {
+            for(int i = 0; i < Input.touchCount; i++) {
+                Vector2 pos = Input.GetTouch(i).position;
+                if(pos.x > separatingColumn) {
+                    if(pos.y >= separatingRow) {
+                        return speedAction.speedDown;
+                    } else {
+                        return speedAction.speedUp;
+                    }
+                }
+            }
         }
 
         // When down key pressed: speed down.
@@ -100,6 +107,38 @@ public class AutoBehaviour : MonoBehaviour {
 
         // If none of the above applies, do nothing with respect to throttling.
         return speedAction.noAction;
+    }
+
+    private steerAction getSteerAction() {
+        int separatingColumn = Screen.width / 2;
+        int separatingRow = Screen.height / 2;
+        
+        // When touching with one finger: check whether on left/right half.
+        if (Input.touchCount >= 1) {
+            for(int i = 0; i < Input.touchCount; i++) {
+                Vector2 pos = Input.GetTouch(i).position;
+                if(pos.x <= separatingColumn) {
+                    if(pos.y >= separatingRow) {
+                        return steerAction.steerLeft;
+                    } else {
+                        return steerAction.steerRight;
+                    }
+                }
+            }
+        }
+        
+        // When left key pressed: steer left.
+        if (Input.GetKey(KeyCode.LeftArrow)) {
+            return steerAction.steerLeft;
+        }
+        
+        // When right key pressed: steer right.
+        if (Input.GetKey(KeyCode.RightArrow)) {
+            return steerAction.steerRight;
+        }
+        
+        // If none of the above applies, do nothing with respect to steering.
+        return steerAction.noAction;
     }
 
     private void applySpeedUpDown(float deltaTime, float accelerationIncrease,
@@ -129,10 +168,24 @@ public class AutoBehaviour : MonoBehaviour {
             speed = 0;
         }
     }
-	
-	private void Start() {
-		
-	}
+
+    // Normalize angle to lie in the interval <-180, 180].
+    private float normalizeAngle(float x) {
+        x %= 360;
+        x += 360;
+        x %= 360;
+        if (x > 180) {
+            return x - 360;
+        } else {
+            return x;
+        }
+    }
+
+    private void Start() {
+        if(SystemInfo.supportsGyroscope) {
+            Input.gyro.enabled = true;
+        }
+    }
 
     private void Update() {
         if(!networkView.isMine) {
@@ -144,34 +197,41 @@ public class AutoBehaviour : MonoBehaviour {
 
         // Make sure speed is in constrained interval.
         speed = forceInInterval(speed, minSpeed, maxSpeed);
-		
+
         if (getSpeedAction() == speedAction.speedUp) {
             applySpeedUpDown(Time.deltaTime, accelerationIncrease, 10, 5);
         } else if (getSpeedAction() == speedAction.speedDown) {
             applySpeedUpDown(Time.deltaTime, -accelerationDecrease, 10, 20);
-		} else {
-			if (speed > 0) {
+        } else {
+            if (speed > 0) {
                 applyFriction(Time.deltaTime, -0.05f);
-			} else if (speed < 0) {
+            } else if (speed < 0) {
                 applyFriction(Time.deltaTime, 0.05f);
-			}
-		}
-
+            }
+        }
+        
         // Steering.
-		if (Input.GetKey(KeyCode.LeftArrow)) {
+        if(getSteerAction() == steerAction.steerLeft) {
             rotate(1f, speed);
-        } else if (Input.GetKey(KeyCode.RightArrow)) {
+        } else if (getSteerAction() == steerAction.steerRight) {
             rotate(-1f, speed);
-		}
+        }
+        /*else {
+            //transform.Rotate(0, 0, accAngle);
+            Vector3 angles = Input.gyro.attitude.eulerAngles;
+
+            Debug.Log(angles.ToString());
+            transform.Rotate(new Vector3(0, 0, normalizeAngle(angles.z - 90) * 1f * Time.deltaTime));
+        }*/
 
         // Move the car according to current speed.
-		transform.Translate(speed * Time.deltaTime * 8f, 0, 0);
+        transform.Translate(speed * Time.deltaTime * 4f, 0, 0);
 
         // Move camera along with car.
-		Camera.main.transform.position = transform.position;
-		Camera.main.transform.Translate(new Vector3(0, 0, -2));
-  	}
-	
+        Camera.main.transform.position = transform.position;
+        Camera.main.transform.Translate(new Vector3(0, 0, -2));
+    }
+
     // Occurs when bumping into something (another car, or a track border).
     private void OnTriggerEnter2D(Collider2D col) {
         if (networkView.isMine) {
@@ -179,5 +239,5 @@ public class AutoBehaviour : MonoBehaviour {
             speed = -(speed + Mathf.Sign(speed) * 0.005f) / 1.2f;
             restoreConfiguration();
         }
-	}
+    }
 }
