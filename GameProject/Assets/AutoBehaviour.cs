@@ -29,6 +29,8 @@ public class AutoBehaviour : MonoBehaviour {
 	private float syncTime = 0f;
 	private Vector3 syncStartPosition = Vector3.zero;
 	private Vector3 syncEndPosition = Vector3.zero;
+	private Quaternion syncStartRotation = Quaternion.identity;
+	private Quaternion syncEndRotation = Quaternion.identity;
 
     private float forceInInterval(float x, float min, float max) {
         return Mathf.Min(Mathf.Max(min, x), max);
@@ -260,23 +262,30 @@ public class AutoBehaviour : MonoBehaviour {
 	private void SyncedMovement() {
 		syncTime += Time.deltaTime;
 		transform.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
+		transform.rotation = Quaternion.Slerp(syncStartRotation, syncEndRotation, syncTime / syncDelay);
 	}
 
 
 	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info) {
 		Vector3 syncPosition = Vector3.zero;
 		Vector3 syncVelocity = Vector3.zero;
+		Quaternion syncRotation = Quaternion.identity;
+		float syncAngularVelocity = 0f;
 
 		if (stream.isWriting) {
 			syncPosition = rigidbody2D.transform.position;
-			Debug.Log(syncPosition);
 			stream.Serialize(ref syncPosition);
 			
 			syncVelocity = rigidbody2D.velocity;
 			stream.Serialize(ref syncVelocity);
+
+			syncAngularVelocity = rigidbody2D.angularVelocity;
+			syncRotation = rigidbody2D.transform.rotation;
+			stream.Serialize(ref syncRotation);
 		} else {
 			stream.Serialize(ref syncPosition);
 			stream.Serialize(ref syncVelocity);
+			stream.Serialize(ref syncRotation);
 			
 			syncTime = 0f;
 			syncDelay = Time.time - lastSynchronizationTime;
@@ -284,6 +293,10 @@ public class AutoBehaviour : MonoBehaviour {
 			
 			syncEndPosition = syncPosition + syncVelocity * syncDelay;
 			syncStartPosition = transform.position;
+		
+			syncRotation = Quaternion.Euler(0, 0, syncAngularVelocity * syncDelay * Mathf.Rad2Deg) * syncRotation;
+			syncEndRotation = syncRotation;  
+			syncStartRotation = rigidbody.rotation;
 		}
 	}
 
