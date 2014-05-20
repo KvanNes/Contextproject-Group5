@@ -279,7 +279,6 @@ public class AutoBehaviour : MonoBehaviour {
 			syncVelocity = rigidbody2D.velocity;
 			stream.Serialize(ref syncVelocity);
 
-			syncAngularVelocity = rigidbody2D.angularVelocity;
 			syncRotation = rigidbody2D.transform.rotation;
 			stream.Serialize(ref syncRotation);
 		} else {
@@ -294,9 +293,8 @@ public class AutoBehaviour : MonoBehaviour {
 			syncEndPosition = syncPosition + syncVelocity * syncDelay;
 			syncStartPosition = transform.position;
 		
-			syncRotation = Quaternion.Euler(0, 0, syncAngularVelocity * syncDelay * Mathf.Rad2Deg) * syncRotation;
 			syncEndRotation = syncRotation;  
-			syncStartRotation = rigidbody.rotation;
+			syncStartRotation = transform.rotation;
 		}
 	}
 
