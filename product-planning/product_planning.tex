@@ -1,117 +1,96 @@
-\documentclass[11pt,twoside,a4paper]{article}
-\usepackage[english]{babel}
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{amssymb}
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{glossaries}
 
-\usepackage[pdfstartview=FitH,pdfpagemode=UseNone]{hyperref}
-\usepackage[letterspace=40]{microtype}
-
-\usepackage{a4wide,times}
-\usepackage{graphicx}
-\usepackage{color}
-\usepackage[section]{placeins}
-
-\urlstyle{same}
-\linespread{1.1}
-
-\title{
-  Product Planning\\
-  DuoDrive
+\makeglossaries
+\newglossaryentry{MoSCoW}{
+name = MoSCoW,
+description = { Technique to reach a common understanding on the importance of each requirement. M = Must, S = Should, C = Could, W = Wont }
 }
-\author{
-	Pim van den Bogaerdt, pvandenbogaerd, 4215516\\
-	Ramin Erfani, rsafarpourerfa, 4205502\\
-	Robert Luijendijk, rluijendijk, 4161467\\
-	Mourad el Maouchi, melmaouchi, 4204379\\
-	Kevin van Nes, kjmvannes, 4020871
+\newglossaryentry{acceleration player}{
+name = {Acceleration Player},
+description = { The player that can only accelerate or decelerate that means, this player cannot steer }
 }
+\newglossaryentry{steering player}{
+name = {Steering Player},
+description = { The player that can only steer left or right that means, this player cannot accelerate or decelerate}
+}
+\newglossaryentry{Gyroscope}{
+name = gyroscope,
+description = {device used for measuring or maintaining orientation, often built-in to smartphones}
+}
+\newglossaryentry{Ghosts}{
+name = Ghosts,
+description = {You see another players shape (ghost) in a transparant color, you cannot collide with it. It is used to show how well your opponents are doing}
+}
+
+
+\title{Product Planning}
+\author{Contextgroup 5}
+\date{May 2014}
 
 \begin{document}
 
 \maketitle
-
-\begin{center}
-TI2805 Contextproject, 2013/2014, TU Delft\\
-Group 5, Computer Games\\
-Version 1 (draft)
-\end{center}
-
-\newpage
-
-\section*{Abstract}
-The product we are making is called DuoDrive, which is a racing game where people have to work together to win. This document will go over the planning that we have made for this product. The planning consists of a high-level product backlog, a roadmap, a list of features sorted according to the MoSCoW method (Wikipedia), user stories and a Definition of Done.
-
-
-\newpage
-
-\tableofcontents
-
-
-\newpage
-
+\begin{abstract}
+The product we are making is called DuoDrive, and it is a racing game where people have to work together win. It is a game that is being built to have something to do whilst you are waiting.
+\end{abstract}
 \section{Introduction}
-The product that we are making is a game. This is not a casual game, but a game where interaction with another player is vital for winning the game. However, winning is not the main goal that we want our players to achieve. We are making this game, because we want people to engage in a fun and social activity, while they are waiting somewhere for someone or something.\\
+The product that we are making is a game. This is not a casual game, but a game were interaction with another player is vital for winning the game. But winning is not why we are making this game. We are making this game because we want that people can engage in a fun activity while waiting for someone or something.\\
 The concept of the game is as follows:\\
-Essentially, our game is a race game, but the twist is that two people will control the car, instead of the usual one person per car. One person will be in control of steering and the other person will be in control of the throttle. The game will be played on two different screens. The person that is in control of steering has limited view and therefore he can not completely see where he is going. What this player can see, is how fast the car should be going. This information needs to be passed over to the player who controls the throttle, because the throttling player will not know how fast (or slow) he has to throttle. The throttling player can see where the steering player has to steer to and needs to inform the steering player about this. The lack of information on both sides forces the two players to cooperate and communicate if they want to reach the finish first (or at all).\\
-To get this idea from scratch to a final product, we will need a proper planning. Firstly, we will talk about the product itself. Secondly, the product backlog will be described. Finally, we will talk about the definition of done. A glossary can be found at the end of the document.
-
+It is essentially a race game, but the twist is that two people will control the car. One person will be in control of steering and the other person will be in control of the throttle. The game will be played on two different screens. The person that is in control of the steering has limited view, thus cannot completely see where he is going. The person can see how fast the car must go, this information needs to be passed over to the player who controls the throttle. This player can see where the steering player has to go and needs to inform the other player.\\
+To get this idea to a final product we will need a proper planning. First of we will talk about the product itself, after that the product backlog is the subject. Third we will talk about the definition of done. At the and there is a glossary.
 \section{Product}
 \subsection{High-level product backlog}
-Our game basically consists of two parts: The \emph{steering player} and the \emph{throttling player}. The steering player has a limited view of the track and will therefore have a hard time steering. In order to steer adequately, this player has to cooperate with the throttling player, who has a complete overview of the track. However, this player can only accelerate or decelerate. As both players control the same car, they will have to be connected to a network. \\\\
-Translating the above to a high-level product backlog gives us the following items:
+Our game basically consists of two parts: The \gls{steering player} and the \gls{acceleration player}. The steering player has a limited view of the track and therefore has a hard time steering. In order to accomplish his successful steering this player has to cooperate with the acceleration player which has a complete overview of the track. However this player can only accelerate or decelerate. As both players control the same car they have to be connected in a network. \\\\
+Translating the above to a high-level product backlog gives us the following items
 \begin{itemize}
 	\item Create different interfaces for both players
 	\item Create control events for both players
-	\item Connect both players through a network.
+	\item Glue both players with a network.
 \end{itemize}
-A backlog containing all features that can be expected, along with the planning of their implementation, is listed in the section below.
-
-
-\newpage
-
+A backlog containing, in detail, all features that can be expected, along with their planning of being implemented is listed below in subsection: Roadmap
 \subsection{Roadmap}
-This section of the report contains the features that we have designed. We have divided these features according to the \emph{MoSCoW} model to give a brief overview of the features and their priorities. The features that must and should be implemented are planned into sprints. The sprint into which they are planned is stated between brackets.
-\subsubsection{Must-haves}
-The following features are essential and will be implemented:
+This section of the report will contain the features that we designed. We have divided these features according to the \gls{MoSCoW} model to give a brief overview of the features and their priority's. The features that must and should be implemented are planned into sprints, which sprint is stated between brackets.
+\subsubsection{Must haves}
+The following features are essential and will be implemented.
 \begin{itemize}
-	\item Race track and car (Sprint 1)
-	\item Network server to achieve online player interaction (Sprint 2)
-	\item Different controls for different roles (\emph{steering player} and \emph{throttling player}), including different User Interfaces (Sprint 4)
-	\item Road sprites (including deceiving ones) (Sprint 1)
+	\item Race track and Car (Sprint 1)
+	\item Network server to implement online player interaction (Sprint 2)
+	\item Different controls for different roles (\gls{steering player} and \gls{acceleration player}) including different User Interfaces (Sprint 4)
+	\item Road sprites (including tricking ones) (Sprint 1)
     \item Steering player must have minimal vision of the track (Sprint 1)
-    \item Acceleration player is able to see an overview of the whole track (Sprint 3)
-    \item Playable on devices that run on an Android operating system (Sprint 5)
+    \item Acceleration player is able to see the whole track (Sprint 3)
+    \item Playable on android (Sprint 5)
 \end{itemize}
-\subsubsection{Should-haves}
-The following features are not essential to achieve a minimal viable product, but will definitely improve the gameplay:
+\subsubsection{Should haves}
+The following features are not essential to a minimal game, but will definitely improve gameplay.
 \begin{itemize}
     \item Tag teams can match up (Sprint 6)  
-    \item Random tracks to remove learning factor (Sprint 5)
-    \item Steering done using a \emph{gyroscope} (Sprint 7)
+    \item Random tracks to delete track learning factor (Sprint 5)
+    \item Steering should be done with \gls{Gyroscope} (Sprint 7)
 \end{itemize}
-\subsubsection{Could-haves}
-The following features will only be implemented if time allows us to do so:
+\subsubsection{Could haves}
+The following features will only be implemented if time allows us to do so.
 \begin{itemize}
-    \item \emph{Ghosts} of other tag teams to see what position you are in.
-    \item Position tracking during the game.
+    \item \gls{Ghosts} of other tag teams to see what position you are in 
+    \item Match position during the game
     \item Several car sprites
     \item Track times according to random track length.
     \item Drop objects on track to harass other players.
+    \item Cross-platform interaction.
 \end{itemize}
-\subsubsection{Won't-haves}
-These features will not be implemented as time will probably not allow us:
+\subsubsection{Wont haves}
+These features will not be implemented as they do not improve gameplay relative to the time they cost.
 \begin{itemize}
     \item A second mode: ranked mode
-    \item Cross-platform possibilities
 \end{itemize}
-We will give a brief overview of the intended planning in the section below.
-
+The intended planning will be shown below in a brief overview.
 \section{Product Backlog}
-In this section, a number of user stories will be described in regard to the following four points: features, defects, technical improvements and know-how acquisition. There will also be a section in which we will go over the initial release plan.
+For this section, a number of user stories will be told in regards to: features, defects,  technical improvements and know-how acquisition. There will also be a section with the initial release plan.
 \subsection{User stories of features}
 As a player,\\
-Who controls the steer,\\
+Who controls the wheels,\\
 I can steer the car\\
 \\
 As a player,\\
@@ -120,55 +99,57 @@ I can determine the speed of the car\\
 \\
 As a player,\\
 Who controls the steering,\\
-I can see when the speed of the car needs adjustment\\
+I can see when the speed of car needs adjustment\\
 \\
 As a player,\\
 Who controls the throttle,\\
-I can see when the car needs to steer and where to\\
+I can see when the car needs steering\\
 \\
 As a player,\\
 Who wants to start a game,\\
-If there is no game available,\\
+And there is no game available,\\
 I can start a new game\\
 \\
 As a player,\\
 Who wants to start a game,\\
 And there is a game available,\\
 I can join that game\\
+
 \subsection{User stories of know-how acquisition}
-As a player who controls the throttle,\\
-If I see a corner coming up,\\
-I know I have to tell my teammate to steer,\\
-Or else we will make mistakes,\\
-Leading to losing the game\\
+As a player,\\
+I know the controls of the game,\\
+because it is explained to me at the beginning of the game,\\
+trough onscreen explanation\\
 \\
-As a player who controls the steering,\\
-If I see that we need to slow down/speed up,\\
-I know that I need to tell my teammate to adjust the speed,\\
-Or else we will make mistakes,\\
-Leading to losing the game\\
+As a player,\\
+Who drives too fast trough a mud section,\\
+The car slows down,\\
+For the next time I know I must go slow\\
+\\
+As a player,\\
+Who sees an arrow on the ground pointing to the right,\\
+I will go right, but the road does not,\\
+For the next time I know no to trust the arrows
+
 \subsection{Initial release plan}
-For our project we will have some milestones.
+For our project we will have some milestones.\\
 \begin{itemize}
 \item network implementation finished
 \item gyroscope control
 \item different controls for each player
 \end{itemize}
-We will see these features as milestones for our project in this specific order. The Minimal Release Features(MRF) consist of:
+These features will we see as milestones for out project. Also in this order.
+The Minimal release features(MRF) per release are all the same. The MRFs consists of:
 \begin{itemize}
 \item The release must have a track with a car, that has limited vision
 \item It must also have network capabilities
-\item The car must have separate controls
+\item The car must have seperate controls before we can release it
 \end{itemize}
-If these features are not achieved, we can not release the game.
-
-
-\newpage
-
+If those features are not done we cannot release the game.
 \section{Definition of Done}
-The last section of this report will explain in detail when the final product can be considered as such. In particular, this section will  handle the Definition of Done (DoD) of a feature, sprint and release.
+The last section of this report will explain in detail when the endproduct can be considered done. This section will particularly handle the DoD of a feature, sprint and release.
 \subsection{Backlog Items}
-Within the backlog, an item is considered as done, if all the checklist points below are checked and considered to be true:
+Within the backlog an item is considered done, when all the checklist points below are true.
 \begin{itemize}
 	\item Code complete and approved by lead programmer
 	\item Code satisfies coding standards
@@ -177,7 +158,7 @@ Within the backlog, an item is considered as done, if all the checklist points b
 	\item Documented
 \end{itemize}
 \subsection{Sprint}
-A sprint is considered done, when all the checklist points below are checked and considered to be true:
+A sprint is considered done, when all the checklist points below are true.
 \begin{itemize}
 	\item All sprint items considered done
 	\item Application is tested globally, all unit tests pass
@@ -185,33 +166,16 @@ A sprint is considered done, when all the checklist points below are checked and
 	\item User tests passed
 \end{itemize}
 \subsection{Releases}
-A release is considered done, when all the checklist points below are checked and considered to be true:
+A release is considered done, when all the checklist points below are true.
 \begin{itemize}
 	\item The product should pass all unit tests
 	\item Integration system test passed
-	\item Interface looks as the product owner demanded.
-	\item (End-)user tests passed
+	\item Interface looks like the product owner demanded.
+	\item (End)user tests passed
 	\item Code documented and satisfies coding standards.
 \end{itemize}
-\newpage
-\section{Glossary}
-\begin{description}
-\item[Ghosts] \hfill \\
-You see another player's shape (ghost) in a transparent color. You can not collide with the ghost. It can be used i.e. to show how well your opponents are doing.
-\item[Gyroscope] \hfill \\
-Device used for measuring or maintaining orientation, often built into smartphones.
-\item[MoSCoW] (Wikipedia) \hfill \\
-Technique to reach a common understanding on the importance of each requirement. M = Must, S = Should, C = Could, W = Won't.
-\item[Steering Player] \hfill \\
-The player that can only steer left or right. This player can not accelerate or decelerate.
-\item[Throttling Player] \hfill \\
-The player that controls the throttle and can only accelerate or decelerate. This player cannot control the steering wheel.
-
-\end{description}
-
-
-\section*{References}
-MoSCoW method. (n.d.). In Wikipedia. Retrieved May 15, 2014, from \url{http://en.wikipedia.org/wiki/MoSCoW_method}
-
-
+Let it be clear that all of the above section cannot be done if the continues integration tests fail.\\
+The main version of the product must apply to the sprint subsection of the definition of done. The other version does not have to apply to this. The moment the are merged into the main version, it is the main version, so they apply to they definition of done terms of the main version.
+\clearpage
+\printglossaries
 \end{document}
