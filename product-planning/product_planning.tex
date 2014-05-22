@@ -138,42 +138,42 @@ I can steer the car\\
 
 As a player,\\
 Who controls the throttle,\\
-I can determine the speed of the car\\
+I can determine the speed of the car.\\
 
 As a player,\\
 Who controls the steering,\\
-I can see when the speed of the car needs adjustment\\
+I can see when the speed of the car needs adjustment.\\
 
 As a player,\\
 Who controls the throttle,\\
-I can see when the car needs to steer and where to\\
+I can see when the car needs to steer and where to.\\
 
 As a player,\\
 Who wants to start a game,\\
 If there is no game available,\\
-I can start a new game\\
+I can start a new game.\\
 
 As a player,\\
 Who wants to start a game,\\
 And there is a game available,\\
-I can join that game\\
+I can join that game.\\
 
 
 \subsection{User stories of know-how acquisition}
 As a player,\\
 I know the controls of the game,\\
 because it is explained to me at the beginning of the game,\\
-trough an on-screen explanation\\
+trough an on-screen explanation.\\
 
 As a player,\\
 Who drives too fast trough a mud section,\\
 The car slows down,\\
-For the next time I know I must go slow\\
+So that the next time I know I must go slow.\\
 
 As a player,\\
-Who sees an arrow on the ground pointing to the right,\\
+Who sees road surface marking on the road heading to the right,\\
 I will go right, but the road does not,\\
-For the next time I know I cannot trust the arrows\\
+So that the next time I know I cannot trust the road surface marking.\\
 
 
 \subsection{Initial release plan}
@@ -238,7 +238,7 @@ A release is considered done, when all the checklist points below are checked an
 
 Let it be clear that all of the above section cannot be done if the continues integration tests fail.
 
-The main version of the product must apply to the sprint subsection of the Definition of Done. The other version does not have to apply to this. The moment the are merged into the main version, it is the main version, so they apply to they definition of done terms of the main version.
+The main version of the product must apply to the sprint subsection of the Definition of Done. This version is on the "master" \emph{branch} in \emph{Git}. The other versions (on other branches) do not have to apply to this, but at the moment the are \emph{merged} into the main branch, they apply to the Definition of Done of the main version.
 
 
 \newpage
@@ -247,11 +247,20 @@ The main version of the product must apply to the sprint subsection of the Defin
 
 \begin{description}
 
+\item[Branch] \hfill \\
+A branch in Git is a separate environment where people can work on part of the code. When this part is done, it can be \emph{merged} into another branch.
+
 \item[Ghosts] \hfill \\
 You see another player's shape (ghost) in a transparent color. You can not collide with the ghost. It can be used to show how well your opponents are doing.
 
+\item[Git] \hfill \\
+Git is a version control system. Among other things, this means that multiple people can work on the same code simultaneously, and a history of modifications is saved for reference.
+
 \item[Gyroscope] \hfill \\
 Device used for measuring or maintaining orientation, as built in smartphones, for example.
+
+\item[Merge] \hfill \\
+In Git, merging a branch X into another branch Y means applying the modifications of X to Y.
 
 \item[MoSCoW] (Beynon-Davies, Mackay, \& Tudhope, 2000, p. 210) \hfill \\
 Technique to reach a common understanding on the importance of each requirement. 'M' stands for 'Must have', 'S' stands for 'Should have', 'C' stands for 'Could have', 'W' stands for 'Won't have'.
@@ -265,6 +274,7 @@ The player that controls the throttle and can only accelerate or decelerate. Thi
 \end{description}
 
 
+\addcontentsline{toc}{section}{References}
 \section*{References}
 Beynon-Davies, P., Mackay, H, \& Tudhope, D. (2000). 'It's lots of bits of paper and ticks and post-it notes and things . . .': a case study of a rapid application development project. \emph{Information Systems Journal}, 10(3)195-216. doi:10.1046/j.1365-2575.2000.00080.x
 
