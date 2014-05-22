@@ -60,6 +60,9 @@ To get this idea from scratch to a final product, we will need a proper planning
 
 \section{Product}
 
+In this section we will outline our high-level product backlog and our roadmap.
+
+
 \subsection{High-level product backlog}
 Our game basically consists of two parts: The \emph{steering player} and the \emph{throttling player}. The steering player has a limited view of the track and will therefore have a hard time controlling the steering wheel. In order to do so adequately, this player has to cooperate with the throttling player, who has a complete overview of the track. However, this player can only accelerate or decelerate. As both players control the same car, they will have to be connected to a network.
 
@@ -206,7 +209,7 @@ Within the backlog, an item is considered as done, if all the checklist points b
 	\item Code complete and approved by the lead programmer.
 	\item Code satisfies coding standards.
 	\item Unit tests written and pass.
-	\item Integration system test passed.
+	\item Integration system test pass.
 	\item The code is documented.
 \end{itemize}
 
@@ -218,7 +221,7 @@ A sprint is considered done, when all the checklist points below are checked and
 	\item All sprint items considered done.
 	\item Application is tested globally, all unit tests pass.
 	\item Tests pass in the continuous integration system.
-	\item User tests passed.
+	\item User tests pass.
 \end{itemize}
 
 
@@ -227,9 +230,9 @@ A release is considered done, when all the checklist points below are checked an
 
 \begin{itemize}
 	\item The product should pass all unit tests.
-	\item Integration system test passed.
+	\item Integration system test pass.
 	\item Interface looks as the product owner demanded.
-	\item (End-)user tests passed.
+	\item (End-)user tests pass.
 	\item Code documented and satisfies coding standards.
 \end{itemize}
 
@@ -243,16 +246,22 @@ The main version of the product must apply to the sprint subsection of the Defin
 \section{Glossary}
 
 \begin{description}
+
 \item[Ghosts] \hfill \\
-You see another player's shape (ghost) in a transparent color. You can not collide with the ghost. It can be used i.e. to show how well your opponents are doing.
+You see another player's shape (ghost) in a transparent color. You can not collide with the ghost. It can be used to show how well your opponents are doing.
+
 \item[Gyroscope] \hfill \\
-Device used for measuring or maintaining orientation, often built into smartphones.
+Device used for measuring or maintaining orientation, as built in smartphones, for example.
+
 \item[MoSCoW] (Beynon-Davies, Mackay, \& Tudhope, 2000, p. 210) \hfill \\
-Technique to reach a common understanding on the importance of each requirement. M = Must, S = Should, C = Could, W = Won't.
+Technique to reach a common understanding on the importance of each requirement. 'M' stands for 'Must have', 'S' stands for 'Should have', 'C' stands for 'Could have', 'W' stands for 'Won't have'.
+
 \item[Steering Player] \hfill \\
-The player that can only steer left or right. This player can not accelerate or decelerate.
+The player that can only control the steering wheel (to the left or to the right). This player can not accelerate or decelerate.
+
 \item[Throttling Player] \hfill \\
 The player that controls the throttle and can only accelerate or decelerate. This player cannot control the steering wheel.
+
 \end{description}
 
 
