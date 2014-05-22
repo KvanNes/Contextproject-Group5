@@ -53,7 +53,11 @@ The product we are making is called DuoDrive, which is a racing game where peopl
 \section{Introduction}
 The product that we are making is a game. This is not a casual game, but a game where interaction with another player is essential for winning the game. However, winning is not the main goal that we want our players to achieve. We are making this game because we want people to engage in a fun and social activity while they are waiting for something.
 
-The concept of the game is as follows. Essentially, our game is a race game, but the twist is that two people will control the car, instead of the usual one person per car. One person will be in control of the steering wheel and the other person will be in control of the throttle. The game will be played on two different screens. The person in control of the steering wheel has limited view and therefore cannot completely see where the car is heading. What this player can see is how fast the car should go. He/she needs to pass this information to the player who controls the throttle, because the throttling player will not know how fast (or slow) he/she has to throttle. The throttling player can see how the other player has to control the steering wheel and needs to inform him/her about this. The lack of information on both sides forces the two players to cooperate and communicate to reach the finish first (or even at all).
+The concept of the game is as follows. Essentially, our game is a race game, but the twist is that two people will control the car, instead of the usual one person per car. One person will be in control of the steering wheel and the other person will be in control of the throttle.
+
+The game will be played on two different screens. The person in control of the steering wheel has limited view and therefore cannot completely see where the car is heading. What this player can see is how fast the car should go. He/she needs to pass this information to the player who controls the throttle, because the throttling player will not know how fast (or slow) he/she has to throttle. The throttling player can see how the other player has to control the steering wheel and needs to inform him/her about this.
+
+Since multiple teams of two people, each controlling one car, play against each other in a game, the lack of information on both sides forces the two players to cooperate and communicate to reach the finish first (or even at all). In other words, collaborating and competing are both fundamental in the game.
 
 To get this idea from scratch to a final product, we will need a proper planning. In this document, we will first talk about the product itself. Then we will describe the product backlog. Finally, we will give the definition of done. A glossary can be found at the end of the document.
 
@@ -86,7 +90,7 @@ In this section of the report we list the features that we will design. We have 
 The following features are essential and will be implemented:
 
 \begin{itemize}
-	\item Race track and car (Sprint 1).
+	\item Race track and cars (Sprint 1).
 	\item Network server to achieve online player interaction (Sprint 2).
 	\item Different controls for different roles (\emph{steering player} and \emph{throttling player}), including different user interfaces (Sprint 4).
 	\item Road sprites (including deceiving ones) (Sprint 1).
@@ -120,7 +124,7 @@ The following features will only be implemented if time allows us to do so:
 
 
 \subsubsection{Won't-haves}
-These features will not be implemented as time will probably not allow us:
+The following feature will not be implemented as time will probably not allow us to do so:
 
 \begin{itemize}
   \item A second mode: ranked mode.
@@ -136,23 +140,28 @@ As a player,\\
 Who controls the steer,\\
 I can steer the car\\
 
+\noindent
 As a player,\\
 Who controls the throttle,\\
 I can determine the speed of the car.\\
 
+\noindent
 As a player,\\
 Who controls the steering,\\
 I can see when the speed of the car needs adjustment.\\
 
+\noindent
 As a player,\\
 Who controls the throttle,\\
 I can see when the car needs to steer and where to.\\
 
+\noindent
 As a player,\\
 Who wants to start a game,\\
 If there is no game available,\\
 I can start a new game.\\
 
+\noindent
 As a player,\\
 Who wants to start a game,\\
 And there is a game available,\\
@@ -165,11 +174,13 @@ I know the controls of the game,\\
 because it is explained to me at the beginning of the game,\\
 trough an on-screen explanation.\\
 
+\noindent
 As a player,\\
 Who drives too fast trough a mud section,\\
 The car slows down,\\
 So that the next time I know I must go slow.\\
 
+\noindent
 As a player,\\
 Who sees road surface marking on the road heading to the right,\\
 I will go right, but the road does not,\\
@@ -181,8 +192,8 @@ For our project we have the following milestones:
 
 \begin{itemize}
   \item Network implementation finished.
-  \item Gyroscope control.
   \item Different controls for each player.
+  \item All must-haves implemented.
 \end{itemize}
 
 We will see these features as milestones for our project in this specific order. The minimal release features are as follows:
@@ -190,7 +201,7 @@ We will see these features as milestones for our project in this specific order.
 \begin{itemize}
   \item The release must have a track with a car that has limited vision.
   \item The release must have network capabilities.
-  \item The car must have separate controls.
+  \item The cars must have separate controls.
 \end{itemize}
 
 If these features are not achieved, we cannot release the game.
@@ -203,7 +214,7 @@ The last section of this report will explain in detail when the final product ca
 
 
 \subsection{Backlog Items}
-Within the backlog, an item is considered as done, if all the checklist points below are checked and considered to be true:
+Within the backlog, an item is considered done if all the checklist points below are checked and considered to be true:
 
 \begin{itemize}
 	\item Code complete and approved by the lead programmer.
@@ -236,9 +247,10 @@ A release is considered done, when all the checklist points below are checked an
 	\item Code documented and satisfies coding standards.
 \end{itemize}
 
+\noindent
 Let it be clear that all of the above section cannot be done if the continues integration tests fail.
 
-The main version of the product must apply to the sprint subsection of the Definition of Done. This version is on the "master" \emph{branch} in \emph{Git}. The other versions (on other branches) do not have to apply to this, but at the moment the are \emph{merged} into the main branch, they apply to the Definition of Done of the main version.
+The main version of the product must apply to the sprint subsection of the Definition of Done. This version is on the "master" \emph{branch} in \emph{Git}. The other versions (on other branches) do not have to apply to this, but at the moment the are \emph{merged} into the master branch, they apply to the Definition of Done of the main version.
 
 
 \newpage
