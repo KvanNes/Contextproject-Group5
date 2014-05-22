@@ -23,6 +23,15 @@ public class AutoBehaviour : MonoBehaviour {
     private const float accelerationIncrease = 1f;
     private const float accelerationDecrease = 1f;
 
+	// User for predicting and interpolation
+	private float lastSynchronizationTime = 0f;
+	private float syncDelay = 0f;
+	private float syncTime = 0f;
+	private Vector3 syncStartPosition = Vector3.zero;
+	private Vector3 syncEndPosition = Vector3.zero;
+	private Quaternion syncStartRotation = Quaternion.identity;
+	private Quaternion syncEndRotation = Quaternion.identity;
+
     private float forceInInterval(float x, float min, float max) {
         return Mathf.Min(Mathf.Max(min, x), max);
     }
@@ -188,49 +197,58 @@ public class AutoBehaviour : MonoBehaviour {
     }
 
     private void Update() {
-        if(!networkView.isMine) {
+        if(networkView.isMine) {
             // Can only control own car.
-            return;
-        }
-
-        storeConfiguration();
-
-        // Make sure speed is in constrained interval.
-        speed = forceInInterval(speed, minSpeed, maxSpeed);
-
-        if (getSpeedAction() == speedAction.speedUp) {
-            applySpeedUpDown(Time.deltaTime, accelerationIncrease, 10, 5);
-        } else if (getSpeedAction() == speedAction.speedDown) {
-            applySpeedUpDown(Time.deltaTime, -accelerationDecrease, 10, 20);
-        } else {
-            if (speed > 0) {
-                applyFriction(Time.deltaTime, -0.05f);
-            } else if (speed < 0) {
-                applyFriction(Time.deltaTime, 0.05f);
-            }
-        }
-        
-        // Steering.
-        if(getSteerAction() == steerAction.steerLeft) {
-            rotate(1f, speed);
-        } else if (getSteerAction() == steerAction.steerRight) {
-            rotate(-1f, speed);
-        }
-        /*else {
+			storeConfiguration();
+			
+			// Make sure speed is in constrained interval.
+			speed = forceInInterval(speed, minSpeed, maxSpeed);
+			
+			if (getSpeedAction() == speedAction.speedUp) {
+				applySpeedUpDown(Time.deltaTime, accelerationIncrease, 10, 5);
+			} else if (getSpeedAction() == speedAction.speedDown) {
+				applySpeedUpDown(Time.deltaTime, -accelerationDecrease, 10, 20);
+			} else {
+				if (speed > 0) {
+					applyFriction(Time.deltaTime, -0.05f);
+				} else if (speed < 0) {
+					applyFriction(Time.deltaTime, 0.05f);
+				}
+			}
+			
+			// Steering.
+			if(getSteerAction() == steerAction.steerLeft) {
+				rotate(1f, speed);
+			} else if (getSteerAction() == steerAction.steerRight) {
+				rotate(-1f, speed);
+			}
+			/*else {
             //transform.Rotate(0, 0, accAngle);
             Vector3 angles = Input.gyro.attitude.eulerAngles;
 
             Debug.Log(angles.ToString());
             transform.Rotate(new Vector3(0, 0, normalizeAngle(angles.z - 90) * 1f * Time.deltaTime));
-        }*/
+        	}*/
+			
+			// Move the car according to current speed.
+			transform.Translate(speed * Time.deltaTime * 4f, 0, 0);
+			
+			// Move camera along with car.
+			Camera.main.transform.position = transform.position;
+			Camera.main.transform.Translate(new Vector3(0, 0, -2));
 
-        // Move the car according to current speed.
-        transform.Translate(speed * Time.deltaTime * 4f, 0, 0);
+        } else {
+			// Synchronize position of cars you can't control
+			SyncedMovement();
+		}
 
-        // Move camera along with car.
-        Camera.main.transform.position = transform.position;
-        Camera.main.transform.Translate(new Vector3(0, 0, -2));
+        
     }
+
+	private void Awake()
+	{
+		lastSynchronizationTime = Time.time;
+	}
 
     // Occurs when bumping into something (another car, or a track border).
     private void OnTriggerEnter2D(Collider2D col) {
@@ -240,4 +258,45 @@ public class AutoBehaviour : MonoBehaviour {
             restoreConfiguration();
         }
     }
+
+	private void SyncedMovement() {
+		syncTime += Time.deltaTime;
+		transform.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
+		transform.rotation = Quaternion.Slerp(syncStartRotation, syncEndRotation, syncTime / syncDelay);
+	}
+
+
+	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info) {
+		Vector3 syncPosition = Vector3.zero;
+		Vector3 syncVelocity = Vector3.zero;
+		Quaternion syncRotation = Quaternion.identity;
+		float syncAngularVelocity = 0f;
+
+		if (stream.isWriting) {
+			syncPosition = rigidbody2D.transform.position;
+			stream.Serialize(ref syncPosition);
+			
+			syncVelocity = rigidbody2D.velocity;
+			stream.Serialize(ref syncVelocity);
+
+			syncRotation = rigidbody2D.transform.rotation;
+			stream.Serialize(ref syncRotation);
+		} else {
+			stream.Serialize(ref syncPosition);
+			stream.Serialize(ref syncVelocity);
+			stream.Serialize(ref syncRotation);
+			
+			syncTime = 0f;
+			syncDelay = Time.time - lastSynchronizationTime;
+			lastSynchronizationTime = Time.time;
+			
+			syncEndPosition = syncPosition + syncVelocity * syncDelay;
+			syncStartPosition = transform.position;
+		
+			syncEndRotation = syncRotation;  
+			syncStartRotation = transform.rotation;
+		}
+	}
+
+
 }
