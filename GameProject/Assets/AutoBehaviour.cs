@@ -270,7 +270,6 @@ public class AutoBehaviour : MonoBehaviour {
 		Vector3 syncPosition = Vector3.zero;
 		Vector3 syncVelocity = Vector3.zero;
 		Quaternion syncRotation = Quaternion.identity;
-		float syncAngularVelocity = 0f;
 
 		if (stream.isWriting) {
 			syncPosition = rigidbody2D.transform.position;
