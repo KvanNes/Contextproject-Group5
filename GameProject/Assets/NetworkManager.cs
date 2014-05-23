@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -15,26 +16,85 @@ public class NetworkManager : MonoBehaviour
     public GameObject playerPrefab = null;
     public Transform spawnObject = null;
 
-    List<bool> beschikbaar = new List<bool> { false, true, true };
-    Dictionary<NetworkPlayer, int> beschikbaarWie = new Dictionary<NetworkPlayer, int>();
+    public static NetworkManager instance;
+    public static NetworkView networkViewInstance;
 
-    void Start()
-    {
+    public static string type = "";
+    public static int car = -1;
+    private static Dictionary<string, Dictionary<int, NetworkPlayer>> availableJobs = new Dictionary<string, Dictionary<int, NetworkPlayer>>();
+    
+    private static T getDictionaryValue<S, T>(Dictionary<S, T> dictionary, S key) {
+        T result;
+        try {
+            dictionary.TryGetValue(key, out result);
+        } catch(Exception) {
+            return default(T);
+        }
+        return result;
+    }
+
+
+    void Start() {
         Application.runInBackground = true;
+
+        if (instance == null) {
+            instance = this;
+            networkViewInstance = networkView;
+        } else {
+            throw new UnityException("NetworkManager is being created twice, it seems");
+        }
+
+        Dictionary<int, NetworkPlayer> steererDictionary = new Dictionary<int, NetworkPlayer>();
+        Dictionary<int, NetworkPlayer> throttlerDictionary = new Dictionary<int, NetworkPlayer>();
+        availableJobs.Add("steerer", steererDictionary);
+        availableJobs.Add("throttler", throttlerDictionary);
     }
 
     /**
      * Start a server with a special port assigned.
      */
-    public static void startServer()
-    {
+    public static void startServer() {
         Network.InitializeServer(32, GameData.PORT, !Network.HavePublicAddress());
         MasterServer.RegisterHost(gameName, "2P1C", "Join this room!");
     }
 
-    public static string type = "";
-    public static int car = -1;
+    [RPC]
+    public bool checkJobAvailableAndMaybeAdd(string typeString, int carNumber, NetworkPlayer player) {
+        Dictionary<int, NetworkPlayer> subDirectory = getDictionaryValue(availableJobs, typeString);
+        if (subDirectory == null) {
+            return false;
+        }
+
+        NetworkPlayer currentPlayer = getDictionaryValue(subDirectory, carNumber);
+        if (currentPlayer == default(NetworkPlayer)) {
+            subDirectory.Remove(carNumber);
+            subDirectory.Add(carNumber, player);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private static string pendingType = "";
+    private static int pendingCarNumber = -1;
     public static void chooseJobFromGUI(string typeString, int carNumber) {
+        pendingType = typeString;
+        pendingCarNumber = carNumber;
+    }
+
+    public void OnConnectedToServer() {
+        networkViewInstance.RPC("chooseJob", RPCMode.Server, pendingType, pendingCarNumber);
+    }
+
+    [RPC]
+    public void chooseJob(string typeString, int carNumber, NetworkMessageInfo info) {
+        if (checkJobAvailableAndMaybeAdd(typeString, carNumber, info.sender)) {
+            networkViewInstance.RPC("chooseJobOK", info.sender, typeString, carNumber);
+        }
+    }
+
+    [RPC]
+    public void chooseJobOK(string typeString, int carNumber) {
         type = typeString;
         car = carNumber;
     }
@@ -42,8 +102,7 @@ public class NetworkManager : MonoBehaviour
     /**
      * Refresh the hosts that are (or are not) available.
      */
-    public static void refreshHostList()
-    {
+    public static void refreshHostList() {
         MasterServer.RequestHostList(gameName);
         refreshing = true;
     }
@@ -51,118 +110,90 @@ public class NetworkManager : MonoBehaviour
     /**
      * Method to make a connection with the server.
      */
-    public static void Connect(HostData host_data)
-    {
+    public static void Connect(HostData host_data) {
         Network.Connect(host_data);
         Debug.Log("Connected");
     }
 
-    void Update()
-    {
-        if (refreshing)
-        {
-            if (MasterServer.PollHostList().Length > 0)
-            {
+    public void Update() {
+        if (refreshing) {
+            if (MasterServer.PollHostList().Length > 0) {
                 refreshing = false;
                 hostData = MasterServer.PollHostList();
             }
         }
     }
 
-    void spawnPlayer(float y, int number)
-    {
+    public void spawnPlayer(float y, int number) {
         Vector3 pos = spawnObject.position + new Vector3(1f, y, 0);
-        Object car = Network.Instantiate(playerPrefab, pos, Quaternion.identity, 0);
+        UnityEngine.Object car = Network.Instantiate(playerPrefab, pos, Quaternion.identity, 0);
         AutoBehaviour ab = (AutoBehaviour) ((GameObject) car).GetComponent(typeof(AutoBehaviour));
         ab.carNumber = number;
         ab.networkView.RPC("setCarNumber", RPCMode.OthersBuffered, number);
     }
 
     [RPC]
-    void setAvailablePosition(int position)
-    {
+    public void setAvailablePosition(int position) {
         spawnPlayer(0.07f - 0.05f * position, position);
     }
 
-    void OnServerInitialized()
-    {
+    public void OnServerInitialized() {
         Debug.Log("Server Initialized!");
         setAvailablePosition(0);
         setAvailablePosition(1);
     }
 
-    void OnPlayerConnected(NetworkPlayer player)
-    {
-        //networkView.RPC("setCarNumber", player, availablePosition(player));
-        networkView.RPC(GameData.MESSAGE_PLAYER_CONNECTED, RPCMode.Server, player.guid);
-        networkView.RPC(GameData.MESSAGE_AMOUNT_PLAYERS, RPCMode.Server, "connected");
+    public void OnPlayerConnected(NetworkPlayer player) {
+        networkViewInstance.RPC(GameData.MESSAGE_PLAYER_CONNECTED, RPCMode.Server, player.guid);
+        networkViewInstance.RPC(GameData.MESSAGE_AMOUNT_PLAYERS, RPCMode.Server, "connected");
     }
 
-    void OnPlayerDisconnected(NetworkPlayer player)
-    {
+    public void OnPlayerDisconnected(NetworkPlayer player) {
         Network.RemoveRPCs(player);
         Network.DestroyPlayerObjects(player);
-        int value;
-        if (beschikbaarWie.TryGetValue(player, out value))
-        {
-            beschikbaar[value] = true;
-            beschikbaarWie.Remove(player);
-        }
-        networkView.RPC(GameData.MESSAGE_AMOUNT_PLAYERS, RPCMode.Server, "disconnected");
-    }
+        networkViewInstance.RPC(GameData.MESSAGE_AMOUNT_PLAYERS, RPCMode.Server, "disconnected");
 
-    int availablePosition(NetworkPlayer networkPlayer)
-    {
-        for (int i = 0; i < beschikbaar.Count; i++)
-        {
-            if (beschikbaar[i])
-            {
-                beschikbaar[i] = false;
-                beschikbaarWie.Add(networkPlayer, i);
-                return i;
+        foreach (KeyValuePair<string, Dictionary<int, NetworkPlayer>> pair in availableJobs) {
+            foreach(KeyValuePair<int, NetworkPlayer> subPair in pair.Value) {
+                if(subPair.Value == player) {
+                    pair.Value.Remove(subPair.Key);
+                    return;
+                }
             }
         }
-        return -1;
     }
 
-    void OnMasterServerEvent(MasterServerEvent mse)
-    {
-        if (mse == MasterServerEvent.RegistrationSucceeded)
-        {
+    public void OnMasterServerEvent(MasterServerEvent mse) {
+        if (mse == MasterServerEvent.RegistrationSucceeded) {
             Debug.Log("Registered Server!");
         }
     }
 
-    public NetworkPlayer[] getConnections()
-    {
+    public NetworkPlayer[] getConnections() {
         return Network.connections;
     }
 
     [RPC]
-    void SendInfoToServer(NetworkPlayer player)
-    {
+    public void SendInfoToServer(NetworkPlayer player) {
         string someInfo = "Client " + player.guid + ": hello server";
-        networkView.RPC("ReceiveInfoFromClient", RPCMode.Server, someInfo);
+        networkViewInstance.RPC("ReceiveInfoFromClient", RPCMode.Server, someInfo);
     }
 
     [RPC]
-    void ReceiveInfoFromClient(string someInfo)
-    {
+    public void ReceiveInfoFromClient(string someInfo) {
         Debug.Log(someInfo);
     }
 
 
     // SERVER PROMPT METHODS
     [RPC]
-    void PlayerConnected(string Info)
-    {
+    public void PlayerConnected(string Info) {
         string Message = "A new player has just connected. The GUID: " + Info;
         Debug.Log(Message);
     }
 
     [RPC]
-    void AmountPlayersConnected(string Info)
-    {
+    public void AmountPlayersConnected(string Info) {
         string Message = "A player has just " + Info + ". The new amount of players is: " + getConnections().Length;
         Debug.Log(Message);
     }
