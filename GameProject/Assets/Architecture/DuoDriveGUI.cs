@@ -50,7 +50,7 @@ public class DuoDriveGUI : MonoBehaviour
         if (!logoShown)
         {
             GUI.Label(new Rect(Screen.width / 2 - 75, Screen.height / 2 - 50, 150, 100), "DuoDrive");
-            StartCoroutine(Wait(3.0f));
+            StartCoroutine(Wait(0.0f));
         }
         else
         {
