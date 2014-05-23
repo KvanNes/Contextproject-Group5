@@ -30,6 +30,11 @@ public class DuoDriveGUI : MonoBehaviour
     }
     bool connected = false;
 
+    enum playerType {
+        steerer,
+        throttler
+    }
+
     /**
     * The method that handles all the GUI-events.
     */
@@ -57,32 +62,42 @@ public class DuoDriveGUI : MonoBehaviour
             // There is a server available, let's be a client.
             if (ServerAvailable() && !Network.isClient)
             {
-                if (hostData.Length == 1)
+                if (hostData.Length == -1)  // FIXME
                 {
                     StartCoroutine(Wait(1.0f));
-                    //Network.Connect(hostData[0]);
                     NetworkManager.Connect(hostData[0]);
                     connected = true;
                 }
                 else
                 {
                     buttonY = 0;
+                    const int CARS = 2;
                     for (int i = 0; i < hostData.Length; i++)
                     {
-                        if (GUI.Button(new Rect(buttonX, buttonY, buttonW, buttonH), hostData[i].gameName))
-                        {
-                            //Network.Connect(hostData[i]);
-                            //Debug.Log(hostData[i]);
-                            NetworkManager.Connect(hostData[i]);
-                            connected = true;
+                        // Using const here causes error dialogs to pop up frequently on MonoDevelop.
+                        playerType[] PLAYER_TYPES = { playerType.steerer, playerType.throttler };
+                        int k = 0;
+                        foreach(playerType pt in PLAYER_TYPES) {
+                            for(int j = 0; j < CARS; j++) {
+                                int x = buttonX + k * buttonW;
+                                int y = buttonY + j * buttonH;
+                                string type = (pt == playerType.steerer ? "steerer" : "throttler");
+                                if (GUI.Button(new Rect(x, y, buttonW, buttonH), hostData[i].gameName + " " + type + " " + j.ToString()))
+                                {
+                                    NetworkManager.chooseJobFromGUI(type, j);
+                                    NetworkManager.Connect(hostData[i]);
+                                    connected = true;
+                                }
+                            }
+                            k++;
                         }
-                        buttonY += buttonH;
+                        buttonY += buttonH * CARS + 30;
                     }
                 }
             }
 
             // There still needs to be a server, create option to be a server.
-            if (!ServerAvailable() && !Network.isServer)
+            if (/*!ServerAvailable() && */!Network.isServer && !Network.isClient)
             {
                 if (GUI.Button(new Rect(Screen.width / 2 - 75, Screen.height / 2 - 75, 150, 150), "Start server!"))
                 {

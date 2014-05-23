@@ -23,6 +23,8 @@ public class AutoBehaviour : MonoBehaviour {
     private const float accelerationIncrease = 1f;
     private const float accelerationDecrease = 1f;
 
+    public int carNumber = -1;
+
     private float forceInInterval(float x, float min, float max) {
         return Mathf.Min(Mathf.Max(min, x), max);
     }
@@ -41,6 +43,7 @@ public class AutoBehaviour : MonoBehaviour {
     private void rotate(float factor, float speed) {
         float angle = factor * Mathf.Min(3, speed * 50f);
         transform.Rotate(new Vector3(0, 0, angle));
+        RotationUpdated();
     }
 
     // Store current position and rotation.
@@ -59,7 +62,9 @@ public class AutoBehaviour : MonoBehaviour {
     private void restoreConfiguration() {
         try {
             transform.rotation = copy(lastRotations.Dequeue());
+            RotationUpdated();
             transform.position = copy(lastPositions.Dequeue());
+            PositionUpdated();
         } catch(InvalidOperationException) {
             // Ignore if not possible.
         }
@@ -78,19 +83,20 @@ public class AutoBehaviour : MonoBehaviour {
     };
 
     private speedAction getSpeedAction() {
+        if (NetworkManager.type == "steerer") {
+            return speedAction.noAction;
+        }
+
         int separatingColumn = Screen.width / 2;
-        int separatingRow = Screen.height / 2;
 
         // When touching with one finger: check whether on left/right half.
         if (Input.touchCount >= 1) {
             for(int i = 0; i < Input.touchCount; i++) {
                 Vector2 pos = Input.GetTouch(i).position;
-                if(pos.x > separatingColumn) {
-                    if(pos.y >= separatingRow) {
-                        return speedAction.speedDown;
-                    } else {
-                        return speedAction.speedUp;
-                    }
+                if(pos.x <= separatingColumn) {
+                    return speedAction.speedUp;
+                } else {
+                    return speedAction.speedDown;
                 }
             }
         }
@@ -110,19 +116,20 @@ public class AutoBehaviour : MonoBehaviour {
     }
 
     private steerAction getSteerAction() {
+        if (NetworkManager.type == "throttler") {
+            return steerAction.noAction;
+        }
+
         int separatingColumn = Screen.width / 2;
-        int separatingRow = Screen.height / 2;
         
         // When touching with one finger: check whether on left/right half.
         if (Input.touchCount >= 1) {
             for(int i = 0; i < Input.touchCount; i++) {
                 Vector2 pos = Input.GetTouch(i).position;
                 if(pos.x <= separatingColumn) {
-                    if(pos.y >= separatingRow) {
-                        return steerAction.steerLeft;
-                    } else {
-                        return steerAction.steerRight;
-                    }
+                    return steerAction.steerLeft;
+                } else {
+                    return steerAction.steerRight;
                 }
             }
         }
@@ -169,27 +176,26 @@ public class AutoBehaviour : MonoBehaviour {
         }
     }
 
-    // Normalize angle to lie in the interval <-180, 180].
-    private float normalizeAngle(float x) {
-        x %= 360;
-        x += 360;
-        x %= 360;
-        if (x > 180) {
-            return x - 360;
-        } else {
-            return x;
+    [RPC]
+    public void setCarNumber(int number) {
+        this.carNumber = number;
+    }
+    
+    [RPC]
+    public void requestInitialPositions(NetworkMessageInfo info) {
+        foreach (GameObject car in GameObject.FindGameObjectsWithTag("Player")) {
+            AutoBehaviour ab = (AutoBehaviour) car.GetComponent(typeof(AutoBehaviour));
+            ab.networkView.RPC("UpdatePosition", info.sender, car.transform.position);
+            ab.networkView.RPC("UpdateRotation", info.sender, car.transform.rotation);
         }
     }
 
     private void Start() {
-        if(SystemInfo.supportsGyroscope) {
-            Input.gyro.enabled = true;
-        }
+        networkView.RPC("requestInitialPositions", RPCMode.Server);
     }
 
     private void Update() {
-        if(!networkView.isMine) {
-            // Can only control own car.
+        if (this.carNumber == -1 || this.carNumber != NetworkManager.car) {
             return;
         }
 
@@ -198,46 +204,79 @@ public class AutoBehaviour : MonoBehaviour {
         // Make sure speed is in constrained interval.
         speed = forceInInterval(speed, minSpeed, maxSpeed);
 
-        if (getSpeedAction() == speedAction.speedUp) {
-            applySpeedUpDown(Time.deltaTime, accelerationIncrease, 10, 5);
-        } else if (getSpeedAction() == speedAction.speedDown) {
-            applySpeedUpDown(Time.deltaTime, -accelerationDecrease, 10, 20);
-        } else {
-            if (speed > 0) {
-                applyFriction(Time.deltaTime, -0.05f);
-            } else if (speed < 0) {
-                applyFriction(Time.deltaTime, 0.05f);
+        string playerType = NetworkManager.type;
+        if(playerType == "steerer") {
+            // Steering.
+            steerAction action = getSteerAction();
+            if(action != steerAction.noAction) {
+                if (action == steerAction.steerLeft) {
+                    rotate(1f, 0.1f);
+                } else if (getSteerAction() == steerAction.steerRight) {
+                    rotate(-1f, 0.1f);
+                }
+                networkView.RPC("UpdateRotation", RPCMode.Others, transform.rotation);
             }
+        } else if(playerType == "throttler") {
+            // Speeding up or down.
+            speedAction action = getSpeedAction();
+            if (action == speedAction.speedUp) {
+                applySpeedUpDown(Time.deltaTime, accelerationIncrease, 10, 5);
+            } else if (action == speedAction.speedDown) {
+                applySpeedUpDown(Time.deltaTime, -accelerationDecrease, 10, 20);
+            } else {
+                if (speed > 0) {
+                    applyFriction(Time.deltaTime, -0.05f);
+                } else if (speed < 0) {
+                    applyFriction(Time.deltaTime, 0.05f);
+                }
+            }
+            
+            // Move the car according to current speed.
+            transform.Translate(speed * Time.deltaTime * 4f, 0, 0);
+            PositionUpdated();
         }
-        
-        // Steering.
-        if(getSteerAction() == steerAction.steerLeft) {
-            rotate(1f, speed);
-        } else if (getSteerAction() == steerAction.steerRight) {
-            rotate(-1f, speed);
-        }
-        /*else {
-            //transform.Rotate(0, 0, accAngle);
-            Vector3 angles = Input.gyro.attitude.eulerAngles;
-
-            Debug.Log(angles.ToString());
-            transform.Rotate(new Vector3(0, 0, normalizeAngle(angles.z - 90) * 1f * Time.deltaTime));
-        }*/
-
-        // Move the car according to current speed.
-        transform.Translate(speed * Time.deltaTime * 4f, 0, 0);
-
-        // Move camera along with car.
-        Camera.main.transform.position = transform.position;
-        Camera.main.transform.Translate(new Vector3(0, 0, -2));
     }
 
     // Occurs when bumping into something (another car, or a track border).
     private void OnTriggerEnter2D(Collider2D col) {
-        if (networkView.isMine) {
+        if (NetworkManager.type == "throttler") {
             // Go back a little.
             speed = -(speed + Mathf.Sign(speed) * 0.005f) / 1.2f;
             restoreConfiguration();
+        }
+    }
+
+    int initialized = 0;
+
+    [RPC]
+    public void UpdateRotation(Quaternion rot) {
+        transform.rotation = rot;
+        RotationUpdated();
+        initialized |= 1;
+    }
+
+    [RPC]
+    public void UpdatePosition(Vector3 pos) {
+        transform.position = pos;
+        PositionUpdated();
+        initialized |= 2;
+    }
+
+    public void PositionUpdated() {
+        if (carNumber == NetworkManager.car) {
+            // Move camera along with car.
+            Camera.main.transform.position = transform.position;
+            Camera.main.transform.Translate(new Vector3(0, 0, -2));
+        }
+
+        if (NetworkManager.type == "throttler" && initialized == 3) {
+            networkView.RPC("UpdatePosition", RPCMode.Others, transform.position);
+        }
+    }
+
+    public void RotationUpdated() {
+        if (NetworkManager.type == "steerer" && initialized == 3) {
+            networkView.RPC("UpdateRotation", RPCMode.Others, transform.rotation);
         }
     }
 }

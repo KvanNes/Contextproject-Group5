@@ -15,7 +15,7 @@ public class NetworkManager : MonoBehaviour
     public GameObject playerPrefab = null;
     public Transform spawnObject = null;
 
-    List<bool> beschikbaar = new List<bool> { false, true };
+    List<bool> beschikbaar = new List<bool> { false, true, true };
     Dictionary<NetworkPlayer, int> beschikbaarWie = new Dictionary<NetworkPlayer, int>();
 
     void Start()
@@ -29,7 +29,14 @@ public class NetworkManager : MonoBehaviour
     public static void startServer()
     {
         Network.InitializeServer(32, GameData.PORT, !Network.HavePublicAddress());
-        MasterServer.RegisterHost(gameName, "Duo Drive", "Join this room!");
+        MasterServer.RegisterHost(gameName, "2P1C", "Join this room!");
+    }
+
+    public static string type = "";
+    public static int car = -1;
+    public static void chooseJobFromGUI(string typeString, int carNumber) {
+        type = typeString;
+        car = carNumber;
     }
 
     /**
@@ -62,39 +69,31 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    void spawnPlayer(float y)
+    void spawnPlayer(float y, int number)
     {
         Vector3 pos = spawnObject.position + new Vector3(1f, y, 0);
-        Network.Instantiate(playerPrefab, pos, Quaternion.identity, 0);
+        Object car = Network.Instantiate(playerPrefab, pos, Quaternion.identity, 0);
+        AutoBehaviour ab = (AutoBehaviour) ((GameObject) car).GetComponent(typeof(AutoBehaviour));
+        ab.carNumber = number;
+        ab.networkView.RPC("setCarNumber", RPCMode.OthersBuffered, number);
     }
 
     [RPC]
     void setAvailablePosition(int position)
     {
-        if (position != -1)
-        {
-            spawnPlayer(0.07f - 0.05f * position);
-        }
-        else
-        {
-            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Player");
-            foreach (GameObject obj in gameObjects)
-            {
-                Destroy(obj);
-            }
-            Network.Disconnect();
-        }
+        spawnPlayer(0.07f - 0.05f * position, position);
     }
 
     void OnServerInitialized()
     {
         Debug.Log("Server Initialized!");
         setAvailablePosition(0);
+        setAvailablePosition(1);
     }
 
     void OnPlayerConnected(NetworkPlayer player)
     {
-        networkView.RPC("setAvailablePosition", player, availablePosition(player));
+        //networkView.RPC("setCarNumber", player, availablePosition(player));
         networkView.RPC(GameData.MESSAGE_PLAYER_CONNECTED, RPCMode.Server, player.guid);
         networkView.RPC(GameData.MESSAGE_AMOUNT_PLAYERS, RPCMode.Server, "connected");
     }
