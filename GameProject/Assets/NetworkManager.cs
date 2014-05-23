@@ -158,7 +158,7 @@ public class NetworkManager : MonoBehaviour
     void PlayerConnected(string Info)
     {
         string Message = "A new player has just connected. The GUID: " + Info;
-        Debug.Log(Info);
+        Debug.Log(Message);
     }
 
     [RPC]

@@ -66,6 +66,7 @@ public class DuoDriveGUI : MonoBehaviour
                 }
                 else
                 {
+                    buttonY = 0;
                     for (int i = 0; i < hostData.Length; i++)
                     {
                         if (GUI.Button(new Rect(buttonX, buttonY, buttonW, buttonH), hostData[i].gameName))
@@ -75,7 +76,7 @@ public class DuoDriveGUI : MonoBehaviour
                             NetworkManager.Connect(hostData[i]);
                             connected = true;
                         }
-                        buttonY += 30;
+                        buttonY += buttonH;
                     }
                 }
             }
