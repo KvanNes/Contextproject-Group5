@@ -185,8 +185,8 @@ public class AutoBehaviour : MonoBehaviour {
     public void requestInitialPositions(NetworkMessageInfo info) {
         foreach (GameObject car in GameObject.FindGameObjectsWithTag("Player")) {
             AutoBehaviour ab = (AutoBehaviour) car.GetComponent(typeof(AutoBehaviour));
-            ab.networkView.RPC("UpdatePosition", info.sender, car.transform.position);
-            ab.networkView.RPC("UpdateRotation", info.sender, car.transform.rotation);
+            ab.networkView.RPC("UpdatePosition", info.sender, car.transform.position, ab.carNumber);
+            ab.networkView.RPC("UpdateRotation", info.sender, car.transform.rotation, ab.carNumber);
         }
     }
 
@@ -214,7 +214,7 @@ public class AutoBehaviour : MonoBehaviour {
                 } else if (getSteerAction() == steerAction.steerRight) {
                     rotate(-1f, 0.1f);
                 }
-                networkView.RPC("UpdateRotation", RPCMode.Others, transform.rotation);
+                RotationUpdated();
             }
         } else if(playerType == "throttler") {
             // Speeding up or down.
@@ -249,17 +249,21 @@ public class AutoBehaviour : MonoBehaviour {
     int initialized = 0;
 
     [RPC]
-    public void UpdateRotation(Quaternion rot) {
-        transform.rotation = rot;
-        RotationUpdated();
-        initialized |= 1;
+    public void UpdateRotation(Quaternion rot, int carNumber) {
+        if (carNumber == this.carNumber) {
+            transform.rotation = rot;
+            RotationUpdated();
+            initialized |= 1;
+        }
     }
 
     [RPC]
-    public void UpdatePosition(Vector3 pos) {
-        transform.position = pos;
-        PositionUpdated();
-        initialized |= 2;
+    public void UpdatePosition(Vector3 pos, int carNumber) {
+        if (carNumber == this.carNumber) {
+            transform.position = pos;
+            PositionUpdated();
+            initialized |= 2;
+        }
     }
 
     public void PositionUpdated() {
@@ -267,16 +271,16 @@ public class AutoBehaviour : MonoBehaviour {
             // Move camera along with car.
             Camera.main.transform.position = transform.position;
             Camera.main.transform.Translate(new Vector3(0, 0, -2));
-        }
-
-        if (NetworkManager.type == "throttler" && initialized == 3) {
-            networkView.RPC("UpdatePosition", RPCMode.Others, transform.position);
+            
+            if (NetworkManager.type == "throttler" && initialized == 3) {
+                networkView.RPC("UpdatePosition", RPCMode.Others, transform.position, this.carNumber);
+            }
         }
     }
 
     public void RotationUpdated() {
-        if (NetworkManager.type == "steerer" && initialized == 3) {
-            networkView.RPC("UpdateRotation", RPCMode.Others, transform.rotation);
+        if (carNumber == NetworkManager.car && NetworkManager.type == "steerer" && initialized == 3) {
+            networkView.RPC("UpdateRotation", RPCMode.Others, transform.rotation, this.carNumber);
         }
     }
 }
