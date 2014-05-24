@@ -192,6 +192,7 @@ public class AutoBehaviour : MonoBehaviour {
 
     private void Start() {
         networkView.RPC("requestInitialPositions", RPCMode.Server);
+        InvokeRepeating("SendToOther", UPDATE_TIME_DELTA, UPDATE_TIME_DELTA);
     }
 
     private void Update() {
@@ -265,22 +266,40 @@ public class AutoBehaviour : MonoBehaviour {
             initialized |= 2;
         }
     }
-
+    
     public void PositionUpdated() {
         if (carNumber == NetworkManager.car) {
             // Move camera along with car.
             Camera.main.transform.position = transform.position;
             Camera.main.transform.Translate(new Vector3(0, 0, -2));
-            
-            if (NetworkManager.type == "throttler" && initialized == 3) {
-                networkView.RPC("UpdatePosition", RPCMode.Others, transform.position, this.carNumber);
-            }
         }
     }
-
+    
     public void RotationUpdated() {
-        if (carNumber == NetworkManager.car && NetworkManager.type == "steerer" && initialized == 3) {
+        
+    }
+    
+    private readonly float UPDATE_TIME_DELTA = 0.25f;
+    private Quaternion lastSentRotation = Quaternion.identity;
+    private Vector3 lastSentPosition = Vector3.zero;
+    
+    private bool shouldSend() {
+        return carNumber == NetworkManager.car
+            && Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork
+            && initialized == (1 | 2);
+    }
+
+    private void SendToOther() {
+        if(!shouldSend()) {
+            return;
+        }
+
+        if(NetworkManager.type == "steerer" && lastSentRotation != transform.rotation) {
+            lastSentRotation = copy(transform.rotation);
             networkView.RPC("UpdateRotation", RPCMode.Others, transform.rotation, this.carNumber);
+        } else if(NetworkManager.type == "throttler" && lastSentPosition != transform.position) {
+            lastSentPosition = copy(transform.position);
+            networkView.RPC("UpdatePosition", RPCMode.Others, transform.position, this.carNumber);
         }
     }
 }

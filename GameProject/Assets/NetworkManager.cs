@@ -86,17 +86,28 @@ public class NetworkManager : MonoBehaviour
         networkViewInstance.RPC("chooseJob", RPCMode.Server, pendingType, pendingCarNumber);
     }
 
-    [RPC]
-    public void chooseJob(string typeString, int carNumber, NetworkMessageInfo info) {
-        if (checkJobAvailableAndMaybeAdd(typeString, carNumber, info.sender)) {
-            networkViewInstance.RPC("chooseJobOK", info.sender, typeString, carNumber);
+    public void OnDisconnectedFromServer() {
+        foreach(GameObject go in GameObject.FindGameObjectsWithTag("Player")) {
+            Destroy(go);
         }
+        DuoDriveGUI.connected = false;
+        refreshing = true;
     }
 
     [RPC]
-    public void chooseJobOK(string typeString, int carNumber) {
-        type = typeString;
-        car = carNumber;
+    public void chooseJob(string typeString, int carNumber, NetworkMessageInfo info) {
+        bool ok = checkJobAvailableAndMaybeAdd(typeString, carNumber, info.sender);
+        networkViewInstance.RPC("chooseJobOK", info.sender, ok, typeString, carNumber);
+    }
+
+    [RPC]
+    public void chooseJobOK(bool ok, string typeString, int carNumber) {
+        if (ok) {
+            type = typeString;
+            car = carNumber;
+        } else {
+            Network.Disconnect();
+        }
     }
 
     /**
@@ -116,7 +127,7 @@ public class NetworkManager : MonoBehaviour
     }
 
     public void Update() {
-        if (refreshing) {
+        if (refreshing && Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork) {
             if (MasterServer.PollHostList().Length > 0) {
                 refreshing = false;
                 hostData = MasterServer.PollHostList();

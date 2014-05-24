@@ -12,7 +12,7 @@ public class DuoDriveGUI : MonoBehaviour
     private readonly int buttonW = 150;
     private readonly int buttonH = 50;
 
-    private bool connected = false;
+    public static bool connected = false;
 
     /**
      * Method that returns if there is even a server available.
@@ -38,6 +38,10 @@ public class DuoDriveGUI : MonoBehaviour
     * The method that handles all the GUI-events.
     */
     void OnGUI() {
+        if (Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork) {
+            return;
+        }
+
         if (connected) {
             return;
         }
