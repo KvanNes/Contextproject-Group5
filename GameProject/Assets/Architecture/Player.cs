@@ -3,14 +3,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+public enum PlayerAction {
+    speedUp,
+    speedDown,
+    steerLeft,
+    steerRight,
+    None
+};
+
 public abstract class Player
 {
 
     // VARIABLES
     public Car Car { get; set; }
-
-    // UNITY VARIABLES
-    public GameObject CarObject = null;
 
     /**
      * Returns the function of the current player as type of class.
@@ -27,4 +32,14 @@ public abstract class Player
     {
         return this.GetType().Name;
     }
+
+    public abstract void SendToOther();
+
+    public virtual PlayerAction GetPlayerAction() {
+        return PlayerAction.None;
+    }
+
+    public abstract void HandlePlayerAction(AutoBehaviour ab);
+
+    public virtual void HandleCollision(AutoBehaviour ab) {}
 }

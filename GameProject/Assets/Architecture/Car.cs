@@ -9,10 +9,13 @@ public class Car
     public Player Throttler { get; set; }
 
     // The Unity variables
-    private GameObject CarObject { get; set; }
+    public AutoBehaviour CarObject { get; set; }
 
     // Variables
     private int amountPlayers = 0;
+
+    private static int carNumberGenerator = 0;
+    public int carNumber;
 
     /**
      * The constructor for the car
@@ -20,13 +23,14 @@ public class Car
     public Car()
     {
         this.CarObject = null;
+        this.carNumber = carNumberGenerator++;
     }
 
 
     /**
      * The constructor for the car
      */
-    public Car(GameObject game_object)
+    public Car(AutoBehaviour game_object)
     {
         // The car may not have more than the maximum allowed players.
         if (amountPlayers > GameData.MAX_PLAYERS_PER_CAR)
@@ -69,6 +73,12 @@ public class Car
             {
                 throw new UnityException("Failsafe: The player is not a driver or throttler!");
             }
+        }
+    }
+
+    public void SendToOther() {
+        if (CarObject != null) {
+            CarObject.SendToOther();
         }
     }
 
