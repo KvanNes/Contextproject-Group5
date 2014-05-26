@@ -93,7 +93,7 @@ public class AutoBehaviour : MonoBehaviour {
         if (Input.touchCount >= 1) {
             for(int i = 0; i < Input.touchCount; i++) {
                 Vector2 pos = Input.GetTouch(i).position;
-                if(pos.x <= separatingColumn) {
+                if(pos.x > separatingColumn) {
                     return speedAction.speedUp;
                 } else {
                     return speedAction.speedDown;
@@ -211,9 +211,9 @@ public class AutoBehaviour : MonoBehaviour {
             steerAction action = getSteerAction();
             if(action != steerAction.noAction) {
                 if (action == steerAction.steerLeft) {
-                    rotate(1f, 0.1f);
+                    rotate(0.3f, 0.1f);
                 } else if (getSteerAction() == steerAction.steerRight) {
-                    rotate(-1f, 0.1f);
+                    rotate(-0.3f, 0.1f);
                 }
                 RotationUpdated();
             }
@@ -279,7 +279,7 @@ public class AutoBehaviour : MonoBehaviour {
         
     }
     
-    private readonly float UPDATE_TIME_DELTA = 0.25f;
+    private readonly float UPDATE_TIME_DELTA = 0.05f;
     private Quaternion lastSentRotation = Quaternion.identity;
     private Vector3 lastSentPosition = Vector3.zero;
     

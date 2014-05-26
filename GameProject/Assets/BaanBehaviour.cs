@@ -16,14 +16,14 @@ public class BaanBehaviour : MonoBehaviour {
 	protected static Vector2[] pointsAbove, pointsBelow;
 
 	protected void addEdges(Vector2[] pointsAbove, Vector2[] pointsBelow) {
-		EdgeCollider2D ec1 = (EdgeCollider2D)gameObject.AddComponent(typeof(EdgeCollider2D));
+		/*EdgeCollider2D ec1 = (EdgeCollider2D)gameObject.AddComponent(typeof(EdgeCollider2D));
 		EdgeCollider2D ec2 = (EdgeCollider2D)gameObject.AddComponent(typeof(EdgeCollider2D));
 		Rigidbody2D rb = (Rigidbody2D)gameObject.AddComponent(typeof(Rigidbody2D));
 
 		ec1.points = moveCenter(pointsAbove);
 		ec2.points = moveCenter(pointsBelow);
 		ec1.isTrigger = ec2.isTrigger = true;
-		rb.gravityScale = 0;
+		rb.gravityScale = 0;*/
 	}
 
 	// Use this for initialization
