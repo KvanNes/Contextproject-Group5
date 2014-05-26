@@ -5,6 +5,8 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 
+// This class takes care of sending and receiving data.
+
 public class NetworkManager : MonoBehaviour
 {
 
@@ -15,7 +17,9 @@ public class NetworkManager : MonoBehaviour
     public GameObject playerPrefab = null;
     public Transform spawnObject = null;
 
+    // Which starting positions are available. The server takes position #1 hence the "false".
     List<bool> beschikbaar = new List<bool> { false, true };
+    // Which player takes which position (so as to free a position on disconnect).
     Dictionary<NetworkPlayer, int> beschikbaarWie = new Dictionary<NetworkPlayer, int>();
 
     void Start()
@@ -62,12 +66,19 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
+    /**
+     * Spawn a car at vertical position y.
+     */
     void spawnPlayer(float y)
     {
         Vector3 pos = spawnObject.position + new Vector3(1f, y, 0);
         Network.Instantiate(playerPrefab, pos, Quaternion.identity, 0);
     }
 
+    /**
+     * This function is called by the server with a position to spawn the car.
+     * If position equals -1, then there is no space left for this player.
+     */
     [RPC]
     void setAvailablePosition(int position)
     {
@@ -89,7 +100,7 @@ public class NetworkManager : MonoBehaviour
     void OnServerInitialized()
     {
         Debug.Log("Server Initialized!");
-        setAvailablePosition(0);
+        setAvailablePosition(0); // Spawn a car for the server itself.
     }
 
     void OnPlayerConnected(NetworkPlayer player)
@@ -99,6 +110,9 @@ public class NetworkManager : MonoBehaviour
         networkView.RPC(GameData.MESSAGE_AMOUNT_PLAYERS, RPCMode.Server, "connected");
     }
 
+    /**
+     * Cleans up on disconnect and makes starting position available again.
+     */
     void OnPlayerDisconnected(NetworkPlayer player)
     {
         Network.RemoveRPCs(player);
@@ -112,6 +126,10 @@ public class NetworkManager : MonoBehaviour
         networkView.RPC(GameData.MESSAGE_AMOUNT_PLAYERS, RPCMode.Server, "disconnected");
     }
 
+    /**
+     * Returns an available starting position, or -1 if none. If there is a position
+     * available, also adds the player to this position to the beschikbaarWie list.
+     */
     int availablePosition(NetworkPlayer networkPlayer)
     {
         for (int i = 0; i < beschikbaar.Count; i++)

@@ -23,17 +23,17 @@ public class AutoBehaviour : MonoBehaviour {
     private const float accelerationIncrease = 1f;
     private const float accelerationDecrease = 1f;
 
-    private float forceInInterval(float x, float min, float max) {
+    public static float forceInInterval(float x, float min, float max) {
         return Mathf.Min(Mathf.Max(min, x), max);
     }
 
     // Copies (clones) a Quaternion.
-    private Quaternion copy(Quaternion v) {
+    public static Quaternion copy(Quaternion v) {
         return new Quaternion(v.x, v.y, v.z, v.w);
     }
 
     // Copies (clones) a Vector3.
-    private Vector3 copy(Vector3 v) {
+    public static Vector3 copy(Vector3 v) {
         return new Vector3(v.x, v.y, v.z);
     }
     
@@ -170,24 +170,24 @@ public class AutoBehaviour : MonoBehaviour {
     }
 
     // Normalize angle to lie in the interval <-180, 180].
-    private float normalizeAngle(float x) {
-        x %= 360;
-        x += 360;
-        x %= 360;
+    public static float normalizeAngle(float x) {
+        x %= 360; // Force in <-360, 360>.
+        x += 360; // Force in <0, 720>.
+        x %= 360; // Force in <0, 360>.
         if (x > 180) {
-            return x - 360;
+            return x - 360; // Normalize <180, 360> to <-180, 0>.
         } else {
             return x;
         }
     }
 
-    private void Start() {
+    public void Start() {
         if(SystemInfo.supportsGyroscope) {
             Input.gyro.enabled = true;
         }
     }
 
-    private void Update() {
+    public void Update() {
         if(!networkView.isMine) {
             // Can only control own car.
             return;
@@ -215,14 +215,17 @@ public class AutoBehaviour : MonoBehaviour {
             rotate(1f, speed);
         } else if (getSteerAction() == steerAction.steerRight) {
             rotate(-1f, speed);
-        }
-        /*else {
+        } else {
+            /*
+             * Gyroscope is disabled for now.
+
             //transform.Rotate(0, 0, accAngle);
             Vector3 angles = Input.gyro.attitude.eulerAngles;
 
             Debug.Log(angles.ToString());
             transform.Rotate(new Vector3(0, 0, normalizeAngle(angles.z - 90) * 1f * Time.deltaTime));
-        }*/
+            */
+        }
 
         // Move the car according to current speed.
         transform.Translate(speed * Time.deltaTime * 4f, 0, 0);
