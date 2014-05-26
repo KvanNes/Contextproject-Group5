@@ -21,13 +21,6 @@ public class Game
         this.maxTime = max_time;
         this.cars = new ArrayList();
         this.NetworkView = networkView;
-
-        test();
-    }
-
-    public void test()
-    {
-        NetworkView.RPC(GameData.MESSAGE_AMOUNT_PLAYERS, RPCMode.Server, "connected");
     }
 
     /**
