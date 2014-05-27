@@ -3,7 +3,6 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using System;
-using AssemblyCSharp;
 
 public class Client : MonoBehaviour {
     public Player Player { get; set; }

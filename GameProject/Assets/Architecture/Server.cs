@@ -3,16 +3,12 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using System;
-using AssemblyCSharp;
 
 public class Server : MonoBehaviour {
     public Game Game { get; set; }
 
     public GameObject playerPrefab = null;
     public Transform spawnObject = null;
-    
-    private CompositeKeyedDictionary<Type, int, NetworkPlayer> availableJobs
-        = new CompositeKeyedDictionary<Type, int, NetworkPlayer>();
 
     public void startServer() {
         Network.InitializeServer(32, GameData.PORT, !Network.HavePublicAddress());
@@ -20,16 +16,27 @@ public class Server : MonoBehaviour {
     }
     
     [RPC]
-    public bool checkJobAvailableAndMaybeAdd(string typeString, int carNumber, NetworkPlayer player) {
-        Type type = (typeString == "Throttler" ? typeof(Throttler) : typeof(Driver));
-        NetworkPlayer currentPlayer = availableJobs.Get(type, carNumber);
-        
-        if (currentPlayer == default(NetworkPlayer)) {
-            availableJobs.Set(type, carNumber, player);
-            return true;
-        } else {
+    public bool checkJobAvailableAndMaybeAdd(string typeString, int carNumber, NetworkPlayer networkPlayer) {
+        if (carNumber < 0 || carNumber >= this.Game.Cars.Count) {
             return false;
         }
+
+        Car car = this.Game.Cars[carNumber];
+        if (car == null) {
+            return false;
+        }
+
+        Player player = (typeString == "Throttler" ? car.Throttler : car.Driver);
+        if(player.NetworkPlayer != default(NetworkPlayer)) {
+            return false;
+        }
+
+        if (typeString == "Throttler") {
+            car.Throttler.NetworkPlayer = networkPlayer;
+        } else {
+            car.Driver.NetworkPlayer = networkPlayer;
+        }
+        return true;
     }
     
     [RPC]
@@ -42,32 +49,52 @@ public class Server : MonoBehaviour {
         }
     }
     
-    public void spawnPlayer(int position) {
+    private void spawnPlayer(int position) {
         float y = 0.07f - 0.05f * position;
         Vector3 pos = spawnObject.position + new Vector3(0, y, 0);
         
         UnityEngine.Object obj = Network.Instantiate(playerPrefab, pos, Quaternion.identity, 0);
         AutoBehaviour ab = (AutoBehaviour) ((GameObject) obj).GetComponent(typeof(AutoBehaviour));
         Car car = new Car(ab);
+        car.Throttler = new Player(car, new Throttler());
+        car.Driver = new Player(car, new Driver());
         this.Game.addCar(car);
         ab.networkView.RPC("setCarNumber", RPCMode.OthersBuffered, position);
     }
     
-    public void OnServerInitialized() {
+    private void OnServerInitialized() {
         this.Game = new Game();
+        Camera.main.transform.position = new Vector3(0, 0, 10);
         for (int i = 0; i < GameData.CARS_AMOUNT; i++) {
             spawnPlayer(i);
         }
     }
+
+    private void OnGUI() {
+        if (this.Game != null) {
+            // Gebaseerd op: http://answers.unity3d.com/questions/296204/gui-font-size.html
+            GUI.skin.label.fontSize = 20;
+
+            GUI.Label(new Rect(10, 10, 200, 50), new GUIContent("Server started"));
+        }
+    }
     
-    public void OnPlayerConnected(NetworkPlayer player) {
+    private void OnPlayerConnected(NetworkPlayer player) {
         
     }
     
-    public void OnPlayerDisconnected(NetworkPlayer player) {
+    private void OnPlayerDisconnected(NetworkPlayer player) {
         Network.RemoveRPCs(player);
         Network.DestroyPlayerObjects(player);
         
-        availableJobs.Remove(player);
+        foreach (Car car in this.Game.Cars) {
+            if (car.Driver.NetworkPlayer == player) {
+                car.Driver.NetworkPlayer = default(NetworkPlayer);
+                break;
+            } else if (car.Throttler.NetworkPlayer == player) {
+                car.Throttler.NetworkPlayer = default(NetworkPlayer);
+                break;
+            }
+        }
     }
 }

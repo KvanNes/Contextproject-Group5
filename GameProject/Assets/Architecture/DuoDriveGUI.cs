@@ -20,7 +20,9 @@ public class DuoDriveGUI : MonoBehaviour {
     }
 
     private void UpdateHostList() {
-        NetworkController.refreshHostList();
+        if (!NetworkController.connected) {
+            NetworkController.refreshHostList();
+        }
     }
 
     private void CreateServerButton() {
@@ -31,7 +33,7 @@ public class DuoDriveGUI : MonoBehaviour {
     }
 
     private void CreateClientButton(Type type, HostData hostData, int carNumber, int x, int y) {
-        if (GUI.Button(new Rect(x, y, buttonW, buttonH), hostData.gameName + " " + type.Name + " " + carNumber.ToString())) {
+        if (GUI.Button(new Rect(x, y, buttonW, buttonH), type.Name + "; Car " + carNumber.ToString())) {
             MainScript.selfType = MainScript.PlayerType.Client;
             MainScript.selfCar = new Car(carNumber);
 
@@ -60,6 +62,9 @@ public class DuoDriveGUI : MonoBehaviour {
         if (NetworkController.connected || Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork) {
             return;
         }
+
+        // Gebaseerd op: http://answers.unity3d.com/questions/296204/gui-font-size.html
+        GUI.skin.label.fontSize = GUI.skin.button.fontSize = 20;
 
         if (!Network.isServer) {
             CreateServerButton();

@@ -4,7 +4,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using AssemblyCSharp;
 
 // This class takes care of sending and receiving data.
 

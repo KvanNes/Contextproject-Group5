@@ -11,12 +11,15 @@ public class GameData {
     public static readonly float UPDATE_TIME_DELTA = 0.05f;
     
     // Constants used for physics.
-    public static readonly float MIN_SPEED = -0.1f;
+    public static readonly float MIN_SPEED = -0.07f;
     public static readonly float MAX_SPEED = 0.3f;
     public static readonly float MIN_ACCELERATION = -0.005f;
     public static readonly float MAX_ACCELERATION = 0.005f;
-    public static readonly float ACCELERATION_DECREASE = -1f;
+    public static readonly float ACCELERATION_DECREASE = -0.2f;
     public static readonly float ACCELERATION_INCREASE = 0.4f;
+    public static readonly float FRICTION_AMOUNT = 0.05f;
+    public static readonly float COLLISION_CONSTANT = 0.005f;
+    public static readonly float COLLISION_FACTOR = 0.8f;
 
     // Game name used for networking.
     public static readonly string GAME_NAME = "CGCookie_DuoDrive";

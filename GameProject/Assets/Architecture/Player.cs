@@ -14,6 +14,8 @@ public enum PlayerAction {
 public class Player {
 
 	public Car Car { get; set; }
+
+    public NetworkPlayer NetworkPlayer { get; set; }
 	
 	public PlayerRole Role { get; set; }
 

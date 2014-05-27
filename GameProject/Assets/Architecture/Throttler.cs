@@ -78,9 +78,9 @@ public class Throttler : PlayerRole {
             applySpeedUpDown(ab, Time.deltaTime, GameData.ACCELERATION_DECREASE, 10, 20);
         } else {
             if (ab.speed > 0) {
-                applyFriction(ab, Time.deltaTime, -0.05f);
+                applyFriction(ab, Time.deltaTime, -GameData.FRICTION_AMOUNT);
             } else if (ab.speed < 0) {
-                applyFriction(ab, Time.deltaTime, 0.05f);
+                applyFriction(ab, Time.deltaTime, GameData.FRICTION_AMOUNT);
             }
         }
         
@@ -91,7 +91,7 @@ public class Throttler : PlayerRole {
 
     public void HandleCollision(AutoBehaviour ab) {
         // Go back a little.
-        ab.speed = -(ab.speed + Mathf.Sign(ab.speed) * 0.005f) / 1.2f;
+        ab.speed = -(ab.speed + Mathf.Sign(ab.speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
         ab.restoreConfiguration();
     }
 }
