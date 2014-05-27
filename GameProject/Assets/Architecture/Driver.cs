@@ -3,24 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class Driver : Player
-{
-
-    public Driver(Car car)
-    {
-        this.Car = car;
-    }
+public class Driver : PlayerRole {
     
-    private static Quaternion lastSentRotation;
-    public override void SendToOther() {
-        Quaternion currentRotation = Car.CarObject.transform.rotation;
+    private Quaternion lastSentRotation;
+    public void SendToOther(Car car) {
+        Quaternion currentRotation = car.CarObject.transform.rotation;
         if (currentRotation != lastSentRotation) {
             lastSentRotation = Utils.copy(currentRotation);
-            Car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, currentRotation, Car.carNumber);
+            car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, currentRotation, car.carNumber);
         }
     }
 
-    public override PlayerAction GetPlayerAction() {
+    public PlayerAction GetPlayerAction() {
         int separatingColumn = Screen.width / 2;
         
         // When touching with one finger: check whether on left/right half.
@@ -54,7 +48,7 @@ public class Driver : Player
         ab.RotationUpdated();
     }
 
-    public override void HandlePlayerAction(AutoBehaviour ab) {
+    public void HandlePlayerAction(AutoBehaviour ab) {
         PlayerAction action = GetPlayerAction();
         if (action == PlayerAction.steerLeft) {
             rotate(ab, 1f);
@@ -62,4 +56,8 @@ public class Driver : Player
             rotate(ab, -1f);
         }
     }
+
+	public void HandleCollision(AutoBehaviour ab) {
+
+	}
 }

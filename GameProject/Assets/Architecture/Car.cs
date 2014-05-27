@@ -39,7 +39,19 @@ public class Car
         }
 
         this.CarObject = game_object;
-    }
+	}
+	
+	private bool shouldSend() {
+		return MainScript.selfCar == this
+			&& Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork
+				&& CarObject.initialized == (AutoBehaviour.POSITION_INITIALIZED | AutoBehaviour.ROTATION_INITIALIZED);
+	}
+	
+	public void SendToOther() {
+		if(shouldSend()) {
+			MainScript.selfPlayer.Role.SendToOther(this);
+		}
+	}
 
     /**
      * Adds a player to the car depending on his/her function.
@@ -57,13 +69,13 @@ public class Car
         }
         if (p != null)
         {
-            if (p is Driver)
+            if (p.Role is Driver)
             {
                 Driver = p;
                 Driver.Car = this;
                 amountPlayers++;
             }
-            else if (p is Throttler)
+            else if (p.Role is Throttler)
             {
                 Throttler = p;
                 Throttler.Car = this;
@@ -73,12 +85,6 @@ public class Car
             {
                 throw new UnityException("Failsafe: The player is not a driver or throttler!");
             }
-        }
-    }
-
-    public void SendToOther() {
-        if (CarObject != null) {
-            CarObject.SendToOther();
         }
     }
 

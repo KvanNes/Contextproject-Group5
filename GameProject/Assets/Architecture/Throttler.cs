@@ -3,26 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class Throttler : Player
-{
+public class Throttler : PlayerRole {
 
-    public Throttler(Car car)
-    {
-        this.Car = car;
-    }
-
-    // rotation, accelaration, speed, position
-
-    private static Vector3 lastSentPosition;
-    public override void SendToOther() {
-        Vector3 currentPosition = Car.CarObject.transform.position;
+    private Vector3 lastSentPosition;
+    public void SendToOther(Car car) {
+        Vector3 currentPosition = car.CarObject.transform.position;
         if (currentPosition != lastSentPosition) {
             lastSentPosition = Utils.copy(currentPosition);
-            Car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, currentPosition, Car.CarObject.speed, Car.carNumber);
+            car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, currentPosition, car.CarObject.speed, car.carNumber);
         }
     }
 
-    public override PlayerAction GetPlayerAction() {
+    public PlayerAction GetPlayerAction() {
         int separatingColumn = Screen.width / 2;
         
         // When touching with one finger: check whether on left/right half.
@@ -78,7 +70,7 @@ public class Throttler : Player
         }
     }
 
-    public override void HandlePlayerAction(AutoBehaviour ab) {
+    public void HandlePlayerAction(AutoBehaviour ab) {
         PlayerAction action = GetPlayerAction();
         if (action == PlayerAction.speedUp) {
             applySpeedUpDown(ab, Time.deltaTime, GameData.accelerationIncrease, 10, 5);
@@ -97,7 +89,7 @@ public class Throttler : Player
         ab.PositionUpdated();
     }
 
-    public override void HandleCollision(AutoBehaviour ab) {
+    public void HandleCollision(AutoBehaviour ab) {
         // Go back a little.
         ab.speed = -(ab.speed + Mathf.Sign(ab.speed) * 0.005f) / 1.2f;
         ab.restoreConfiguration();

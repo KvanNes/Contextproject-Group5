@@ -72,17 +72,17 @@ public class AutoBehaviour : MonoBehaviour {
         // Make sure speed is in constrained interval.
         speed = Utils.forceInInterval(speed, GameData.minSpeed, GameData.maxSpeed);
 
-        MainScript.selfPlayer.HandlePlayerAction(this);
+        MainScript.selfPlayer.Role.HandlePlayerAction(this);
     }
 
     // Occurs when bumping into something (another car, or a track border).
     private void OnTriggerEnter2D(Collider2D col) {
-        MainScript.selfPlayer.HandleCollision(this);
+        MainScript.selfPlayer.Role.HandleCollision(this);
     }
 
-    private int initialized = 0;
-    private static readonly int POSITION_INITIALIZED = 1 << 0;
-    private static readonly int ROTATION_INITIALIZED = 1 << 1;
+    public int initialized = 0;
+	public static readonly int POSITION_INITIALIZED = 1 << 0;
+	public static readonly int ROTATION_INITIALIZED = 1 << 1;
 
     [RPC]
     public void UpdateRotation(Quaternion rot, int carNumber) {
@@ -113,17 +113,5 @@ public class AutoBehaviour : MonoBehaviour {
     
     public void RotationUpdated() {
         
-    }
-    
-    private bool shouldSend() {
-        return MainScript.selfCar.CarObject == this
-            && Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork
-            && initialized == (POSITION_INITIALIZED | ROTATION_INITIALIZED);
-    }
-
-    public void SendToOther() {
-        if(shouldSend()) {
-            MainScript.selfPlayer.SendToOther();
-        }
     }
 }

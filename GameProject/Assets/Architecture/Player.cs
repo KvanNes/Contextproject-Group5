@@ -11,11 +11,18 @@ public enum PlayerAction {
     None
 };
 
-public abstract class Player
+public class Player
 {
 
     // VARIABLES
-    public Car Car { get; set; }
+	public Car Car { get; set; }
+	
+	public PlayerRole Role { get; set; }
+
+	public Player(Car car, PlayerRole role) {
+		this.Car = car;
+		this.Role = role;
+	}
 
     /**
      * Returns the function of the current player as type of class.
@@ -32,14 +39,4 @@ public abstract class Player
     {
         return this.GetType().Name;
     }
-
-    public abstract void SendToOther();
-
-    public virtual PlayerAction GetPlayerAction() {
-        return PlayerAction.None;
-    }
-
-    public abstract void HandlePlayerAction(AutoBehaviour ab);
-
-    public virtual void HandleCollision(AutoBehaviour ab) {}
 }

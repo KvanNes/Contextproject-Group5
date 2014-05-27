@@ -64,7 +64,7 @@ public class DuoDriveGUI : MonoBehaviour
                         if (GUI.Button(new Rect(x, y, buttonW, buttonH), hostData[i].gameName + " " + type + " " + j.ToString())) {
                             MainScript.selfType = MainScript.PlayerType.Client;
                             MainScript.selfCar = MainScript.cars[j];
-                            MainScript.selfPlayer = (type == "throttler" ? (Player) new Throttler(MainScript.selfCar) : (Player) new Driver(MainScript.selfCar));
+                            MainScript.selfPlayer = new Player(MainScript.selfCar, (type == "throttler" ? (PlayerRole) new Throttler() : (PlayerRole) new Driver()));
                             NetworkManager.chooseJobFromGUI(type, j);
                             NetworkManager.Connect(hostData[i]);
                             connected = true;
