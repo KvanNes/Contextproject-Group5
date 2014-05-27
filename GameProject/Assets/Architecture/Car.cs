@@ -1,8 +1,7 @@
 using UnityEngine;
 using System;
 
-public class Car
-{
+public class Car {
 
     // Players for the car variables
     public Player Driver { get; set; }
@@ -17,24 +16,17 @@ public class Car
     private static int carNumberGenerator = 0;
     public int carNumber;
 
-    /**
-     * The constructor for the car
-     */
-    public Car()
-    {
-        this.CarObject = null;
+    public Car(int carNumber) {
+        this.carNumber = carNumber;
+    }
+
+    public Car() {
         this.carNumber = carNumberGenerator++;
     }
 
-
-    /**
-     * The constructor for the car
-     */
-    public Car(AutoBehaviour game_object)
-    {
+    public Car(AutoBehaviour game_object) {
         // The car may not have more than the maximum allowed players.
-        if (amountPlayers > GameData.MAX_PLAYERS_PER_CAR)
-        {
+        if (amountPlayers > GameData.MAX_PLAYERS_PER_CAR) {
             throw new UnityException(GameData.ERROR_AMOUNT_PLAYERS);
         }
 
@@ -42,9 +34,10 @@ public class Car
 	}
 	
 	private bool shouldSend() {
-		return MainScript.selfCar == this
+		return CarObject != null
+            && MainScript.selfCar == this
 			&& Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork
-				&& CarObject.initialized == (AutoBehaviour.POSITION_INITIALIZED | AutoBehaviour.ROTATION_INITIALIZED);
+			&& CarObject.initialized == (AutoBehaviour.POSITION_INITIALIZED | AutoBehaviour.ROTATION_INITIALIZED);
 	}
 	
 	public void SendToOther() {
@@ -53,39 +46,25 @@ public class Car
 		}
 	}
 
-    /**
-     * Adds a player to the car depending on his/her function.
-     * 
-     * @param p      The player to add to the car.
-     *  
-     */
-    public void addPlayer(Player p)
-    {
+    public void addPlayer(Player p) {
         // The amount of players should not exceed the maximum allowed.
-        if (amountPlayers > GameData.MAX_PLAYERS_PER_CAR)
-        {
+        if (amountPlayers > GameData.MAX_PLAYERS_PER_CAR) {
             System.Console.WriteLine(GameData.ERROR_AMOUNT_PLAYERS);
             return;
         }
-        if (p != null)
-        {
-            if (p.Role is Driver)
-            {
+
+        if (p != null) {
+            if (p.Role is Driver) {
                 Driver = p;
                 Driver.Car = this;
                 amountPlayers++;
-            }
-            else if (p.Role is Throttler)
-            {
+            } else if (p.Role is Throttler) {
                 Throttler = p;
                 Throttler.Car = this;
                 amountPlayers++;
-            }
-            else
-            {
+            } else {
                 throw new UnityException("Failsafe: The player is not a driver or throttler!");
             }
         }
     }
-
 }

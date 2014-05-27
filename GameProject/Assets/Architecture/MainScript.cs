@@ -10,7 +10,9 @@ public class MainScript : MonoBehaviour {
         None
     };
     
-    public static NetworkManager networkManager;
+    public static NetworkController networkController;
+    public static Server server;
+    public static Client client;
     public static List<Car> cars;
     public static Player selfPlayer;
     public static Car selfCar;
@@ -22,6 +24,9 @@ public class MainScript : MonoBehaviour {
         Application.runInBackground = true;
 
         InvokeRepeating("SendToOther", GameData.UPDATE_TIME_DELTA, GameData.UPDATE_TIME_DELTA);
+
+        server = (Server) GameObject.FindGameObjectWithTag("Network").GetComponent(typeof(Server));
+        client = (Client) GameObject.FindGameObjectWithTag("Network").GetComponent(typeof(Client));
 
         cars = new List<Car>();
         for (int i = 0; i < GameData.CARS_AMOUNT; i++) {

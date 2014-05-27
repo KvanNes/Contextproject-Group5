@@ -4,45 +4,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-public class Game
-{
+public class Game {
 
-    // NETWORK MANAGER
-    public NetworkView NetworkView = null;
+    public SpawnController SpawnController { get; set; }
+    public AvailabilityController AvailabilityController { get; set; }
+    public StartController StartController { get; set; }
+    public List<Car> Cars { get; set; }
 
-    // VARIABLES
-    private int maxCars;
-    private int maxTime;
-    private ArrayList cars;
-
-    public Game(int max_cars, int max_time, NetworkView networkView)
-    {
-        this.maxCars = max_cars;
-        this.maxTime = max_time;
-        this.cars = new ArrayList();
-        this.NetworkView = networkView;
+    public Game() {
+        this.SpawnController = new SpawnController();
+        this.AvailabilityController = new AvailabilityController();
+        this.StartController = new StartController();
+        this.Cars = new List<Car>();
     }
 
-    /**
-     * Creates the cars needed for the game.
-     */
-    public void createCars()
-    {
-        for (int i = 0; i < maxCars; i++)
-        {
-            Car c = new Car();
-            addCar(c);
-        }
+    public void addCar(Car car) {
+        Cars.Add(car);
+        car.CarObject.setCarNumber(Cars.Count - 1);
     }
-
-    /**
-     * Method to add a car to the game.
-     * 
-     * @param c     The car to be added.
-     */
-    public void addCar(Car c)
-    {
-        cars.Add(c);
-    }
-
 }

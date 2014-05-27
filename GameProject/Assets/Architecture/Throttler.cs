@@ -46,13 +46,13 @@ public class Throttler : PlayerRole {
                                   float forwardAccelerationFactor) {
         // Calculate acceleration.
         ab.acceleration = ab.acceleration + accelerationIncrease * deltaTime;
-        ab.acceleration = Utils.forceInInterval(ab.acceleration, GameData.minAcceleration,
-                                                GameData.maxAcceleration);
+        ab.acceleration = Utils.forceInInterval(ab.acceleration, GameData.MIN_ACCELERATION,
+                                                GameData.MAX_ACCELERATION);
 
         // Calculate speed.
-        if (GameData.minSpeed <= ab.speed && ab.speed < 0) {
+        if (GameData.MIN_SPEED <= ab.speed && ab.speed < 0) {
             ab.speed = ab.speed + backAccelerationFactor * ab.acceleration * deltaTime;
-        } else if (0 <= ab.speed && ab.speed <= GameData.maxSpeed) {
+        } else if (0 <= ab.speed && ab.speed <= GameData.MAX_SPEED) {
             ab.speed = ab.speed + forwardAccelerationFactor * ab.acceleration
                 * deltaTime;
         }
@@ -73,9 +73,9 @@ public class Throttler : PlayerRole {
     public void HandlePlayerAction(AutoBehaviour ab) {
         PlayerAction action = GetPlayerAction();
         if (action == PlayerAction.speedUp) {
-            applySpeedUpDown(ab, Time.deltaTime, GameData.accelerationIncrease, 10, 5);
+            applySpeedUpDown(ab, Time.deltaTime, GameData.ACCELERATION_INCREASE, 10, 5);
         } else if (action == PlayerAction.speedDown) {
-            applySpeedUpDown(ab, Time.deltaTime, GameData.accelerationDecrease, 10, 20);
+            applySpeedUpDown(ab, Time.deltaTime, GameData.ACCELERATION_DECREASE, 10, 20);
         } else {
             if (ab.speed > 0) {
                 applyFriction(ab, Time.deltaTime, -0.05f);
