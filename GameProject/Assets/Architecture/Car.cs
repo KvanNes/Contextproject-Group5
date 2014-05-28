@@ -21,7 +21,7 @@ public class Car {
     }
 
     public Car() {
-        this.carNumber = carNumberGenerator++;
+        this.carNumber = ++carNumberGenerator;  // Start with 1.
     }
 
     public Car(AutoBehaviour game_object) {
