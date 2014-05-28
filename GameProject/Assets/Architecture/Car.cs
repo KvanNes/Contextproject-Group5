@@ -48,23 +48,27 @@ public class Car {
 
     public void addPlayer(Player p) {
         // The amount of players should not exceed the maximum allowed.
-        if (amountPlayers > GameData.MAX_PLAYERS_PER_CAR) {
-            System.Console.WriteLine(GameData.ERROR_AMOUNT_PLAYERS);
-            return;
+        if (amountPlayers >= GameData.MAX_PLAYERS_PER_CAR) {
+            throw new UnityException(GameData.ERROR_AMOUNT_PLAYERS);
         }
 
         if (p != null) {
             if (p.Role is Driver) {
                 Driver = p;
                 Driver.Car = this;
-                amountPlayers++;
+                ++amountPlayers;
             } else if (p.Role is Throttler) {
                 Throttler = p;
                 Throttler.Car = this;
-                amountPlayers++;
+                ++amountPlayers;
             } else {
                 throw new UnityException("Failsafe: The player is not a driver or throttler!");
             }
         }
+    }
+
+    public int getAmountPlayers()
+    {
+        return amountPlayers;
     }
 }

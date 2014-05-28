@@ -6,13 +6,36 @@ using System;
 
 public class Server : MonoBehaviour {
     public Game Game { get; set; }
+    public bool connected = false;
 
     public GameObject playerPrefab = null;
     public Transform spawnObject = null;
 
+    public INetwork _network;
+
+    public INetwork network
+    {
+        set { _network = value; }
+    }
+
     public void startServer() {
-        Network.InitializeServer(32, GameData.PORT, !Network.HavePublicAddress());
+        _network.InitializeServer(32, GameData.PORT, !Network.HavePublicAddress());
         MasterServer.RegisterHost(GameData.GAME_NAME, "2P1C");
+        connected = true;
+    }
+
+    public void DisconnectServer()
+    {
+        if (isConnected())
+        {
+            _network.Disconnect();
+            connected = false;
+        }
+    }
+
+    public bool isConnected()
+    {
+        return connected;
     }
     
     [RPC]
