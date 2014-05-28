@@ -43,7 +43,7 @@ public class Driver : PlayerRole {
     
     // Rotate (steer) this car.
     private void rotate(AutoBehaviour ab, float factor) {
-        float angle = factor * Mathf.Min(3, ab.speed * 50f);
+        float angle = factor * Mathf.Min(3, ab.speed * 10f);
         ab.transform.Rotate(new Vector3(0, 0, angle));
         ab.RotationUpdated();
     }
