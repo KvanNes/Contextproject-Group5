@@ -28,6 +28,9 @@ public class MainScript : MonoBehaviour {
         server = (Server) GameObject.FindGameObjectWithTag("Network").GetComponent(typeof(Server));
         client = (Client) GameObject.FindGameObjectWithTag("Network").GetComponent(typeof(Client));
 
+        // Use the NetworkWrapper so that the Server maintains it's actual functionallity.
+        server.network = new NetworkWrapper();
+
         cars = new List<Car>();
         for (int i = 0; i < GameData.CARS_AMOUNT; i++) {
             cars.Add(new Car());
