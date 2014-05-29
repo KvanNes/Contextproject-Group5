@@ -4,12 +4,13 @@ using Moq;
 using System;
 
 [TestFixture]
-public class CarTest : MonoBehaviour
+public class CarTest
 {
     private readonly int ZERO = 0;
     private readonly int ONE = 1;
 
     private int initialCarNumber;
+    private bool initialized = false;
 
     private Car car;
     private Car car_ab;
@@ -21,25 +22,42 @@ public class CarTest : MonoBehaviour
     private PlayerRole driverRole;
     private PlayerRole throttlerRole;
 
+    [TestFixtureSetUp]
+    public void Init()
+    {
+        if (!initialized)
+        {
+            car = new Car();
+            ab = new AutoBehaviour();
+            car_ab = new Car(ab);
+
+            driverRole = new Driver();
+            throttlerRole = new Throttler();
+
+            driver = new Player();
+            throttler = new Player();
+
+            driver.Role = driverRole;
+            throttler.Role = throttlerRole;
+
+            initialCarNumber = car.carNumber;
+            initialized = true;
+        }
+    }
+
     [SetUp]
-    public void BeforeTest()
+    public void InitTest()
     {
         car = new Car();
-
         ab = new AutoBehaviour();
         car_ab = new Car(ab);
+    }
 
-        driverRole = new Driver();
-        throttlerRole = new Throttler();
-
-        driver = new Player();
-        throttler = new Player();
-
-        driver.Role = driverRole;
-        throttler.Role = throttlerRole;
-
-        initialCarNumber = car.carNumber;
-        
+    [TearDown]
+    public void Cleanup()
+    {
+        car.clear();
+        car_ab.clear();
     }
 
     [Test]
@@ -57,7 +75,6 @@ public class CarTest : MonoBehaviour
     [Test]
     public void TestConstructor1_Variables2()
     {
-        car = new Car(initialCarNumber);
         Assert.AreEqual(ONE, car.carNumber);
     }
 
@@ -68,7 +85,7 @@ public class CarTest : MonoBehaviour
     }
 
     [Test]
-    public void TestConstructor2_ParNotNull()
+    public void TestConstructor2_ParNull()
     {
         Assert.IsNotNull(car_ab.CarObject);
     }
@@ -89,20 +106,16 @@ public class CarTest : MonoBehaviour
         car.addPlayer(throttler);
         Assert.AreEqual(ONE + 1, car.getAmountPlayers());
         Assert.AreEqual(throttler, car.Throttler);
-        //Assert.AreEqual(car, car.Throttler.GetCar());
+        // Assert.AreEqual(car, car.Throttler.GetCar());
     }
 
     [Test]
     [ExpectedException(typeof(UnityException))]
     public void TestAddPlayer_Fail()
     {
-        Debug.Log(car.getAmountPlayers());
         car.addPlayer(driver);
-        Debug.Log(car.getAmountPlayers());
         car.addPlayer(throttler);
-        Debug.Log(car.getAmountPlayers());
         car.addPlayer(driver);
-        Debug.Log(car.getAmountPlayers());
     }
 
     // TODO: Test SendToOther()
