@@ -5,10 +5,6 @@ using System.Reflection;
 using System.Linq;
 
 public class Utils {
-    
-    public static Texture2D LoadTexture(String path) {
-        return (Texture2D) Resources.Load<Texture2D>(path);
-    }
 
     public static Vector2 RotatedTranslate(Vector2 start, Vector2 delta, float angle) {
         return Rotate(start + delta, start, angle);
