@@ -20,9 +20,13 @@ public class ControlButtonsGUI : MonoBehaviour {
         DriverPressedRightTexture = Utils.LoadTexture("stuur-rechts-ingedrukt");
 	}
 
+    private void DrawControl(Texture2D texture, float left, float top) {
+        GUI.DrawTexture(new Rect(left, top, texture.width * BUTTONS_FACTOR, texture.height * BUTTONS_FACTOR), texture);
+    }
+
 	private void DrawControls(Texture2D leftTexture, Texture2D rightTexture) {
-		GUI.DrawTexture(new Rect(0, Screen.height - leftTexture.height, leftTexture.width, leftTexture.height), leftTexture);
-		GUI.DrawTexture(new Rect(Screen.width - rightTexture.width, Screen.height - rightTexture.height, rightTexture.width, rightTexture.height), rightTexture);
+        DrawControl(leftTexture, 0, Screen.height - leftTexture.height * BUTTONS_FACTOR);
+        DrawControl(rightTexture, Screen.width - rightTexture.width * BUTTONS_FACTOR, Screen.height - rightTexture.height * BUTTONS_FACTOR);
 	}
 
 	private void DrawDriverControls() {
