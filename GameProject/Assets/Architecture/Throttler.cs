@@ -5,6 +5,10 @@ using System;
 
 public class Throttler : PlayerRole {
 
+    public void Initialize() {
+        RenderSettings.ambientLight = Color.white;
+    }
+
     private Vector3 lastSentPosition;
     public void SendToOther(Car car) {
         Vector3 currentPosition = car.CarObject.transform.position;
@@ -93,5 +97,29 @@ public class Throttler : PlayerRole {
         // Go back a little.
         ab.speed = -(ab.speed + Mathf.Sign(ab.speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
         ab.restoreConfiguration();
+    }
+    
+    public void PositionUpdated(AutoBehaviour ab) {
+        Camera.main.transform.position = new Vector3(3.9f, 0.4f, -8f);
+    }
+
+    public void RotationUpdated(AutoBehaviour ab) {
+        // http://answers.unity3d.com/questions/183649/how-to-find-a-child-gameobject-by-name.html
+        Component[] components = MainScript.selfCar.CarObject.transform.GetComponentsInChildren<Component>();
+        GameObject sphere = null;
+        foreach(Component component in components) {
+            if(component.name == "Sphere") {
+                sphere = component.gameObject;
+                break;
+            }
+        }
+        Transform carTransform = MainScript.selfCar.CarObject.transform;
+        float angle = Mathf.Deg2Rad * carTransform.rotation.eulerAngles.z;
+        Vector2 generatedPosition = Utils.RotatedTranslate(carTransform.position, new Vector2(3, 0), angle);
+        sphere.transform.position = Utils.Rotate(
+            generatedPosition,
+            carTransform.position,
+            -angle
+        );
     }
 }

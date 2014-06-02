@@ -6,23 +6,20 @@ public class ControlButtonsGUI : MonoBehaviour {
     Texture2D ThrottlerNormalTexture, ThrottlerPressedTexture;
     Texture2D DriverNormalLeftTexture, DriverPressedLeftTexture;
     Texture2D DriverNormalRightTexture, DriverPressedRightTexture;
-    
-    private static Texture2D LoadTexture(String path) {
-        return (Texture2D) Resources.Load<Texture2D>(path);
-    }
+    private static readonly float BUTTONS_FACTOR = 0.4f;
     
     private void Start() {
-        ThrottlerNormalTexture = LoadTexture("gaspedaal-normaal");
-        ThrottlerPressedTexture = LoadTexture("gaspedaal-ingedrukt");
-        DriverNormalLeftTexture = LoadTexture("stuur-links-normaal");
-        DriverPressedLeftTexture = LoadTexture("stuur-links-ingedrukt");
-        DriverNormalRightTexture = LoadTexture("stuur-rechts-normaal");
-        DriverPressedRightTexture = LoadTexture("stuur-rechts-ingedrukt");
+        ThrottlerNormalTexture = Utils.LoadTexture("gaspedaal-normaal");
+        ThrottlerPressedTexture = Utils.LoadTexture("gaspedaal-ingedrukt");
+        DriverNormalLeftTexture = Utils.LoadTexture("stuur-links-normaal");
+        DriverPressedLeftTexture = Utils.LoadTexture("stuur-links-ingedrukt");
+        DriverNormalRightTexture = Utils.LoadTexture("stuur-rechts-normaal");
+        DriverPressedRightTexture = Utils.LoadTexture("stuur-rechts-ingedrukt");
     }
     
     private void DrawControls(Texture2D leftTexture, Texture2D rightTexture) {
-        GUI.DrawTexture(new Rect(0, Screen.height - leftTexture.height, leftTexture.width, leftTexture.height), leftTexture);
-        GUI.DrawTexture(new Rect(Screen.width - rightTexture.width, Screen.height - rightTexture.height, rightTexture.width, rightTexture.height), rightTexture);
+        GUI.DrawTexture(new Rect(0, Screen.height - leftTexture.height * BUTTONS_FACTOR, leftTexture.width * BUTTONS_FACTOR, leftTexture.height * BUTTONS_FACTOR), leftTexture);
+        GUI.DrawTexture(new Rect(Screen.width - rightTexture.width * BUTTONS_FACTOR, Screen.height - rightTexture.height * BUTTONS_FACTOR, rightTexture.width * BUTTONS_FACTOR, rightTexture.height * BUTTONS_FACTOR), rightTexture);
     }
     
     private void DrawDriverControls() {

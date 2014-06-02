@@ -18,6 +18,7 @@ public class MainScript : MonoBehaviour {
     public static Car selfCar;
     public static PlayerType selfType = PlayerType.None;
     public static bool selectionIsFinal = false;
+    public static bool isDebug = true;
 
 	// Use this for initialization
     void Start () {

@@ -30,6 +30,7 @@ public class TrackBehaviour : MonoBehaviour {
 
     // Add the collision edges to this game object.
 	protected void addEdges(Vector2[] pointsAbove, Vector2[] pointsBelow) {
+        return;
 		EdgeCollider2D ec1 = (EdgeCollider2D)gameObject.AddComponent(typeof(EdgeCollider2D));
 		EdgeCollider2D ec2 = (EdgeCollider2D)gameObject.AddComponent(typeof(EdgeCollider2D));
 		Rigidbody2D rb = (Rigidbody2D)gameObject.AddComponent(typeof(Rigidbody2D));
