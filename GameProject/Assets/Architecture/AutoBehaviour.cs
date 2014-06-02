@@ -118,4 +118,15 @@ public class AutoBehaviour : MonoBehaviour {
             MainScript.selfPlayer.Role.RotationUpdated(this);
         }
     }
+
+    public GameObject GetSphere() {
+        // Gebaseerd op: http://answers.unity3d.com/questions/183649/how-to-find-a-child-gameobject-by-name.html
+        Component[] components = transform.GetComponentsInChildren<Component>();
+        foreach(Component component in components) {
+            if(component.name == "Sphere") {
+                return component.gameObject;
+            }
+        }
+        return null;
+    }
 }

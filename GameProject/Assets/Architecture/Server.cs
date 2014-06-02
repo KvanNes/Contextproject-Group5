@@ -88,8 +88,8 @@ public class Server : MonoBehaviour {
     private void OnServerInitialized() {
         this.Game = new Game();
         Camera.main.transform.position = new Vector3(0, 0, 10);
-        for (int i = 0; i < GameData.CARS_AMOUNT; i++) {
-            spawnPlayer(i);
+        for (int i = 1; i <= GameData.CARS_AMOUNT; i++) {
+            spawnPlayer(i - 1);
         }
     }
 

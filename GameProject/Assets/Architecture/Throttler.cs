@@ -104,22 +104,12 @@ public class Throttler : PlayerRole {
     }
 
     public void RotationUpdated(AutoBehaviour ab) {
-        // http://answers.unity3d.com/questions/183649/how-to-find-a-child-gameobject-by-name.html
-        Component[] components = MainScript.selfCar.CarObject.transform.GetComponentsInChildren<Component>();
-        GameObject sphere = null;
-        foreach(Component component in components) {
-            if(component.name == "Sphere") {
-                sphere = component.gameObject;
-                break;
-            }
-        }
-        Transform carTransform = MainScript.selfCar.CarObject.transform;
+        GameObject sphere = ab.GetSphere();
+        Transform carTransform = ab.transform;
         float angle = Mathf.Deg2Rad * carTransform.rotation.eulerAngles.z;
-        Vector2 generatedPosition = Utils.RotatedTranslate(carTransform.position, new Vector2(3, 0), angle);
-        sphere.transform.position = Utils.Rotate(
-            generatedPosition,
-            carTransform.position,
-            -angle
-        );
+        Vector3 v = Utils.Vector2to3(Utils.Rotate(new Vector2(43f, 0f), Vector2.zero, -angle));
+        v.y *= 0.07f / 0.03f;  // Scale ratio of Auto needs to be taken into account here.
+        v.z = -0.3f;
+        sphere.transform.localPosition = v;
     }
 }

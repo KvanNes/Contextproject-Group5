@@ -5,9 +5,13 @@ using System.Reflection;
 using System.Linq;
 
 public class Utils {
+    
+    public static Vector2 Vector3to2(Vector3 v) {
+        return new Vector2(v.x, v.y);
+    }
 
-    public static Vector2 RotatedTranslate(Vector2 start, Vector2 delta, float angle) {
-        return Rotate(start + delta, start, angle);
+    public static Vector3 Vector2to3(Vector2 v) {
+        return new Vector3(v.x, v.y, 0f);
     }
 
     public static Vector2 Rotate(Vector2 point, Vector2 midpoint, float angle) {

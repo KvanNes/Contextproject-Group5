@@ -52,11 +52,15 @@ public class ControlButtonsGUI : MonoBehaviour {
 			List<Car> cars = MainScript.cars;
 			Transform spawnObject = (Transform) GameObject.Find("SpawnPositionBase").GetComponent("Transform");
 			foreach(Car car in cars) {
-				float y = 0.07f - 0.05f * car.carNumber;
+				float y = 0.07f - 0.05f * (car.carNumber - 1);
 				Vector3 pos = spawnObject.position + new Vector3(0, y, 0);
 				car.CarObject.transform.position = pos;
-				car.CarObject.transform.rotation = Quaternion.identity;
+                Quaternion rot = Quaternion.identity;
+                car.CarObject.transform.rotation = rot;
 				car.CarObject.speed = 0f;
+                car.CarObject.acceleration = 0f;
+                car.CarObject.GetSphere().transform.localPosition = new Vector3(43f, 0f, -0.3f);
+                car.CarObject.GetSphere().transform.localRotation = Quaternion.identity;
 			}
 		}
 	}
