@@ -72,8 +72,12 @@ public class Server : MonoBehaviour {
         }
     }
     
-    private void spawnPlayer(int position) {
-        float y = 0.07f - 0.05f * position;
+    public static float GetStartingPosition(int carNumber) {
+        return 0.12f - 0.05f * carNumber;
+    }
+    
+    private void spawnPlayer(int carNumber) {
+        float y = GetStartingPosition(carNumber);
         Vector3 pos = spawnObject.position + new Vector3(0, y, 0);
         
         UnityEngine.Object obj = Network.Instantiate(playerPrefab, pos, Quaternion.identity, 0);
@@ -82,13 +86,13 @@ public class Server : MonoBehaviour {
         car.Throttler = new Player(car, new Throttler());
         car.Driver = new Player(car, new Driver());
         this.Game.addCar(car);
-        ab.networkView.RPC("setCarNumber", RPCMode.OthersBuffered, position);
+        ab.networkView.RPC("setCarNumber", RPCMode.OthersBuffered, carNumber - 1);
     }
     
     private void OnServerInitialized() {
         this.Game = new Game();
         Camera.main.transform.position = new Vector3(0, 0, 10);
-        for (int i = 0; i < GameData.CARS_AMOUNT; i++) {
+        for (int i = 1; i <= GameData.CARS_AMOUNT; i++) {
             spawnPlayer(i);
         }
     }
