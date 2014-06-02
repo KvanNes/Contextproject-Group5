@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System;
 
 public class Driver : PlayerRole {
+
+    public void Initialize() {
+
+    }
     
     private Quaternion lastSentRotation;
     public void SendToOther(Car car) {
@@ -60,4 +64,14 @@ public class Driver : PlayerRole {
 	public void HandleCollision(AutoBehaviour ab) {
 
 	}
+
+    public void PositionUpdated(AutoBehaviour ab) {
+        // Move camera along with car.
+        Camera.main.transform.position = ab.transform.position;
+        Camera.main.transform.Translate(new Vector3(0, 0, -2));
+    }
+    
+    public void RotationUpdated(AutoBehaviour ab) {
+
+    }
 }

@@ -5,6 +5,26 @@ using System.Reflection;
 using System.Linq;
 
 public class Utils {
+    
+    public static Texture2D LoadTexture(String path) {
+        return (Texture2D) Resources.Load<Texture2D>(path);
+    }
+
+    public static Vector2 RotatedTranslate(Vector2 start, Vector2 delta, float angle) {
+        return Rotate(start + delta, start, angle);
+    }
+
+    public static Vector2 Rotate(Vector2 point, Vector2 midpoint, float angle) {
+        return new Vector2(
+            point.x * Mathf.Cos(angle) - point.y * Mathf.Sin(angle),
+            point.y * Mathf.Cos(angle) + point.x * Mathf.Sin(angle)
+        );
+    }
+
+    public static Texture2D LoadTexture(String path) {
+        return (Texture2D) Resources.Load<Texture2D>(path);
+    }
+
     public static T getDictionaryValue<S, T>(Dictionary<S, T> dictionary, S key) {
         T result;
         try {
