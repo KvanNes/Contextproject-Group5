@@ -31,10 +31,11 @@ public class ArrowController : MonoBehaviour {
     }
 
     private static Vector2 GetCenter(Vector2 point) {
-        return new Vector2(
-            point.x - (point.x % 0.3f),
-            point.y - (point.y % 0.3f)
-        );
+        const float half = 0.3f / 2f;
+        Vector2 p = point + new Vector2(half, half);
+        p.x -= p.x % 0.3f;
+        p.y -= p.y % 0.3f;
+        return p;
     }
 
     public void OnGUI() {
