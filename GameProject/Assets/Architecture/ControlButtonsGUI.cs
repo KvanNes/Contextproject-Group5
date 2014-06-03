@@ -59,7 +59,7 @@ public class ControlButtonsGUI : MonoBehaviour {
                 car.CarObject.transform.rotation = rot;
 				car.CarObject.speed = 0f;
                 car.CarObject.acceleration = 0f;
-                car.CarObject.GetSphere().transform.localPosition = new Vector3(43f, 0f, -0.3f);
+                car.CarObject.GetSphere().transform.localPosition = new Vector3(3f / 0.07f, 0f, -0.3f);
                 car.CarObject.GetSphere().transform.localRotation = Quaternion.identity;
                 car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.carNumber - 1);
                 car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, rot, car.carNumber - 1);

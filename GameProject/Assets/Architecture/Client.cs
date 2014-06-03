@@ -16,6 +16,8 @@ public class Client : MonoBehaviour {
     }
     
     public void OnConnectedToServer() {
+        NetworkController.connected = true;
+
         this.networkView.RPC("chooseJob", RPCMode.Server, pendingType, pendingCarNumber);
     }
     
@@ -45,6 +47,18 @@ public class Client : MonoBehaviour {
     public void chooseJobAvailable() {
         MainScript.selfCar.CarObject = GetCarObjectByNumber(MainScript.selfCar.carNumber);
         MainScript.selectionIsFinal = true;
+        
+        foreach(GameObject gameObject in GameObject.FindGameObjectsWithTag("Player")) {
+            Light[] lights = gameObject.GetComponentsInChildren<Light>();
+            if(lights.Length == 0) {
+                continue;
+            }
+            if(MainScript.selfCar.CarObject.gameObject == gameObject) {
+                lights[0].enabled = true;
+            } else {
+                lights[0].enabled = false;
+            }
+        }
     }
     
     [RPC]
