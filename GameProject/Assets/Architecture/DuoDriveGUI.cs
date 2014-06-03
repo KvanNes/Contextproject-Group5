@@ -43,6 +43,7 @@ public class DuoDriveGUI : MonoBehaviour {
 
             MainScript.client.chooseJobWhenConnected(type.Name, carNumber);
             Network.Connect(hostData);
+            NetworkController.connected = true;
         }
     }
 

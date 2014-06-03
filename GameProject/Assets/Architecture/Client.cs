@@ -16,8 +16,6 @@ public class Client : MonoBehaviour {
     }
     
     public void OnConnectedToServer() {
-        NetworkController.connected = true;
-
         this.networkView.RPC("chooseJob", RPCMode.Server, pendingType, pendingCarNumber);
     }
     
