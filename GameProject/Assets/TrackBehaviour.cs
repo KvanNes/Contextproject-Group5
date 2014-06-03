@@ -15,34 +15,23 @@ public class TrackBehaviour : MonoBehaviour {
         for (int i = 0; i < input.Length; i++) {
             const float unit = 10f;
             res[i] = input[i];
-            res[i] -= new Vector2(0.5f, 0.5f);
+            res[i] -= new Vector2(0.5f, 0.5f); // Make (0.5, 0.5) the center.
             res[i] *= unit;
-            res[i].y *= 0.03f;
-            /*res[i] += new Vector2(0.5f, 0.5f);
-            res[i] *= unit;
-            res[i] -= new Vector2(unit * 0.5f, unit * 0.5f);*/
+            res[i].y *= 0.03f; // Take scale ratio into account.
 		}
 		return res;
 	}
 
-    // These should be set in derived classes.
-	protected static Vector2[] pointsAbove, pointsBelow;
-
     // Add the collision edges to this game object.
 	protected void addEdges(Vector2[] pointsAbove, Vector2[] pointsBelow) {
-        return;
-		EdgeCollider2D ec1 = (EdgeCollider2D)gameObject.AddComponent(typeof(EdgeCollider2D));
-		EdgeCollider2D ec2 = (EdgeCollider2D)gameObject.AddComponent(typeof(EdgeCollider2D));
-		Rigidbody2D rb = (Rigidbody2D)gameObject.AddComponent(typeof(Rigidbody2D));
+		EdgeCollider2D ec1 = (EdgeCollider2D) gameObject.AddComponent(typeof(EdgeCollider2D));
+		EdgeCollider2D ec2 = (EdgeCollider2D) gameObject.AddComponent(typeof(EdgeCollider2D));
+		Rigidbody2D rb = (Rigidbody2D) gameObject.AddComponent(typeof(Rigidbody2D));
 
         ec1.points = normalize(pointsAbove);
         ec2.points = normalize(pointsBelow);
         ec1.isTrigger = true;
         ec2.isTrigger = true;
 		rb.gravityScale = 0;
-	}
-
-	protected void Start() {
-
 	}
 }

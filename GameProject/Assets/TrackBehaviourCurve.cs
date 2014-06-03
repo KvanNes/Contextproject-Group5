@@ -4,6 +4,8 @@ using System.Collections;
 public class TrackBehaviourCurve : TrackBehaviour {
 
 	private const float curveFactor = 0.7f;
+    // Set in Editor to rotate the collision edges appropriately.
+    public int rotateTimes = 0;
 
     // The inner curve.
 	protected new static Vector2[] pointsAbove = new Vector2[] {
@@ -19,6 +21,9 @@ public class TrackBehaviourCurve : TrackBehaviour {
 	};
 	
 	protected new void Start() {
-		addEdges(pointsAbove, pointsBelow);
+		addEdges(
+            Utils.RotateVectors(pointsAbove, rotateTimes),
+            Utils.RotateVectors(pointsBelow, rotateTimes)
+        );
 	}
 }

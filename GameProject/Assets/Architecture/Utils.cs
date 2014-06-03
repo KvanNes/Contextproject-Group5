@@ -15,10 +15,19 @@ public class Utils {
     }
 
     public static Vector2 Rotate(Vector2 point, Vector2 midpoint, float angle) {
-        return new Vector2(
-            point.x * Mathf.Cos(angle) - point.y * Mathf.Sin(angle),
-            point.y * Mathf.Cos(angle) + point.x * Mathf.Sin(angle)
-        );
+        // Formules komen van: https://www.siggraph.org/education/materials/HyperGraph/modeling/mod_tran/2drota.htm
+        Vector2 p = point - midpoint;
+        float xNew = p.x * Mathf.Cos(angle) - p.y * Mathf.Sin(angle);
+        float yNew = p.y * Mathf.Cos(angle) + p.x * Mathf.Sin(angle);
+        return new Vector2(xNew, yNew) + midpoint;
+    }
+
+    public static Vector2[] RotateVectors(Vector2[] vectors, int count) {
+        Vector2[] res = new Vector2[vectors.Length];
+        for (int i = 0; i < vectors.Length; i++) {
+            res[i] = Utils.Rotate(vectors[i], new Vector2(0.5f, 0.5f), Mathf.Deg2Rad * 90 * count);
+        }
+        return res;
     }
 
     public static Texture2D LoadTexture(String path) {
