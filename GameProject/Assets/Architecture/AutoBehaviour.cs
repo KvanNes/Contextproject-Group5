@@ -108,15 +108,13 @@ public class AutoBehaviour : MonoBehaviour {
     }
     
     public void PositionUpdated() {
-        if (MainScript.selfType == MainScript.PlayerType.Client && MainScript.selfCar.CarObject == this) {
-            MainScript.selfPlayer.Role.PositionUpdated(this);
-        }
+        bool isSelf = MainScript.selfType == MainScript.PlayerType.Client && MainScript.selfCar.CarObject == this;
+        MainScript.selfPlayer.Role.PositionUpdated(this, isSelf);
     }
 
     public void RotationUpdated() {
-        if (MainScript.selfType == MainScript.PlayerType.Client && MainScript.selfCar.CarObject == this) {
-            MainScript.selfPlayer.Role.RotationUpdated(this);
-        }
+        bool isSelf = MainScript.selfType == MainScript.PlayerType.Client && MainScript.selfCar.CarObject == this;
+        MainScript.selfPlayer.Role.RotationUpdated(this, isSelf);
     }
 
     public GameObject GetSphere() {

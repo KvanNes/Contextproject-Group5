@@ -99,11 +99,14 @@ public class Throttler : PlayerRole {
         ab.restoreConfiguration();
     }
     
-    public void PositionUpdated(AutoBehaviour ab) {
+    public void PositionUpdated(AutoBehaviour ab, bool isSelf) {
+        if (!isSelf) {
+            return;
+        }
         Camera.main.transform.position = new Vector3(3.9f, 0.4f, -8f);
     }
 
-    public void RotationUpdated(AutoBehaviour ab) {
+    public void RotationUpdated(AutoBehaviour ab, bool isSelf) {
         GameObject sphere = ab.GetSphere();
         Transform carTransform = ab.transform;
         float angle = Mathf.Deg2Rad * carTransform.rotation.eulerAngles.z;

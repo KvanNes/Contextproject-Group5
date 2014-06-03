@@ -6,6 +6,6 @@ public interface PlayerRole {
 	PlayerAction GetPlayerAction();
 	void HandlePlayerAction(AutoBehaviour ab);
 	void HandleCollision(AutoBehaviour ab);
-    void PositionUpdated(AutoBehaviour ab);
-    void RotationUpdated(AutoBehaviour ab);
+    void PositionUpdated(AutoBehaviour ab, bool isSelf);
+    void RotationUpdated(AutoBehaviour ab, bool isSelf);
 }

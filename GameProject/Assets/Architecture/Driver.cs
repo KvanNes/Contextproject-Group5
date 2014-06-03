@@ -65,13 +65,16 @@ public class Driver : PlayerRole {
 
 	}
 
-    public void PositionUpdated(AutoBehaviour ab) {
+    public void PositionUpdated(AutoBehaviour ab, bool isSelf) {
+        if (!isSelf) {
+            return;
+        }
         // Move camera along with car.
         Camera.main.transform.position = ab.transform.position;
         Camera.main.transform.Translate(new Vector3(0, 0, -2));
     }
     
-    public void RotationUpdated(AutoBehaviour ab) {
+    public void RotationUpdated(AutoBehaviour ab, bool isSelf) {
 
     }
 }
