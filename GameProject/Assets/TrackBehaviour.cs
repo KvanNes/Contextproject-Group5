@@ -34,4 +34,8 @@ public class TrackBehaviour : MonoBehaviour {
         ec2.isTrigger = true;
 		rb.gravityScale = 0;
 	}
+
+    public virtual void Start() {
+
+    }
 }

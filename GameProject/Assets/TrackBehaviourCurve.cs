@@ -8,19 +8,19 @@ public class TrackBehaviourCurve : TrackBehaviour {
     public int rotateTimes = 0;
 
     // The inner curve.
-	protected new static Vector2[] pointsAbove = new Vector2[] {
+	private Vector2[] pointsAbove = new Vector2[] {
 		new Vector2(0, 1 - margin),
         new Vector2(margin, 1)
 	};
 
     // The outer curve.
-	protected new static Vector2[] pointsBelow = new Vector2[] {
+    private Vector2[] pointsBelow = new Vector2[] {
 		new Vector2(0, margin),
         new Vector2(curveFactor, 1 - curveFactor),
         new Vector2(1 - margin, 1)
 	};
 	
-	protected new void Start() {
+	public override void Start() {
 		addEdges(
             Utils.RotateVectors(pointsAbove, rotateTimes),
             Utils.RotateVectors(pointsBelow, rotateTimes)
