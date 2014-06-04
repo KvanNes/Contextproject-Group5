@@ -7,6 +7,7 @@ public class Throttler : PlayerRole {
 
     public void Initialize() {
         RenderSettings.ambientLight = Color.white;
+        Camera.main.orthographicSize = 0.7f;
     }
 
     private Vector3 lastSentPosition;
@@ -103,7 +104,7 @@ public class Throttler : PlayerRole {
         if (!isSelf) {
             return;
         }
-        Camera.main.transform.position = new Vector3(3.9f, 0.4f, -8f);
+        Camera.main.transform.position = new Vector3(3.9f, 0.4f, -1f);
     }
 
     public void RotationUpdated(AutoBehaviour ab, bool isSelf) {
