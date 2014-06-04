@@ -28,6 +28,7 @@ public class Client : MonoBehaviour {
         MainScript.selfPlayer = null;
         MainScript.selfType = MainScript.PlayerType.None;
         MainScript.selectionIsFinal = false;
+        Camera.main.transform.position = Vector3.zero;
     }
     
     private AutoBehaviour GetCarObjectByNumber(int carNumber) {

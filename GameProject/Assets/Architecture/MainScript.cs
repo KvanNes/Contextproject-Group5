@@ -18,7 +18,10 @@ public class MainScript : MonoBehaviour {
     public static Car selfCar;
     public static PlayerType selfType = PlayerType.None;
     public static bool selectionIsFinal = false;
+
+    // FIXME: Remove the following variables in release.
     public static bool isDebug = true;
+    public static bool fixedCamera = false;
 
 	// Use this for initialization
     void Start () {
