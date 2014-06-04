@@ -80,14 +80,8 @@ public class AutoBehaviour : MonoBehaviour {
     }
 
     // Occurs when bumping into something (another car, or a track border).
-    private void OnTriggerEnter2D(Collider2D col) {
-        MainScript.selfPlayer.Role.HandleCollision(this);
-
-		if(col.gameObject.tag == "Mud") {
-			if(this.speed > GameData.MAX_SPEED - 0.01) {
-				this.speed = 0;
-			}
-		}
+    private void OnTriggerEnter2D(Collider2D collider) {
+        MainScript.selfPlayer.Role.HandleCollision(this, collider);
     }
 
     public int initialized = 0;
