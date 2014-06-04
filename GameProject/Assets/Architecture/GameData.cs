@@ -12,7 +12,7 @@ public class GameData {
     
     // Constants used for physics.
     public static readonly float MIN_SPEED = -0.07f;
-    public static readonly float MAX_SPEED = 0.03f;
+    public static readonly float MAX_SPEED = 0.15f;
     public static readonly float MIN_ACCELERATION = -0.005f;
     public static readonly float MAX_ACCELERATION = 0.005f;
     public static readonly float ACCELERATION_DECREASE = -0.2f;

@@ -61,7 +61,7 @@ public class Driver : PlayerRole {
         }
     }
 
-	public void HandleCollision(AutoBehaviour ab) {
+    public void HandleCollision(AutoBehaviour ab, Collider2D collider) {
 
 	}
 
