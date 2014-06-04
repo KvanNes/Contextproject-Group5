@@ -81,7 +81,9 @@ public class AutoBehaviour : MonoBehaviour {
 
     // Occurs when bumping into something (another car, or a track border).
     private void OnTriggerEnter2D(Collider2D collider) {
-        MainScript.selfPlayer.Role.HandleCollision(this, collider);
+        if (MainScript.selfType == MainScript.PlayerType.Client) {
+            MainScript.selfPlayer.Role.HandleCollision(this, collider);
+        }
     }
 
     public int initialized = 0;
