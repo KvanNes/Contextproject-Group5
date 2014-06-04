@@ -59,7 +59,7 @@ public class ControlButtonsGUI : MonoBehaviour {
                 car.CarObject.transform.rotation = rot;
 				car.CarObject.speed = 0f;
                 car.CarObject.acceleration = 0f;
-                car.CarObject.GetSphere().transform.localPosition = new Vector3(3f / 0.07f, 0f, -0.3f);
+                car.CarObject.GetSphere().transform.localPosition = new Vector3(5f / 0.07f, 0f, -0.3f);
                 car.CarObject.GetSphere().transform.localRotation = Quaternion.identity;
                 car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.carNumber - 1);
                 car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, rot, car.carNumber - 1);
@@ -67,9 +67,26 @@ public class ControlButtonsGUI : MonoBehaviour {
 		}
 	}
 
+    public void DrawLightControl() {
+        if (GUI.Button(new Rect(0, 50, 300, 50), new GUIContent("Toggle light"))) {
+            MainScript.networkController.networkView.RPC("ToggleLight", RPCMode.Others);
+        }
+    }
+
+    public void DrawOverviewControl() {
+        if (GUI.Button(new Rect(0, 100, 300, 50), new GUIContent("Toggle overview"))) {
+            MainScript.networkController.networkView.RPC("ToggleOverview", RPCMode.Others);
+        }
+    }
+
 	public void OnGUI() {
 		if (MainScript.selfPlayer == null) {
-			return;
+			if(MainScript.selfType == MainScript.PlayerType.Server) {
+                DrawLightControl();
+                DrawOverviewControl();
+                CreateRestartButton();
+            }
+            return;
 		} else if (MainScript.selfPlayer.Role is Driver) {
 			DrawDriverControls();
 		} else if(MainScript.selfPlayer.Role is Throttler) {
