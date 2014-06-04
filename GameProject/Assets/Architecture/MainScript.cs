@@ -47,6 +47,13 @@ public class MainScript : MonoBehaviour {
 	}
 
     void SendToOther() {
+        if (Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork) {
+            // Make sure to only send/receive data on local network.
+            Network.Disconnect();
+            Application.Quit();
+            return;
+        }
+
         if (selfCar != null) {
             selfCar.SendToOther();
         }
