@@ -6,7 +6,7 @@ using System;
 public class Driver : PlayerRole {
 
     public void Initialize() {
-
+        Camera.main.orthographicSize = 0.1f;
     }
     
     private Quaternion lastSentRotation;
@@ -69,9 +69,10 @@ public class Driver : PlayerRole {
         if (!isSelf) {
             return;
         }
+
         // Move camera along with car.
         Camera.main.transform.position = ab.transform.position;
-        Camera.main.transform.Translate(new Vector3(0, 0, -2));
+        Camera.main.transform.Translate(new Vector3(0f, 0f, -1f));
     }
     
     public void RotationUpdated(AutoBehaviour ab, bool isSelf) {
