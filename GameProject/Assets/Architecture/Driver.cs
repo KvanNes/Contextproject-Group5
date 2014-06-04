@@ -55,9 +55,9 @@ public class Driver : PlayerRole {
     public void HandlePlayerAction(AutoBehaviour ab) {
         PlayerAction action = GetPlayerAction();
         if (action == PlayerAction.steerLeft) {
-            rotate(ab, 1f);
+            rotate(ab, Time.deltaTime * 125f);
         } else if (action == PlayerAction.steerRight) {
-            rotate(ab, -1f);
+            rotate(ab, Time.deltaTime * -125f);
         }
     }
 
