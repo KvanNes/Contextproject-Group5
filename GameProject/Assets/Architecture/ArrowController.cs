@@ -64,8 +64,16 @@ public class ArrowController : MonoBehaviour {
     private static Vector2 GetCenter(Vector2 point) {
         const float half = 0.3f / 2f;
         Vector2 p = point + new Vector2(half, half);
+        bool xWasNegative = p.x < 0;
+        bool yWasNegative = p.y < 0;
         p.x -= p.x % 0.3f;
+        if (xWasNegative) {
+            p.x -= 0.3f;
+        }
         p.y -= p.y % 0.3f;
+        if (yWasNegative) {
+            p.y -= 0.3f;
+        }
         return p;
     }
 
