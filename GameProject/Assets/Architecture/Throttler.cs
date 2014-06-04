@@ -103,6 +103,7 @@ public class Throttler : PlayerRole {
         if (!isSelf) {
             return;
         }
+
         Camera.main.transform.position = new Vector3(5.9f, 0.4f, -8f);
     }
 
