@@ -111,7 +111,8 @@ public class Throttler : PlayerRole {
             return;
         }
 
-        Camera.main.transform.position = new Vector3(5.9f, 0.4f, -8f);
+        Camera.main.transform.position = new Vector3(5.6f, 1f, -8f);
+        Camera.main.orthographicSize = 1.4f;
     }
 
     public void RotationUpdated(AutoBehaviour ab, bool isSelf) {
