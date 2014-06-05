@@ -16,7 +16,7 @@ public class DuoDriveGUI : MonoBehaviour {
     }
 
     private void Start() {
-        InvokeRepeating("UpdateHostList", 0f, 1f);
+        InvokeRepeating("UpdateHostList", 0f, 5f);
     }
 
     private void UpdateHostList() {
