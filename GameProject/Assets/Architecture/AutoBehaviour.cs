@@ -41,16 +41,16 @@ public class AutoBehaviour : MonoBehaviour {
         if(lastPositions.Count >= 3) {
             lastPositions.Dequeue();
         }
-        lastRotations.Enqueue(Utils.copy(transform.rotation));
-        lastPositions.Enqueue(Utils.copy(transform.position));
+        lastRotations.Enqueue(MathUtils.copy(transform.rotation));
+        lastPositions.Enqueue(MathUtils.copy(transform.position));
     }
     
     // Restore last position and rotation.
     public void restoreConfiguration() {
         try {
-            transform.rotation = Utils.copy(lastRotations.Dequeue());
+            transform.rotation = MathUtils.copy(lastRotations.Dequeue());
             RotationUpdated();
-            transform.position = Utils.copy(lastPositions.Dequeue());
+            transform.position = MathUtils.copy(lastPositions.Dequeue());
             PositionUpdated();
         } catch(InvalidOperationException) {
             // Ignore if not possible.
@@ -69,7 +69,7 @@ public class AutoBehaviour : MonoBehaviour {
         storeConfiguration();
 
         // Make sure speed is in constrained interval.
-        speed = Utils.forceInInterval(speed, GameData.MIN_SPEED, GameData.MAX_SPEED);
+        speed = MathUtils.forceInInterval(speed, GameData.MIN_SPEED, GameData.MAX_SPEED);
 
         if (MainScript.isDebug) {
             new Driver().HandlePlayerAction(this);
