@@ -13,7 +13,7 @@ public class Driver : PlayerRole {
     public void SendToOther(Car car) {
         Quaternion currentRotation = car.CarObject.transform.rotation;
         if (currentRotation != lastSentRotation) {
-            lastSentRotation = Utils.copy(currentRotation);
+            lastSentRotation = MathUtils.copy(currentRotation);
             car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, currentRotation, car.carNumber);
         }
     }
