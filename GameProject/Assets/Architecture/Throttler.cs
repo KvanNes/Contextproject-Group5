@@ -101,8 +101,14 @@ public class Throttler : PlayerRole {
             }
         } else {
             // Go back a little.
-            ab.speed = -(ab.speed + Mathf.Sign(ab.speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
             ab.restoreConfiguration();
+            ab.speed = -ab.speed * GameData.COLLISION_FACTOR;
+            ab.gameObject.transform.Translate(
+                -0.005f * Mathf.Cos(ab.gameObject.transform.rotation.eulerAngles.z),
+                -0.005f * Mathf.Sin(ab.gameObject.transform.rotation.eulerAngles.z),
+                0f
+            );
+            ab.PositionUpdated();
         }
     }
     
