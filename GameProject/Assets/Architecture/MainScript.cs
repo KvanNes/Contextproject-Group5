@@ -18,6 +18,7 @@ public class MainScript : MonoBehaviour {
     public static Car selfCar;
     public static PlayerType selfType = PlayerType.None;
     public static bool selectionIsFinal = false;
+    public static Tutorial Tutorial;
 
     // FIXME: Remove the following variables in release.
     public static bool isDebug = false;
@@ -46,6 +47,8 @@ public class MainScript : MonoBehaviour {
         for (int i = 0; i < GameData.CARS_AMOUNT; i++) {
             cars.Add(new Car());
         }
+        
+        Tutorial = GameObject.FindWithTag("Tutorial").GetComponent<Tutorial>();
 	}
 	
 	// Update is called once per frame
