@@ -1,107 +1,104 @@
 ﻿using UnityEngine;
 
-public class InputWrapper
+namespace Mock
 {
-    private static int touchCount = 0;
-
-    private static bool downArrow = false;
-    private static bool upArrow = false;
-    private static bool leftArrow = false;
-    private static bool rightArrow = false;
-
-    private static Touch[] touches = new Touch[10];
-    private static Vector2[] touchPositions = new Vector2[10];
-
-    public static void Clear()
+    public class InputWrapper
     {
-        downArrow = false;
-        upArrow = false;
-        leftArrow = false;
-        rightArrow = false;
-        touchCount = 0;
-        touches = new Touch[10];
-        touchPositions = new Vector2[10];
-    }
+        private static int _touchCount;
 
-    public static int GetTouchCount()
-    {
-        return Input.touchCount + touchCount;
-    }
+        private static bool _downArrow;
+        private static bool _upArrow;
+        private static bool _leftArrow;
+        private static bool _rightArrow;
 
-    public static void SetTouchCount(int num)
-    {
-        touchCount = num;
-    }
+        private static Touch[] _touches = new Touch[10];
+        private static Vector2[] _touchPositions = new Vector2[10];
 
-    public static void SetTouch(int index, Vector2 pos)
-    {
-        if (Input.touches.Length > 0)
+        public static void Clear()
         {
-            touches = Input.touches;
+            _downArrow = false;
+            _upArrow = false;
+            _leftArrow = false;
+            _rightArrow = false;
+            _touchCount = 0;
+            _touches = new Touch[10];
+            _touchPositions = new Vector2[10];
         }
-        else
-        {
-            touches[index] = new Touch();
-            touchPositions[index] = pos;
-        }
-    }
 
-    public static Touch GetTouch(int index)
-    {
-        if (Input.touches.Length > 0)
+        public static int GetTouchCount()
         {
-            return Input.GetTouch(index);
+            return Input.touchCount + _touchCount;
         }
-        else
-        {
-            return touches[0];
-        }
-    }
 
-    public static Vector2 GetTouchPosition(int index)
-    {
-        if (Input.touches.Length > 0)
+        public static void SetTouchCount(int num)
         {
-            return Input.GetTouch(index).position;
+            _touchCount = num;
         }
-        else
-        {
-            return touchPositions[0];
-        }
-    }
 
-    public static void SetKey(KeyCode kc, bool b)
-    {
-        switch (kc)
+        public static void SetTouch(int index, Vector2 pos)
         {
-            case KeyCode.DownArrow:
-                downArrow = b;
-                break;
-            case KeyCode.UpArrow:
-                upArrow = b;
-                break;
-            case KeyCode.LeftArrow:
-                leftArrow = b;
-                break;
-            case KeyCode.RightArrow:
-                rightArrow = b;
-                break;
+            if (Input.touches.Length > 0)
+            {
+                _touches = Input.touches;
+            }
+            else
+            {
+                _touches[index] = new Touch();
+                _touchPositions[index] = pos;
+            }
         }
-    }
 
-    public static bool GetKey(KeyCode keyCode)
-    {
-        switch (keyCode)
+        public static Touch GetTouch(int index)
         {
-            case KeyCode.DownArrow:
-                return downArrow || Input.GetKey(KeyCode.DownArrow);
-            case KeyCode.UpArrow:
-                return upArrow || Input.GetKey(KeyCode.UpArrow);
-            case KeyCode.LeftArrow:
-                return leftArrow || Input.GetKey(KeyCode.LeftArrow);
-            case KeyCode.RightArrow:
-                return rightArrow || Input.GetKey(KeyCode.RightArrow);
+            if (Input.touches.Length > 0)
+            {
+                return Input.GetTouch(index);
+            }
+            return _touches[0];
         }
-        return false;
+
+        public static Vector2 GetTouchPosition(int index)
+        {
+            if (Input.touches.Length > 0)
+            {
+                return Input.GetTouch(index).position;
+            }
+            return _touchPositions[0];
+        }
+
+        public static void SetKey(KeyCode kc, bool b)
+        {
+            switch (kc)
+            {
+                case KeyCode.DownArrow:
+                    _downArrow = b;
+                    break;
+                case KeyCode.UpArrow:
+                    _upArrow = b;
+                    break;
+                case KeyCode.LeftArrow:
+                    _leftArrow = b;
+                    break;
+                case KeyCode.RightArrow:
+                    _rightArrow = b;
+                    break;
+            }
+        }
+
+        public static bool GetKey(KeyCode keyCode)
+        {
+            switch (keyCode)
+            {
+                case KeyCode.DownArrow:
+                    return _downArrow || Input.GetKey(KeyCode.DownArrow);
+                case KeyCode.UpArrow:
+                    return _upArrow || Input.GetKey(KeyCode.UpArrow);
+                case KeyCode.LeftArrow:
+                    return _leftArrow || Input.GetKey(KeyCode.LeftArrow);
+                case KeyCode.RightArrow:
+                    return _rightArrow || Input.GetKey(KeyCode.RightArrow);
+            }
+            return false;
+        }
     }
 }

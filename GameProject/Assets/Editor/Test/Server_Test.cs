@@ -1,7 +1,12 @@
-﻿using UnityEngine;
+﻿using Behaviours;
+using Cars;
+using Mock;
+using NetworkManager;
+using UnityEngine;
 using NUnit.Framework;
 using Moq;
 using System.Collections.Generic;
+using Utilities;
 
 [TestFixture]
 public class ServerTest
@@ -34,9 +39,9 @@ public class ServerTest
         Network = new Mock<INetwork>();
         NetworkView = new Mock<INetworkView>();
         _testServer.Game = new Game();
-        _testServer.network = Network.Object;
-        _testServer.startServer();
-        _testServer.networkView = NetworkView.Object;
+        _testServer.Network = Network.Object;
+        _testServer.StartServer();
+        _testServer.NetworkView = NetworkView.Object;
 
         var cars = new List<Car>();
         for (var i = 0; i < GameData.CARS_AMOUNT; i++)
@@ -96,8 +101,8 @@ public class ServerTest
         var c1 = new Car(0) { CarObject = _carObject };
         var c2 = new Car(1) { CarObject = _carObject };
 
-        _testServer.Game.addCar(c1);
-        _testServer.Game.addCar(c2);
+        _testServer.Game.AddCar(c1);
+        _testServer.Game.AddCar(c2);
         _testServer.Game.Cars[0] = null;
 
         var res = _testServer.checkJobAvailableAndMaybeAdd(TypeStringEmpty, 0, _networkPlayer);
@@ -113,7 +118,7 @@ public class ServerTest
             Throttler = new Player { NetworkPlayer = UnityEngine.Network.player }
         };
 
-        _testServer.Game.addCar(c1);
+        _testServer.Game.AddCar(c1);
 
         var res = _testServer.checkJobAvailableAndMaybeAdd(TypeStringThrottler, CarNumberInit, _networkPlayer);
         Assert.IsFalse(res);
@@ -128,7 +133,7 @@ public class ServerTest
             Driver = new Player { NetworkPlayer = UnityEngine.Network.player }
         };
 
-        _testServer.Game.addCar(c1);
+        _testServer.Game.AddCar(c1);
 
         var res = _testServer.checkJobAvailableAndMaybeAdd(TypeStringDriver, CarNumberInit, _networkPlayer);
         Assert.IsFalse(res);
@@ -139,7 +144,7 @@ public class ServerTest
     {
         var c1 = new Car(CarNumberInit) { CarObject = _carObject, Throttler = new Player() };
 
-        _testServer.Game.addCar(c1);
+        _testServer.Game.AddCar(c1);
         _testServer.checkJobAvailableAndMaybeAdd(TypeStringThrottler, CarNumberInit, _networkPlayer);
 
         Assert.AreEqual(_networkPlayer, _testServer.Game.Cars[CarNumberInit].Throttler.NetworkPlayer);
@@ -150,7 +155,7 @@ public class ServerTest
     {
         var c1 = new Car(CarNumberInit) { CarObject = _carObject, Driver = new Player() };
 
-        _testServer.Game.addCar(c1);
+        _testServer.Game.AddCar(c1);
         _testServer.checkJobAvailableAndMaybeAdd(TypeStringDriver, CarNumberInit, _networkPlayer);
 
         Assert.AreEqual(_networkPlayer, _testServer.Game.Cars[CarNumberInit].Driver.NetworkPlayer);
@@ -161,7 +166,7 @@ public class ServerTest
     {
         var c1 = new Car(CarNumberInit) { CarObject = _carObject, Driver = new Player() };
 
-        _testServer.Game.addCar(c1);
+        _testServer.Game.AddCar(c1);
 
         var res = _testServer.checkJobAvailableAndMaybeAdd(TypeStringEmpty, CarNumberInit, _networkPlayer);
         Assert.IsTrue(res);
@@ -171,7 +176,7 @@ public class ServerTest
     public void Test_ChooseJob_JobAvailable()
     {
         var c1 = new Car(CarNumberInit) { CarObject = _carObject, Driver = new Player() };
-        _testServer.Game.addCar(c1);
+        _testServer.Game.AddCar(c1);
         _testServer.chooseJob(TypeStringEmpty, CarNumberTen, default(NetworkMessageInfo));
 
         NetworkView.Verify(net => net.RPC(It.IsAny<string>(), It.IsAny<NetworkPlayer>()));

@@ -1,6 +1,11 @@
-﻿using UnityEngine;
+﻿using Behaviours;
+using Cars;
+using Mock;
+using NetworkManager;
+using UnityEngine;
 using NUnit.Framework;
 using Moq;
+using Utilities;
 
 [TestFixture]
 public class ThrottlerTest
@@ -82,7 +87,7 @@ public class ThrottlerTest
         InputWrapper.SetKey(KeyCode.UpArrow, true);
         var paNew = _throttler.GetPlayerAction();
 
-        Assert.AreEqual(PlayerAction.speedUp, paNew);
+        Assert.AreEqual(PlayerAction.SpeedUp, paNew);
     }
 
     [Test]
@@ -91,7 +96,7 @@ public class ThrottlerTest
         InputWrapper.SetKey(KeyCode.DownArrow, true);
         var paNew = _throttler.GetPlayerAction();
 
-        Assert.AreEqual(PlayerAction.speedDown, paNew);
+        Assert.AreEqual(PlayerAction.SpeedDown, paNew);
     }
 
     [Test]
@@ -103,7 +108,7 @@ public class ThrottlerTest
         var paNew = _throttler.GetPlayerAction();
 
         Assert.AreNotEqual(paPrev, paNew);
-        Assert.AreEqual(PlayerAction.speedUp, paNew);
+        Assert.AreEqual(PlayerAction.SpeedUp, paNew);
     }
 
     [Test]
@@ -115,7 +120,7 @@ public class ThrottlerTest
         var paNew = _throttler.GetPlayerAction();
 
         Assert.AreNotEqual(paPrev, paNew);
-        Assert.AreEqual(PlayerAction.speedDown, paNew);
+        Assert.AreEqual(PlayerAction.SpeedDown, paNew);
     }
 
     [Test]

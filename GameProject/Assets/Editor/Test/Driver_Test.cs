@@ -1,6 +1,11 @@
-﻿using UnityEngine;
+﻿using Behaviours;
+using Cars;
+using Mock;
+using NetworkManager;
+using UnityEngine;
 using NUnit.Framework;
 using Moq;
+using Utilities;
 using Object = UnityEngine.Object;
 
 [TestFixture]
@@ -84,7 +89,7 @@ public class DriverTest
         InputWrapper.SetKey(KeyCode.LeftArrow, true);
         PlayerAction paNew = _driver.GetPlayerAction();
 
-        Assert.AreEqual(PlayerAction.steerLeft, paNew);
+        Assert.AreEqual(PlayerAction.SteerLeft, paNew);
     }
 
     [Test]
@@ -93,7 +98,7 @@ public class DriverTest
         InputWrapper.SetKey(KeyCode.RightArrow, true);
         PlayerAction paNew = _driver.GetPlayerAction();
 
-        Assert.AreEqual(PlayerAction.steerRight, paNew);
+        Assert.AreEqual(PlayerAction.SteerRight, paNew);
     }
 
     [Test]
@@ -105,7 +110,7 @@ public class DriverTest
         PlayerAction paNew = _driver.GetPlayerAction();
 
         Assert.AreNotEqual(paPrev, paNew);
-        Assert.AreEqual(PlayerAction.steerLeft, paNew);
+        Assert.AreEqual(PlayerAction.SteerLeft, paNew);
     }
 
     [Test]
@@ -117,7 +122,7 @@ public class DriverTest
         PlayerAction paNew = _driver.GetPlayerAction();
 
         Assert.AreNotEqual(paPrev, paNew);
-        Assert.AreEqual(PlayerAction.steerRight, paNew);
+        Assert.AreEqual(PlayerAction.SteerRight, paNew);
     }
 
     [Test]

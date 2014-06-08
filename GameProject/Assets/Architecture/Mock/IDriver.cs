@@ -1,5 +1,11 @@
-﻿public interface IDriver
+﻿using Behaviours;
+using Cars;
+
+namespace Mock
 {
-    PlayerAction GetPlayerAction();
-    void HandlePlayerAction(AutoBehaviour ab);
+    public interface IDriver
+    {
+        PlayerAction GetPlayerAction();
+        void HandlePlayerAction(AutoBehaviour ab);
+    }
 }

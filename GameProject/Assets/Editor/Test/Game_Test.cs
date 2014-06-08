@@ -1,6 +1,10 @@
-﻿using UnityEngine;
+﻿using Behaviours;
+using Cars;
+using NetworkManager;
+using UnityEngine;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Utilities;
 
 [TestFixture]
 public class GameTest
@@ -67,7 +71,7 @@ public class GameTest
     {
         const int carNumber = 0;
 
-        _game.addCar(_car);
+        _game.AddCar(_car);
 
         Assert.IsNotEmpty(_game.Cars);
         Assert.AreEqual(carNumber, _game.Cars[0].CarObject.CarNumber);
@@ -78,8 +82,8 @@ public class GameTest
     {
         const int carNumber = 0;
 
-        _game.addCar(_car);
-        _game.addCar(_carOther);
+        _game.AddCar(_car);
+        _game.AddCar(_carOther);
 
         Assert.IsNotEmpty(_game.Cars);
         Assert.AreEqual(carNumber, _game.Cars[0].CarObject.CarNumber);

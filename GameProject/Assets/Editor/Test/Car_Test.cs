@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using Behaviours;
+using Cars;
+using UnityEngine;
 using NUnit.Framework;
+using Utilities;
 
 [TestFixture]
 public class CarTest
@@ -7,7 +10,7 @@ public class CarTest
     private const int Zero = 0;
     private const int One = 1;
 
-    private GameObject gameObject;
+    private GameObject _gameObject;
 
     private Car _car;
     private Car _carAutoBehaviour;
@@ -16,15 +19,15 @@ public class CarTest
     private Player _driver;
     private Player _throttler;
 
-    private PlayerRole _driverRole;
-    private PlayerRole _throttlerRole;
+    private IPlayerRole _driverRole;
+    private IPlayerRole _throttlerRole;
 
     [SetUp]
     public void SetUp()
     {
         _car = new Car();
-        gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        _autoBehaviour = gameObject.AddComponent<AutoBehaviour>();
+        _gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        _autoBehaviour = _gameObject.AddComponent<AutoBehaviour>();
         _carAutoBehaviour = new Car(_autoBehaviour);
 
         _driverRole = new Driver();
@@ -40,7 +43,7 @@ public class CarTest
     [TearDown]
     public void Cleanup()
     {
-        Utils.DestroyObject(gameObject);
+        Utils.DestroyObject(_gameObject);
         _car.Clear();
         _carAutoBehaviour.Clear();
     }
@@ -60,7 +63,7 @@ public class CarTest
     [Test]
     public void TestConstructor1_Variables2()
     {
-        Assert.AreEqual(One, _car.carNumber);
+        Assert.AreEqual(One, _car.CarNumber);
     }
 
     [Test]
@@ -84,7 +87,7 @@ public class CarTest
         Assert.IsNull(_car.Throttler);
         Assert.IsNull(_car.CarObject);
         Assert.AreEqual(Zero, _car.GetAmountPlayers());
-        Assert.AreEqual(Zero, _car.carNumber);
+        Assert.AreEqual(Zero, _car.CarNumber);
     }
 
 

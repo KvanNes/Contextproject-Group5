@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using UnityEngine;
+using Utilities;
 
 [TestFixture]
 public class UtilsTest

@@ -1,7 +1,12 @@
-﻿public interface ICar
-{
-    AutoBehaviour CarObject { get; set; }
-    int carNumber { get; set; }
+﻿using Behaviours;
 
-    void SendToOther();
+namespace Mock
+{
+    public interface ICar
+    {
+        AutoBehaviour CarObject { get; set; }
+        int CarNumber { get; set; }
+
+        void SendToOther();
+    }
 }

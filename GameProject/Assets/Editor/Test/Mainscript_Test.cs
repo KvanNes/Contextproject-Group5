@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿using Mock;
+using NetworkManager;
+using UnityEngine;
 using NUnit.Framework;
 using Moq;
+using Utilities;
 
 [TestFixture]
 public class MainscriptTest

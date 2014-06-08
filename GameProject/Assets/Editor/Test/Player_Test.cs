@@ -1,57 +1,41 @@
-﻿using UnityEngine;
+﻿using Cars;
 using NUnit.Framework;
-using Moq;
-using System;
 
 [TestFixture]
 public class PlayerTest
 {
-    private bool initialized = false;
 
-    private Player player { get; set; }
-    private Player playerPar { get; set; }
-    private PlayerRole driverRole { get; set; }
-    private Car car { get; set; }
-
-    [TestFixtureSetUp]
-    public void SetUp()
-    {
-        if (!initialized)
-        {
-            player = new Player();
-
-            driverRole = new Driver();
-            car = new Car();
-            playerPar = new Player(car, driverRole);
-        }
-    }
+    private Player Player { get; set; }
+    private Player PlayerPar { get; set; }
+    private IPlayerRole DriverRole { get; set; }
+    private Car Car { get; set; }
 
     [SetUp]
-    public void InitTest()
+    public void SetUp()
     {
-        player = new Player();
+        Player = new Player();
 
-        driverRole = new Driver();
-        car = new Car();
-        playerPar = new Player(car, driverRole);
+        DriverRole = new Driver();
+        Car = new Car();
+        PlayerPar = new Player(Car, DriverRole);
     }
 
     [Test]
     public void TestConstructor()
     {
-        Assert.IsNull(player.Car);
-        Assert.IsNull(player.Role);
+        Assert.IsNull(Player.Car);
+        Assert.IsNull(Player.Role);
     }
 
     public void TestConstructorNotNull()
     {
-        Assert.IsNotNull(playerPar);
+        Assert.IsNotNull(PlayerPar);
     }
 
     [Test]
     public void TestConstructor_Par()
     {
-        Assert.AreEqual(car, playerPar.Car);
-        Assert.AreEqual(driverRole, playerPar.Role);
+        Assert.AreEqual(Car, PlayerPar.Car);
+        Assert.AreEqual(DriverRole, PlayerPar.Role);
     }
 }
