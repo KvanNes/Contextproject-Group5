@@ -197,5 +197,6 @@ public class ServerTest
         var startingPosition = Server.GetStartingPosition(CarNumberInit);
 
         Assert.AreEqual(expectedPosition, startingPosition);
+
     }
 }
