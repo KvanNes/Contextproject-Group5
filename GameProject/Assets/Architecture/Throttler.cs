@@ -5,6 +5,11 @@ using System;
 
 public class Throttler : PlayerRole {
 
+    public void Initialize() {
+        RenderSettings.ambientLight = Color.white;
+        Camera.main.orthographicSize = 0.7f;
+    }
+
     private Vector3 lastSentPosition;
     public void SendToOther(Car car) {
         Vector3 currentPosition = car.CarObject.transform.position;
@@ -89,9 +94,34 @@ public class Throttler : PlayerRole {
         ab.PositionUpdated();
     }
 
-    public void HandleCollision(AutoBehaviour ab) {
-        // Go back a little.
-        ab.speed = -(ab.speed + Mathf.Sign(ab.speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
-        ab.restoreConfiguration();
+    public void HandleCollision(AutoBehaviour ab, Collider2D collider) {
+        if (collider.gameObject.tag == "Mud") {
+            if (ab.speed > GameData.MAX_SPEED - 0.01) {
+                ab.speed = 0;
+            }
+        } else {
+            // Go back a little.
+            ab.speed = -(ab.speed + Mathf.Sign(ab.speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
+            ab.restoreConfiguration();
+        }
+    }
+    
+    public void PositionUpdated(AutoBehaviour ab, bool isSelf) {
+        if (!isSelf) {
+            return;
+        }
+
+        Camera.main.transform.position = new Vector3(5.6f, 1f, -8f);
+        Camera.main.orthographicSize = 1.4f;
+    }
+
+    public void RotationUpdated(AutoBehaviour ab, bool isSelf) {
+        GameObject sphere = ab.GetSphere();
+        Transform carTransform = ab.transform;
+        float angle = Mathf.Deg2Rad * carTransform.rotation.eulerAngles.z;
+        Vector3 v = Utils.Vector2to3(Utils.Rotate(new Vector2(5f / 0.07f, 0f), Vector2.zero, -angle));
+        v.y *= 0.07f / 0.03f;  // Scale ratio of Auto needs to be taken into account here.
+        v.z = -0.3f;
+        sphere.transform.localPosition = v;
     }
 }

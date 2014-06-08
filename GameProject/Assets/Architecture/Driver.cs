@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System;
 
 public class Driver : PlayerRole {
+
+    public void Initialize() {
+        Camera.main.orthographicSize = 0.1f;
+    }
     
     private Quaternion lastSentRotation;
     public void SendToOther(Car car) {
@@ -51,13 +55,27 @@ public class Driver : PlayerRole {
     public void HandlePlayerAction(AutoBehaviour ab) {
         PlayerAction action = GetPlayerAction();
         if (action == PlayerAction.steerLeft) {
-            rotate(ab, 1f);
+            rotate(ab, Time.deltaTime * 125f);
         } else if (action == PlayerAction.steerRight) {
-            rotate(ab, -1f);
+            rotate(ab, Time.deltaTime * -125f);
         }
     }
 
-	public void HandleCollision(AutoBehaviour ab) {
+    public void HandleCollision(AutoBehaviour ab, Collider2D collider) {
 
 	}
+
+    public void PositionUpdated(AutoBehaviour ab, bool isSelf) {
+        if (!isSelf) {
+            return;
+        }
+
+        // Move camera along with car.
+        Camera.main.transform.position = ab.transform.position;
+        Camera.main.transform.Translate(new Vector3(0f, 0f, -1f));
+    }
+    
+    public void RotationUpdated(AutoBehaviour ab, bool isSelf) {
+
+    }
 }

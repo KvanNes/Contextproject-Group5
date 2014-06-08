@@ -5,6 +5,35 @@ using System.Reflection;
 using System.Linq;
 
 public class Utils {
+    
+    public static Vector2 Vector3to2(Vector3 v) {
+        return new Vector2(v.x, v.y);
+    }
+
+    public static Vector3 Vector2to3(Vector2 v) {
+        return new Vector3(v.x, v.y, 0f);
+    }
+
+    public static Vector2 Rotate(Vector2 point, Vector2 midpoint, float angle) {
+        // Formules komen van: https://www.siggraph.org/education/materials/HyperGraph/modeling/mod_tran/2drota.htm
+        Vector2 p = point - midpoint;
+        float xNew = p.x * Mathf.Cos(angle) - p.y * Mathf.Sin(angle);
+        float yNew = p.y * Mathf.Cos(angle) + p.x * Mathf.Sin(angle);
+        return new Vector2(xNew, yNew) + midpoint;
+    }
+
+    public static Vector2[] RotateVectors(Vector2[] vectors, int count) {
+        Vector2[] res = new Vector2[vectors.Length];
+        for (int i = 0; i < vectors.Length; i++) {
+            res[i] = Utils.Rotate(vectors[i], new Vector2(0.5f, 0.5f), Mathf.Deg2Rad * 90 * count);
+        }
+        return res;
+    }
+
+    public static Texture2D LoadTexture(String path) {
+        return (Texture2D) Resources.Load<Texture2D>(path);
+    }
+
     public static T getDictionaryValue<S, T>(Dictionary<S, T> dictionary, S key) {
         T result;
         try {

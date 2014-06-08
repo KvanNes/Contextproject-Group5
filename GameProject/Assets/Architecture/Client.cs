@@ -28,6 +28,7 @@ public class Client : MonoBehaviour {
         MainScript.selfPlayer = null;
         MainScript.selfType = MainScript.PlayerType.None;
         MainScript.selectionIsFinal = false;
+        Camera.main.transform.position = Vector3.zero;
     }
     
     private AutoBehaviour GetCarObjectByNumber(int carNumber) {
@@ -45,6 +46,18 @@ public class Client : MonoBehaviour {
     public void chooseJobAvailable() {
         MainScript.selfCar.CarObject = GetCarObjectByNumber(MainScript.selfCar.carNumber);
         MainScript.selectionIsFinal = true;
+        
+        foreach(GameObject gameObject in GameObject.FindGameObjectsWithTag("Player")) {
+            Light[] lights = gameObject.GetComponentsInChildren<Light>();
+            if(lights.Length == 0) {
+                continue;
+            }
+            if(MainScript.selfCar.CarObject.gameObject == gameObject) {
+                lights[0].enabled = true;
+            } else {
+                lights[0].enabled = false;
+            }
+        }
     }
     
     [RPC]

@@ -1,56 +1,97 @@
 using UnityEngine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 
 public class ControlButtonsGUI : MonoBehaviour {
-    
-    Texture2D ThrottlerNormalTexture, ThrottlerPressedTexture;
-    Texture2D DriverNormalLeftTexture, DriverPressedLeftTexture;
-    Texture2D DriverNormalRightTexture, DriverPressedRightTexture;
-    
-    private static Texture2D LoadTexture(String path) {
-        return (Texture2D) Resources.Load<Texture2D>(path);
+    private static readonly float BUTTONS_FACTOR = 0.4f;
+
+	Texture2D ThrottlerNormalTexture, ThrottlerPressedTexture;
+	Texture2D DriverNormalLeftTexture, DriverPressedLeftTexture;
+	Texture2D DriverNormalRightTexture, DriverPressedRightTexture;
+
+	private void Start() {
+		ThrottlerNormalTexture = Utils.LoadTexture("gaspedaal-normaal");
+        ThrottlerPressedTexture = Utils.LoadTexture("gaspedaal-ingedrukt");
+        DriverNormalLeftTexture = Utils.LoadTexture("stuur-links-normaal");
+        DriverPressedLeftTexture = Utils.LoadTexture("stuur-links-ingedrukt");
+        DriverNormalRightTexture = Utils.LoadTexture("stuur-rechts-normaal");
+        DriverPressedRightTexture = Utils.LoadTexture("stuur-rechts-ingedrukt");
+	}
+
+    private void DrawControl(Texture2D texture, float left, float top) {
+        GUI.DrawTexture(new Rect(left, top, texture.width * BUTTONS_FACTOR, texture.height * BUTTONS_FACTOR), texture);
     }
-    
-    private void Start() {
-        ThrottlerNormalTexture = LoadTexture("gaspedaal-normaal");
-        ThrottlerPressedTexture = LoadTexture("gaspedaal-ingedrukt");
-        DriverNormalLeftTexture = LoadTexture("stuur-links-normaal");
-        DriverPressedLeftTexture = LoadTexture("stuur-links-ingedrukt");
-        DriverNormalRightTexture = LoadTexture("stuur-rechts-normaal");
-        DriverPressedRightTexture = LoadTexture("stuur-rechts-ingedrukt");
-    }
-    
-    private void DrawControls(Texture2D leftTexture, Texture2D rightTexture) {
-        GUI.DrawTexture(new Rect(0, Screen.height - leftTexture.height, leftTexture.width, leftTexture.height), leftTexture);
-        GUI.DrawTexture(new Rect(Screen.width - rightTexture.width, Screen.height - rightTexture.height, rightTexture.width, rightTexture.height), rightTexture);
-    }
-    
-    private void DrawDriverControls() {
-        PlayerAction currentAction = MainScript.selfPlayer.Role.GetPlayerAction();
-        
-        DrawControls(
-            currentAction == PlayerAction.steerLeft ? DriverPressedLeftTexture : DriverNormalLeftTexture,
-            currentAction == PlayerAction.steerRight ? DriverPressedRightTexture : DriverNormalRightTexture
-            );
-    }
-    
-    private void DrawThrottlerControls() {
-        PlayerAction currentAction = MainScript.selfPlayer.Role.GetPlayerAction();
-        
-        DrawControls(
-            currentAction == PlayerAction.speedDown ? ThrottlerPressedTexture : ThrottlerNormalTexture,
-            currentAction == PlayerAction.speedUp ? ThrottlerPressedTexture : ThrottlerNormalTexture
-            );
-    }
-    
-    public void OnGUI() {
-        if (MainScript.selfPlayer == null) {
-            return;
-        } else if (MainScript.selfPlayer.Role is Driver) {
-            DrawDriverControls();
-        } else if(MainScript.selfPlayer.Role is Throttler) {
-            DrawThrottlerControls();
+
+	private void DrawControls(Texture2D leftTexture, Texture2D rightTexture) {
+        DrawControl(leftTexture, 0, Screen.height - leftTexture.height * BUTTONS_FACTOR);
+        DrawControl(rightTexture, Screen.width - rightTexture.width * BUTTONS_FACTOR, Screen.height - rightTexture.height * BUTTONS_FACTOR);
+	}
+
+	private void DrawDriverControls() {
+		PlayerAction currentAction = MainScript.selfPlayer.Role.GetPlayerAction();
+
+		DrawControls(
+			currentAction == PlayerAction.steerLeft ? DriverPressedLeftTexture : DriverNormalLeftTexture,
+			currentAction == PlayerAction.steerRight ? DriverPressedRightTexture : DriverNormalRightTexture
+		);
+	}
+
+	private void DrawThrottlerControls() {
+		PlayerAction currentAction = MainScript.selfPlayer.Role.GetPlayerAction();
+
+		DrawControls(
+			currentAction == PlayerAction.speedDown ? ThrottlerPressedTexture : ThrottlerNormalTexture,
+			currentAction == PlayerAction.speedUp ? ThrottlerPressedTexture : ThrottlerNormalTexture
+		);
+	}
+
+	private void CreateRestartButton() {
+		if(GUI.Button(new Rect(Screen.width / 2 - 75, 10, 150, 25), "Restart Game")) {
+			List<Car> cars = MainScript.cars;
+			Transform spawnObject = (Transform) GameObject.Find("SpawnPositionBase").GetComponent("Transform");
+			foreach(Car car in cars) {
+				float y = Server.GetStartingPosition(car.carNumber);
+				Vector3 pos = spawnObject.position + new Vector3(0, y, 0);
+				car.CarObject.transform.position = pos;
+                Quaternion rot = Quaternion.identity;
+                car.CarObject.transform.rotation = rot;
+				car.CarObject.speed = 0f;
+                car.CarObject.acceleration = 0f;
+                car.CarObject.GetSphere().transform.localPosition = new Vector3(5f / 0.07f, 0f, -0.3f);
+                car.CarObject.GetSphere().transform.localRotation = Quaternion.identity;
+                car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.carNumber - 1);
+                car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, rot, car.carNumber - 1);
+			}
+		}
+	}
+
+    public void DrawLightControl() {
+        if (GUI.Button(new Rect(0, 50, 300, 50), new GUIContent("Toggle light"))) {
+            MainScript.networkController.networkView.RPC("ToggleLight", RPCMode.Others);
         }
     }
-}
 
+    public void DrawOverviewControl() {
+        if (GUI.Button(new Rect(0, 100, 300, 50), new GUIContent("Toggle overview"))) {
+            MainScript.networkController.networkView.RPC("ToggleOverview", RPCMode.Others);
+        }
+    }
+
+	public void OnGUI() {
+		if (MainScript.selfPlayer == null) {
+			if(MainScript.selfType == MainScript.PlayerType.Server) {
+                DrawLightControl();
+                DrawOverviewControl();
+                CreateRestartButton();
+            }
+            return;
+		} else if (MainScript.selfPlayer.Role is Driver) {
+			DrawDriverControls();
+		} else if(MainScript.selfPlayer.Role is Throttler) {
+			DrawThrottlerControls();
+		}
+		CreateRestartButton();
+	}
+}

@@ -71,12 +71,19 @@ public class AutoBehaviour : MonoBehaviour {
         // Make sure speed is in constrained interval.
         speed = Utils.forceInInterval(speed, GameData.MIN_SPEED, GameData.MAX_SPEED);
 
-        MainScript.selfPlayer.Role.HandlePlayerAction(this);
+        if (MainScript.isDebug) {
+            new Driver().HandlePlayerAction(this);
+            new Throttler().HandlePlayerAction(this);
+        } else {
+            MainScript.selfPlayer.Role.HandlePlayerAction(this);
+        }
     }
 
     // Occurs when bumping into something (another car, or a track border).
-    private void OnTriggerEnter2D(Collider2D col) {
-        MainScript.selfPlayer.Role.HandleCollision(this);
+    private void OnTriggerEnter2D(Collider2D collider) {
+        if (MainScript.selfType == MainScript.PlayerType.Client) {
+            MainScript.selfPlayer.Role.HandleCollision(this, collider);
+        }
     }
 
     public int initialized = 0;
@@ -103,14 +110,29 @@ public class AutoBehaviour : MonoBehaviour {
     }
     
     public void PositionUpdated() {
-        if (MainScript.selfType == MainScript.PlayerType.Client && MainScript.selfCar.CarObject == this) {
-            // Move camera along with car.
-            Camera.main.transform.position = transform.position;
-            Camera.main.transform.Translate(new Vector3(0, 0, -2));
+        if (MainScript.selfType == MainScript.PlayerType.Server || MainScript.selfCar == null) {
+            return;
         }
+        bool isSelf = MainScript.selfCar.CarObject == this;
+        MainScript.selfPlayer.Role.PositionUpdated(this, isSelf);
     }
-    
+
     public void RotationUpdated() {
-        
+        if (MainScript.selfType == MainScript.PlayerType.Server || MainScript.selfCar == null) {
+            return;
+        }
+        bool isSelf = MainScript.selfCar.CarObject == this;
+        MainScript.selfPlayer.Role.RotationUpdated(this, isSelf);
+    }
+
+    public GameObject GetSphere() {
+        // Gebaseerd op: http://answers.unity3d.com/questions/183649/how-to-find-a-child-gameobject-by-name.html
+        Component[] components = transform.GetComponentsInChildren<Component>();
+        foreach(Component component in components) {
+            if(component.name == "Sphere") {
+                return component.gameObject;
+            }
+        }
+        return null;
     }
 }

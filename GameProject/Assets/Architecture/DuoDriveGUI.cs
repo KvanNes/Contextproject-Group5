@@ -16,7 +16,7 @@ public class DuoDriveGUI : MonoBehaviour {
     }
 
     private void Start() {
-        InvokeRepeating("UpdateHostList", 0f, 1f);
+        InvokeRepeating("UpdateHostList", 0f, 5f);
     }
 
     private void UpdateHostList() {
@@ -39,6 +39,7 @@ public class DuoDriveGUI : MonoBehaviour {
 
             // Gebaseerd op: http://stackoverflow.com/a/755
             MainScript.selfPlayer = new Player(MainScript.selfCar, (PlayerRole) Activator.CreateInstance(type));
+            MainScript.selfPlayer.Role.Initialize();                
 
             MainScript.client.chooseJobWhenConnected(type.Name, carNumber);
             Network.Connect(hostData);

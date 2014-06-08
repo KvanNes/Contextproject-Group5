@@ -10,3 +10,13 @@
 /GameProject/*_Data
 /GameProject/*.exe
 /GameProject/GameProject.userprefs
+*.aux
+*.bbl
+*.blg
+*.log
+*.synctex
+*.out
+*.toc
+*.ist
+*.glo
+GameProject/*.apk

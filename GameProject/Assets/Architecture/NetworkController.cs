@@ -32,4 +32,23 @@ public class NetworkController : MonoBehaviour {
         }
     }
 
+    [RPC]
+    public void ToggleLight() {
+        if (MainScript.selfPlayer.Role is Driver) {
+            RenderSettings.ambientLight = RenderSettings.ambientLight == Color.white ? Color.black : Color.white;
+        }
+    }
+
+    [RPC]
+    public void ToggleOverview() {
+        if(MainScript.selfPlayer.Role is Throttler) {
+            MainScript.fixedCamera = !MainScript.fixedCamera;
+            if(MainScript.fixedCamera) {
+                Camera.main.transform.rotation = Quaternion.Euler(0, 180, 0);
+            } else {
+                Camera.main.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+        }
+    }
+
 }

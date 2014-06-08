@@ -19,9 +19,20 @@ public class MainScript : MonoBehaviour {
     public static PlayerType selfType = PlayerType.None;
     public static bool selectionIsFinal = false;
 
+    // FIXME: Remove the following variables in release.
+    public static bool isDebug = false;
+    public static bool fixedCamera = false;
+
 	// Use this for initialization
     void Start () {
-        Application.runInBackground = true;
+        if (Application.platform == RuntimePlatform.WindowsEditor
+            || Application.platform == RuntimePlatform.WindowsPlayer
+            || Application.platform == RuntimePlatform.OSXPlayer
+            || Application.platform == RuntimePlatform.OSXEditor) {
+            Application.runInBackground = true;
+        } else {
+            Application.runInBackground = false;
+        }
 
         InvokeRepeating("SendToOther", GameData.UPDATE_TIME_DELTA, GameData.UPDATE_TIME_DELTA);
 
@@ -43,6 +54,13 @@ public class MainScript : MonoBehaviour {
 	}
 
     void SendToOther() {
+        if (Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork) {
+            // Make sure to only send/receive data on local network.
+            Network.Disconnect();
+            Application.Quit();
+            return;
+        }
+
         if (selfCar != null) {
             selfCar.SendToOther();
         }
