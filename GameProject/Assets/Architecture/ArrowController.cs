@@ -78,11 +78,11 @@ public class ArrowController : MonoBehaviour {
     }
 
     public void OnGUI() {
-        if (MainScript.selfCar == null || MainScript.selfCar.CarObject == null || MainScript.selfPlayer.Role is Driver) {
+        if (MainScript.SelfCar == null || MainScript.SelfCar.CarObject == null || MainScript.SelfPlayer.Role is Driver) {
             return;
         }
 
-        Vector3 p = MainScript.selfCar.CarObject.transform.position;
+        Vector3 p = MainScript.SelfCar.CarObject.transform.position;
         Vector2 point = GetCenter(new Vector2(p.x, p.y));
         Texture2D texture = null;
 

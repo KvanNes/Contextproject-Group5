@@ -19,7 +19,7 @@ public class Player {
         Car = null;
     }
 
-	public Car Car { get; set; }
+	public ICar Car { get; set; }
 
     public NetworkPlayer NetworkPlayer { get; set; }
 	
@@ -29,4 +29,10 @@ public class Player {
 		this.Car = car;
 		this.Role = role;
 	}
+
+    public Player(ICar car, PlayerRole role)
+    {
+        this.Car = car;
+        this.Role = role;
+    }
 }

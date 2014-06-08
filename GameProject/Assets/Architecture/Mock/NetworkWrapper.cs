@@ -1,20 +1,16 @@
 ﻿using UnityEngine;
-using System;
 
 public class NetworkWrapper : INetwork
 {
-
-    public string IPAdress;
-    public bool connected;
-
-    public object Instantiate(UnityEngine.Object prefab, Vector3 location, Quaternion rotation, int group)
+    public Object Instantiate(Object prefab, Vector3 location, Quaternion rotation,
+        int group)
     {
         return Network.Instantiate(prefab, location, rotation, group);
     }
 
-    public NetworkConnectionError InitializeServer(int maxConnection, int portnumber, bool NATPunchthrough)
+    public NetworkConnectionError InitializeServer(int maxConnection, int portnumber, bool natPunchthrough)
     {
-        return Network.InitializeServer(maxConnection, portnumber, NATPunchthrough);
+        return Network.InitializeServer(maxConnection, portnumber, natPunchthrough);
     }
 
     public void Disconnect()

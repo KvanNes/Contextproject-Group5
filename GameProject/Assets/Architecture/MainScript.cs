@@ -13,9 +13,9 @@ public class MainScript : MonoBehaviour {
     public static NetworkController networkController;
     public static Server server;
     public static Client client;
-    public static List<Car> cars;
-    public static Player selfPlayer;
-    public static Car selfCar;
+    public static List<Car> Cars;
+    public static Player SelfPlayer;
+    public static ICar SelfCar { get; set; }
     public static PlayerType selfType = PlayerType.None;
     public static bool selectionIsFinal = false;
 
@@ -36,24 +36,25 @@ public class MainScript : MonoBehaviour {
 
         InvokeRepeating("SendToOther", GameData.UPDATE_TIME_DELTA, GameData.UPDATE_TIME_DELTA);
 
-        server = (Server) GameObject.FindGameObjectWithTag("Network").GetComponent(typeof(Server));
-        client = (Client) GameObject.FindGameObjectWithTag("Network").GetComponent(typeof(Client));
+        Initialize();
+	}
+
+    public void Initialize()
+    {
+        server = (Server)GameObject.FindGameObjectWithTag("Network").GetComponent(typeof(Server));
+        client = (Client)GameObject.FindGameObjectWithTag("Network").GetComponent(typeof(Client));
 
         // Use the NetworkWrapper so that the Server maintains it's actual functionallity.
         server.network = new NetworkWrapper();
 
-        cars = new List<Car>();
-        for (int i = 0; i < GameData.CARS_AMOUNT; i++) {
-            cars.Add(new Car());
+        Cars = new List<Car>();
+        for (int i = 0; i < GameData.CARS_AMOUNT; i++)
+        {
+            Cars.Add(new Car());
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    }
 
-    void SendToOther() {
+    public void SendToOther() {
         if (Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork) {
             // Make sure to only send/receive data on local network.
             Network.Disconnect();
@@ -61,8 +62,35 @@ public class MainScript : MonoBehaviour {
             return;
         }
 
-        if (selfCar != null) {
-            selfCar.SendToOther();
+        if (SelfCar != null) {
+            SelfCar.SendToOther();
         }
+    }
+
+    public Server GetServer()
+    {
+        return server;
+    }
+
+    public Client GetClient()
+    {
+        return client;
+    }
+
+    public List<Car> GetCars()
+    {
+        return Cars;
+    }
+
+    public void SetSelfCar(ICar c)
+    {
+        SelfCar = c;
+    }
+
+    public void Clear()
+    {
+        server = null;
+        client = null;
+        Cars.Clear();
     }
 }

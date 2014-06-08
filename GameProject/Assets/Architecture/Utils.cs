@@ -1,16 +1,16 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Linq;
+using Object = UnityEngine.Object;
 
 public class Utils {
     
-    public static Vector2 Vector3to2(Vector3 v) {
+    public static Vector2 Vector3To2(Vector3 v) {
         return new Vector2(v.x, v.y);
     }
 
-    public static Vector3 Vector2to3(Vector2 v) {
+    public static Vector3 Vector2To3(Vector2 v) {
         return new Vector3(v.x, v.y, 0f);
     }
 
@@ -25,16 +25,16 @@ public class Utils {
     public static Vector2[] RotateVectors(Vector2[] vectors, int count) {
         Vector2[] res = new Vector2[vectors.Length];
         for (int i = 0; i < vectors.Length; i++) {
-            res[i] = Utils.Rotate(vectors[i], new Vector2(0.5f, 0.5f), Mathf.Deg2Rad * 90 * count);
+            res[i] = Rotate(vectors[i], new Vector2(0.5f, 0.5f), Mathf.Deg2Rad * 90 * count);
         }
         return res;
     }
 
     public static Texture2D LoadTexture(String path) {
-        return (Texture2D) Resources.Load<Texture2D>(path);
+        return Resources.Load<Texture2D>(path);
     }
 
-    public static T getDictionaryValue<S, T>(Dictionary<S, T> dictionary, S key) {
+    public static T GetDictionaryValue<S, T>(Dictionary<S, T> dictionary, S key) {
         T result;
         try {
             dictionary.TryGetValue(key, out result);
@@ -45,16 +45,16 @@ public class Utils {
     }
     
     // Copies (clones) a Quaternion.
-    public static Quaternion copy(Quaternion v) {
+    public static Quaternion Copy(Quaternion v) {
         return new Quaternion(v.x, v.y, v.z, v.w);
     }
     
     // Copies (clones) a Vector3.
-    public static Vector3 copy(Vector3 v) {
+    public static Vector3 Copy(Vector3 v) {
         return new Vector3(v.x, v.y, v.z);
     }
     
-    public static float forceInInterval(float x, float min, float max) {
+    public static float ForceInInterval(float x, float min, float max) {
         return Mathf.Min(Mathf.Max(min, x), max);
     }
 
@@ -70,5 +70,10 @@ public class Utils {
             .GetAssemblies()
             .SelectMany(assembly => assembly.GetTypes())
             .Where(type => desiredType.IsAssignableFrom(type) && desiredType != type);
+    }
+
+    public static void DestroyObject(UnityEngine.Object obj)
+    {
+        Object.DestroyImmediate(obj);
     }
 }

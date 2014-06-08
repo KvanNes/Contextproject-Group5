@@ -30,7 +30,7 @@ public class ControlButtonsGUI : MonoBehaviour {
 	}
 
 	private void DrawDriverControls() {
-		PlayerAction currentAction = MainScript.selfPlayer.Role.GetPlayerAction();
+		PlayerAction currentAction = MainScript.SelfPlayer.Role.GetPlayerAction();
 
 		DrawControls(
 			currentAction == PlayerAction.steerLeft ? DriverPressedLeftTexture : DriverNormalLeftTexture,
@@ -39,7 +39,7 @@ public class ControlButtonsGUI : MonoBehaviour {
 	}
 
 	private void DrawThrottlerControls() {
-		PlayerAction currentAction = MainScript.selfPlayer.Role.GetPlayerAction();
+		PlayerAction currentAction = MainScript.SelfPlayer.Role.GetPlayerAction();
 
 		DrawControls(
 			currentAction == PlayerAction.speedDown ? ThrottlerPressedTexture : ThrottlerNormalTexture,
@@ -49,7 +49,7 @@ public class ControlButtonsGUI : MonoBehaviour {
 
 	private void CreateRestartButton() {
 		if(GUI.Button(new Rect(Screen.width / 2 - 75, 10, 150, 25), "Restart Game")) {
-			List<Car> cars = MainScript.cars;
+			List<Car> cars = MainScript.Cars;
 			Transform spawnObject = (Transform) GameObject.Find("SpawnPositionBase").GetComponent("Transform");
 			foreach(Car car in cars) {
 				float y = Server.GetStartingPosition(car.carNumber);
@@ -57,8 +57,8 @@ public class ControlButtonsGUI : MonoBehaviour {
 				car.CarObject.transform.position = pos;
                 Quaternion rot = Quaternion.identity;
                 car.CarObject.transform.rotation = rot;
-				car.CarObject.speed = 0f;
-                car.CarObject.acceleration = 0f;
+				car.CarObject.Speed = 0f;
+                car.CarObject.Acceleration = 0f;
                 car.CarObject.GetSphere().transform.localPosition = new Vector3(5f / 0.07f, 0f, -0.3f);
                 car.CarObject.GetSphere().transform.localRotation = Quaternion.identity;
                 car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.carNumber - 1);
@@ -80,16 +80,16 @@ public class ControlButtonsGUI : MonoBehaviour {
     }
 
 	public void OnGUI() {
-		if (MainScript.selfPlayer == null) {
+		if (MainScript.SelfPlayer == null) {
 			if(MainScript.selfType == MainScript.PlayerType.Server) {
                 DrawLightControl();
                 DrawOverviewControl();
                 CreateRestartButton();
             }
             return;
-		} else if (MainScript.selfPlayer.Role is Driver) {
+		} else if (MainScript.SelfPlayer.Role is Driver) {
 			DrawDriverControls();
-		} else if(MainScript.selfPlayer.Role is Throttler) {
+		} else if(MainScript.SelfPlayer.Role is Throttler) {
 			DrawThrottlerControls();
 		}
 		CreateRestartButton();

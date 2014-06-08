@@ -1,28 +1,29 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System;
 
 public class AutoBehaviour : MonoBehaviour {
     
-    public int carNumber = -1;
+    public int CarNumber = -1;
 
     // The current speed and acceleration of this car.
-    public float speed = 0f;
-    public float acceleration = 0.02f;
+    public float Speed = 0f;
+    public float Acceleration = 0.02f;
+
+    public INetworkView NetworkView;
 
     [RPC]
     public void setCarNumber(int number) {
-        this.carNumber = number;
-        MainScript.cars[number].CarObject = this;
+        CarNumber = number;
+        MainScript.Cars[number].CarObject = this;
     }
     
     [RPC]
     public void requestInitialPositions(NetworkMessageInfo info) {
-        foreach (Car car in MainScript.cars) {
+        foreach (Car car in MainScript.Cars) {
             AutoBehaviour ab = car.CarObject;
-            ab.networkView.RPC("UpdatePosition", info.sender, ab.transform.position, ab.speed, ab.carNumber);
-            ab.networkView.RPC("UpdateRotation", info.sender, ab.transform.rotation, ab.carNumber);
+            ab.NetworkView.RPC("UpdatePosition", info.sender, ab.transform.position, ab.Speed, ab.CarNumber);
+            ab.NetworkView.RPC("UpdateRotation", info.sender, ab.transform.rotation, ab.CarNumber);
         }
     }
     
@@ -30,59 +31,67 @@ public class AutoBehaviour : MonoBehaviour {
     // These are used to recover to the last position/rotation when a
     // collision occurs.
     private const int QUEUE_SIZE = 3;
-    private Queue<Quaternion> lastRotations = new Queue<Quaternion>(QUEUE_SIZE);
-    private Queue<Vector3> lastPositions = new Queue<Vector3>(QUEUE_SIZE);
+    private Queue<Quaternion> _lastRotations = new Queue<Quaternion>(QUEUE_SIZE);
+    private Queue<Vector3> _lastPositions = new Queue<Vector3>(QUEUE_SIZE);
     
     // Store current position and rotation.
-    private void storeConfiguration() {
-        if(lastRotations.Count >= 3) {
-            lastRotations.Dequeue();
+    public void StoreConfiguration() {
+        if(_lastRotations.Count >= 3) {
+            _lastRotations.Dequeue();
         }
-        if(lastPositions.Count >= 3) {
-            lastPositions.Dequeue();
+        if(_lastPositions.Count >= 3) {
+            _lastPositions.Dequeue();
         }
-        lastRotations.Enqueue(Utils.copy(transform.rotation));
-        lastPositions.Enqueue(Utils.copy(transform.position));
+        _lastRotations.Enqueue(Utils.Copy(transform.rotation));
+        _lastPositions.Enqueue(Utils.Copy(transform.position));
     }
     
     // Restore last position and rotation.
-    public void restoreConfiguration() {
+    public void RestoreConfiguration() {
         try {
-            transform.rotation = Utils.copy(lastRotations.Dequeue());
+            transform.rotation = Utils.Copy(_lastRotations.Dequeue());
             RotationUpdated();
-            transform.position = Utils.copy(lastPositions.Dequeue());
+            transform.position = Utils.Copy(_lastPositions.Dequeue());
             PositionUpdated();
         } catch(InvalidOperationException) {
             // Ignore if not possible.
         }
     }
 
+    private void SetNetworkView()
+    {
+        NetworkView = new NetworkViewWrapper();
+        NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
+    }
+
     private void Start() {
-        networkView.RPC("requestInitialPositions", RPCMode.Server);
+        SetNetworkView();
+
+        NetworkView.RPC("requestInitialPositions", RPCMode.Server);
     }
 
     private void Update() {
-        if (!MainScript.selectionIsFinal || MainScript.selfCar.CarObject != this) {
+        if (!MainScript.selectionIsFinal || MainScript.SelfCar.CarObject != this) {
             return;
         }
 
-        storeConfiguration();
+        StoreConfiguration();
 
         // Make sure speed is in constrained interval.
-        speed = Utils.forceInInterval(speed, GameData.MIN_SPEED, GameData.MAX_SPEED);
+        Speed = Utils.ForceInInterval(Speed, GameData.MIN_SPEED, GameData.MAX_SPEED);
 
         if (MainScript.isDebug) {
             new Driver().HandlePlayerAction(this);
             new Throttler().HandlePlayerAction(this);
         } else {
-            MainScript.selfPlayer.Role.HandlePlayerAction(this);
+            MainScript.SelfPlayer.Role.HandlePlayerAction(this);
         }
     }
 
     // Occurs when bumping into something (another car, or a track border).
     private void OnTriggerEnter2D(Collider2D collider) {
         if (MainScript.selfType == MainScript.PlayerType.Client) {
-            MainScript.selfPlayer.Role.HandleCollision(this, collider);
+            MainScript.SelfPlayer.Role.HandleCollision(this, collider);
         }
     }
 
@@ -92,7 +101,7 @@ public class AutoBehaviour : MonoBehaviour {
 
     [RPC]
     public void UpdateRotation(Quaternion rot, int carNumber) {
-        if (this.carNumber == carNumber) {
+        if (this.CarNumber == carNumber) {
             transform.rotation = rot;
             RotationUpdated();
             initialized |= ROTATION_INITIALIZED;
@@ -101,28 +110,55 @@ public class AutoBehaviour : MonoBehaviour {
 
     [RPC]
     public void UpdatePosition(Vector3 pos, float speed, int carNumber) {
-        if (this.carNumber == carNumber) {
+        if (this.CarNumber == carNumber) {
             transform.position = pos;
-            this.speed = speed;
+            this.Speed = speed;
             PositionUpdated();
             initialized |= POSITION_INITIALIZED;
         }
     }
     
     public void PositionUpdated() {
-        if (MainScript.selfType == MainScript.PlayerType.Server || MainScript.selfCar == null) {
+        if (MainScript.selfType == MainScript.PlayerType.Server || MainScript.SelfCar == null) {
             return;
         }
-        bool isSelf = MainScript.selfCar.CarObject == this;
-        MainScript.selfPlayer.Role.PositionUpdated(this, isSelf);
+        bool isSelf = MainScript.SelfCar.CarObject == this;
+        MainScript.SelfPlayer.Role.PositionUpdated(this, isSelf);
     }
 
     public void RotationUpdated() {
-        if (MainScript.selfType == MainScript.PlayerType.Server || MainScript.selfCar == null) {
+        if (MainScript.selfType == MainScript.PlayerType.Server || MainScript.SelfCar == null) {
             return;
         }
-        bool isSelf = MainScript.selfCar.CarObject == this;
-        MainScript.selfPlayer.Role.RotationUpdated(this, isSelf);
+        bool isSelf = MainScript.SelfCar.CarObject == this;
+        MainScript.SelfPlayer.Role.RotationUpdated(this, isSelf);
+    }
+
+    public void AddToQueues(int count)
+    {
+        for (var i = 0; i < count; i++)
+        {
+            _lastRotations.Enqueue(Utils.Copy(transform.rotation));
+            _lastPositions.Enqueue(Utils.Copy(transform.position));
+        }
+    }
+
+    public Queue<Quaternion> GetLastRotations()
+    {
+        return _lastRotations;
+    }
+    public void ResetLastRotations()
+    {
+        _lastRotations.Clear();
+    }
+
+    public Queue<Vector3> GetLastPositions()
+    {
+        return _lastPositions;
+    }
+    public void ResetLastPositions()
+    {
+        _lastPositions.Clear();
     }
 
     public GameObject GetSphere() {

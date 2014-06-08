@@ -1,8 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using System.Linq;
-using System.Collections.Generic;
-using System;
 
 public class Server : MonoBehaviour {
     public Game Game { get; set; }
@@ -11,29 +7,28 @@ public class Server : MonoBehaviour {
     public GameObject playerPrefab = null;
     public Transform spawnObject = null;
 
-    public INetwork _network;
+    public INetwork network { get; set; }
+    public INetworkView networkView { get; set; }
 
-    public INetwork network
+    public void startServer()
     {
-        set { _network = value; }
-    }
-
-    public void startServer() {
-        _network.InitializeServer(32, GameData.PORT, !Network.HavePublicAddress());
+        networkView = new NetworkViewWrapper();
+        networkView.SetNativeNetworkView(GetComponent<NetworkView>());
+        network.InitializeServer(32, GameData.PORT, !Network.HavePublicAddress());
         MasterServer.RegisterHost(GameData.GAME_NAME, "2P1C");
         connected = true;
     }
 
     public void DisconnectServer()
     {
-        if (isConnected())
+        if (IsConnected())
         {
-            _network.Disconnect();
+            network.Disconnect();
             connected = false;
         }
     }
 
-    public bool isConnected()
+    public bool IsConnected()
     {
         return connected;
     }
@@ -66,9 +61,9 @@ public class Server : MonoBehaviour {
     public void chooseJob(string typeString, int carNumber, NetworkMessageInfo info) {
         bool ok = checkJobAvailableAndMaybeAdd(typeString, carNumber, info.sender);
         if (ok) {
-            this.networkView.RPC("chooseJobAvailable", info.sender);
+            networkView.RPC("chooseJobAvailable", info.sender);
         } else {
-            this.networkView.RPC("chooseJobNotAvailable", info.sender);
+            networkView.RPC("chooseJobNotAvailable", info.sender);
         }
     }
     

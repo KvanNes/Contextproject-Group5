@@ -1,7 +1,6 @@
 using UnityEngine;
-using System;
 
-public class Car
+public class Car : ICar
 {
 
     // Players for the car variables
@@ -24,7 +23,7 @@ public class Car
 
     public Car()
     {
-        this.carNumber = ++carNumberGenerator;  // Start with 1.
+        carNumber = ++carNumberGenerator;  // Start with 1.
     }
 
     public Car(AutoBehaviour game_object)
@@ -41,7 +40,7 @@ public class Car
     private bool shouldSend()
     {
         return CarObject != null
-            && MainScript.selfCar == this
+            && MainScript.SelfCar == this
             && Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork
             && CarObject.initialized == (AutoBehaviour.POSITION_INITIALIZED | AutoBehaviour.ROTATION_INITIALIZED);
     }
@@ -50,7 +49,7 @@ public class Car
     {
         if (shouldSend())
         {
-            MainScript.selfPlayer.Role.SendToOther(this);
+            MainScript.SelfPlayer.Role.SendToOther(this);
         }
     }
 
@@ -83,12 +82,12 @@ public class Car
         }
     }
 
-    public int getAmountPlayers()
+    public int GetAmountPlayers()
     {
         return amountPlayers;
     }
 
-    public void clear()
+    public void Clear()
     {
         Driver = null;
         Throttler = null;

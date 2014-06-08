@@ -35,11 +35,11 @@ public class DuoDriveGUI : MonoBehaviour {
     private void CreateClientButton(Type type, HostData hostData, int carNumber, int x, int y) {
         if (GUI.Button(new Rect(x, y, buttonW, buttonH), type.Name + "; Car " + carNumber.ToString())) {
             MainScript.selfType = MainScript.PlayerType.Client;
-            MainScript.selfCar = new Car(carNumber);
+            MainScript.SelfCar = new Car(carNumber);
 
             // Gebaseerd op: http://stackoverflow.com/a/755
-            MainScript.selfPlayer = new Player(MainScript.selfCar, (PlayerRole) Activator.CreateInstance(type));
-            MainScript.selfPlayer.Role.Initialize();                
+            MainScript.SelfPlayer = new Player(MainScript.SelfCar, (PlayerRole) Activator.CreateInstance(type));
+            MainScript.SelfPlayer.Role.Initialize();                
 
             MainScript.client.chooseJobWhenConnected(type.Name, carNumber);
             Network.Connect(hostData);

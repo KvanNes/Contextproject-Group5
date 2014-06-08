@@ -24,8 +24,8 @@ public class Client : MonoBehaviour {
             Destroy(go);
         }
         NetworkController.connected = false;
-        MainScript.selfCar = null;
-        MainScript.selfPlayer = null;
+        MainScript.SelfCar = null;
+        MainScript.SelfPlayer = null;
         MainScript.selfType = MainScript.PlayerType.None;
         MainScript.selectionIsFinal = false;
         Camera.main.transform.position = Vector3.zero;
@@ -35,7 +35,7 @@ public class Client : MonoBehaviour {
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject gameObject in gameObjects) {
             AutoBehaviour ab = (AutoBehaviour) gameObject.GetComponent(typeof(AutoBehaviour));
-            if(ab.carNumber == carNumber) {
+            if(ab.CarNumber == carNumber) {
                 return ab;
             }
         }
@@ -44,7 +44,7 @@ public class Client : MonoBehaviour {
     
     [RPC]
     public void chooseJobAvailable() {
-        MainScript.selfCar.CarObject = GetCarObjectByNumber(MainScript.selfCar.carNumber);
+        MainScript.SelfCar.CarObject = GetCarObjectByNumber(MainScript.SelfCar.carNumber);
         MainScript.selectionIsFinal = true;
         
         foreach(GameObject gameObject in GameObject.FindGameObjectsWithTag("Player")) {
@@ -52,7 +52,7 @@ public class Client : MonoBehaviour {
             if(lights.Length == 0) {
                 continue;
             }
-            if(MainScript.selfCar.CarObject.gameObject == gameObject) {
+            if(MainScript.SelfCar.CarObject.gameObject == gameObject) {
                 lights[0].enabled = true;
             } else {
                 lights[0].enabled = false;

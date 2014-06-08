@@ -1,72 +1,90 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System;
 
-public class Driver : PlayerRole {
+public class Driver : PlayerRole
+{
 
-    public void Initialize() {
+    public void Initialize()
+    {
         Camera.main.orthographicSize = 0.1f;
     }
-    
-    private Quaternion lastSentRotation;
-    public void SendToOther(Car car) {
+
+    private Quaternion _lastSentRotation;
+    public Quaternion GetLastSentRotation()
+    {
+        return _lastSentRotation;
+    }
+
+    public void SendToOther(Car car)
+    {
         Quaternion currentRotation = car.CarObject.transform.rotation;
-        if (currentRotation != lastSentRotation) {
-            lastSentRotation = Utils.copy(currentRotation);
-            car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, currentRotation, car.carNumber);
+        if (currentRotation != _lastSentRotation)
+        {
+            _lastSentRotation = Utils.Copy(currentRotation);
+            car.CarObject.NetworkView.RPC("UpdateRotation", RPCMode.Others, currentRotation, car.carNumber);
         }
     }
 
-    public PlayerAction GetPlayerAction() {
+    public PlayerAction GetPlayerAction()
+    {
         int separatingColumn = Screen.width / 2;
-        
+
         // When touching with one finger: check whether on left/right half.
-        if (Input.touchCount >= 1) {
-            Vector2 pos = Input.GetTouch(0).position;
-            if(pos.x <= separatingColumn) {
+        if (InputWrapper.GetTouchCount() >= 1)
+        {
+            Vector2 pos = InputWrapper.GetTouchPosition(0); // Input.GetTouch(0).position;
+            if (pos.x <= separatingColumn)
+            {
                 return PlayerAction.steerLeft;
-            } else {
-                return PlayerAction.steerRight;
             }
-        }
-        
-        // When left key pressed: steer left.
-        if (Input.GetKey(KeyCode.LeftArrow)) {
-            return PlayerAction.steerLeft;
-        }
-        
-        // When right key pressed: steer right.
-        if (Input.GetKey(KeyCode.RightArrow)) {
             return PlayerAction.steerRight;
         }
-        
+
+        // When left key pressed: steer left.
+        if (InputWrapper.GetKey(KeyCode.LeftArrow))
+        {
+            return PlayerAction.steerLeft;
+        }
+
+        // When right key pressed: steer right.
+        if (InputWrapper.GetKey(KeyCode.RightArrow))
+        {
+            return PlayerAction.steerRight;
+        }
+
         // If none of the above applies, do nothing with respect to steering.
         return PlayerAction.None;
     }
-    
+
     // Rotate (steer) this car.
-    private void rotate(AutoBehaviour ab, float factor) {
-        float angle = factor * Mathf.Min(3, ab.speed * 10f);
+    private void rotate(AutoBehaviour ab, float factor)
+    {
+        float angle = factor * Mathf.Min(3, ab.Speed * 10f);
         ab.transform.Rotate(new Vector3(0, 0, angle));
         ab.RotationUpdated();
     }
 
-    public void HandlePlayerAction(AutoBehaviour ab) {
+    public void HandlePlayerAction(AutoBehaviour ab)
+    {
         PlayerAction action = GetPlayerAction();
-        if (action == PlayerAction.steerLeft) {
+        if (action == PlayerAction.steerLeft)
+        {
             rotate(ab, Time.deltaTime * 125f);
-        } else if (action == PlayerAction.steerRight) {
+        }
+        else if (action == PlayerAction.steerRight)
+        {
             rotate(ab, Time.deltaTime * -125f);
         }
     }
 
-    public void HandleCollision(AutoBehaviour ab, Collider2D collider) {
+    public void HandleCollision(AutoBehaviour ab, Collider2D collider)
+    {
 
-	}
+    }
 
-    public void PositionUpdated(AutoBehaviour ab, bool isSelf) {
-        if (!isSelf) {
+    public void PositionUpdated(AutoBehaviour ab, bool isSelf)
+    {
+        if (!isSelf)
+        {
             return;
         }
 
@@ -74,8 +92,9 @@ public class Driver : PlayerRole {
         Camera.main.transform.position = ab.transform.position;
         Camera.main.transform.Translate(new Vector3(0f, 0f, -1f));
     }
-    
-    public void RotationUpdated(AutoBehaviour ab, bool isSelf) {
+
+    public void RotationUpdated(AutoBehaviour ab, bool isSelf)
+    {
 
     }
 }
