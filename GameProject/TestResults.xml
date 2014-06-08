@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="Unity Tests" total="65" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2014-06-09" time="00:29:42">
+  <environment nunit-version="2.6.2-Unity" clr-version="2.0.50727.1433" os-version="Microsoft Windows NT 6.2.9200.0" platform="Win32NT" cwd="C:\Users\Mourad\Documents\GitHub\Contextproject-Group5\GameProject" machine-name="MOURAD" user="Mourad" user-domain="MOURAD" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite name="Unit Tests" type="Assembly" executed="True" result="Success" success="True" time="0.284">
+    <results>
+      <test-case name="AutoBehaviourTest.Test_requestInitialPositions" executed="True" result="Success" success="True" time="0.188">
+      </test-case>
+      <test-case name="AutoBehaviourTest.Test_RestoreConfiguration_Position" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="AutoBehaviourTest.Test_RestoreConfiguration_Rotation" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="AutoBehaviourTest.Test_setCarNumber" executed="True" result="Success" success="True" time="0.016">
+      </test-case>
+      <test-case name="AutoBehaviourTest.Test_storeConfiguration1" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="AutoBehaviourTest.Test_storeConfiguration2" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="AutoBehaviourTest.Test_UpdateRotation" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="CarTest.TestClearCar" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="CarTest.TestConstructor1_NotNull" executed="True" result="Success" success="True" time="0.016">
+      </test-case>
+      <test-case name="CarTest.TestConstructor1_Variables1" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="CarTest.TestConstructor1_Variables2" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="CarTest.TestConstructor2_NotNull" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="CarTest.TestConstructor2_ParNull" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="DriverTest.Test_GetPlayerAction_LeftArrow" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="DriverTest.Test_GetPlayerAction_None" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="DriverTest.Test_GetPlayerAction_RightArrow" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="DriverTest.Test_GetPlayerAction_TouchLeft" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="DriverTest.Test_GetPlayerAction_TouchRight" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="DriverTest.Test_HandlePlayerAction_Left" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="DriverTest.Test_HandlePlayerAction_Right" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="DriverTest.Test_SendToOther" executed="True" result="Success" success="True" time="0.016">
+      </test-case>
+      <test-case name="GameTest.Test_addCar" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="GameTest.Test_addCarTwice" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="GameTest.Test_CarsEmpty" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="GameTest.Test_ConstructorVariables" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="MainscriptTest.Test_Cars" executed="True" result="Success" success="True" time="0.016">
+      </test-case>
+      <test-case name="MainscriptTest.Test_ClientSet" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="MainscriptTest.Test_SendToOther" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="MainscriptTest.Test_ServerNetwork" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="MainscriptTest.Test_ServerSet" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="PlayerTest.TestConstructor" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="PlayerTest.TestConstructor_Par" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ServerTest.Test_checkJobAvailable" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ServerTest.Test_checkJobAvailable_CarNull" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ServerTest.Test_checkJobAvailable_Driver" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ServerTest.Test_checkJobAvailable_NetworkPlayerDriver" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ServerTest.Test_checkJobAvailable_NetworkPlayerThrottler" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ServerTest.Test_checkJobAvailable_OverloadCarNum" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ServerTest.Test_checkJobAvailable_Throttler" executed="True" result="Success" success="True" time="0.016">
+      </test-case>
+      <test-case name="ServerTest.Test_ChooseJob_JobAvailable" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ServerTest.Test_ChooseJob_JobNotAvailable" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ServerTest.Test_GetStartingPosition" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ServerTest.Test_noJobAvailable_NegativeCarNum" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ServerTest.TestConnected" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ServerTest.TestDisconnect" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ServerTest.TestInitialization" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ThrottlerTest.Test_GetPlayerAction_DownArrow" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ThrottlerTest.Test_GetPlayerAction_None" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ThrottlerTest.Test_GetPlayerAction_TouchLeft" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ThrottlerTest.Test_GetPlayerAction_TouchRight" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ThrottlerTest.Test_GetPlayerAction_UpArrow" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ThrottlerTest.Test_HandleCollision_Mud" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ThrottlerTest.Test_HandleCollision_NotMud" executed="True" result="Success" success="True" time="0.016">
+      </test-case>
+      <test-case name="ThrottlerTest.Test_HandlePlayerAction_applyFrictionNegative" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ThrottlerTest.Test_HandlePlayerAction_applyFrictionPositive" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ThrottlerTest.Test_HandlePlayerAction_applyFrictionZero" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ThrottlerTest.Test_HandlePlayerAction_applySpeedDown" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ThrottlerTest.Test_HandlePlayerAction_applySpeedUp" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="ThrottlerTest.Test_SendToOther" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="UtilsTest.Test_CopyQuaternion" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="UtilsTest.Test_CopyVector" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="UtilsTest.Test_ForceInInterval1" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="UtilsTest.Test_ForceInInterval2" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="UtilsTest.Test_ForceInInterval3" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+      <test-case name="UtilsTest.Test_ForceInInterval4" executed="True" result="Success" success="True" time="0.000">
+      </test-case>
+    </results>
+  </test-suite>
+</test-results>
