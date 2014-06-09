@@ -155,5 +155,27 @@ namespace CarsTests
 
             Assert.AreNotEqual(oldRotation, _autoBehaviour.transform.rotation.eulerAngles);
         }
+
+        [Test]
+        public void Test_PositionUpdated_IsSelf()
+        {
+            Vector3 expectedPosition = _autoBehaviour.transform.position;
+            expectedPosition.z -= 1.0f;
+
+            _driver.PositionUpdated(_autoBehaviour, true);
+
+            Assert.AreEqual(expectedPosition, Camera.main.transform.position);
+        }
+
+        [Test]
+        public void Test_PositionUpdated_NotIsSelf()
+        {
+            Vector3 expectedPosition = _autoBehaviour.transform.position;
+            expectedPosition.z -= 1.0f;
+
+            _driver.PositionUpdated(_autoBehaviour, false);
+
+            Assert.AreEqual(expectedPosition, Camera.main.transform.position);
+        }
     }
 }

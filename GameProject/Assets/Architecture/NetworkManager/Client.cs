@@ -1,6 +1,7 @@
 using Behaviours;
 using Cars;
 using Controllers;
+using Mock;
 using UnityEngine;
 
 namespace NetworkManager
@@ -13,6 +14,16 @@ namespace NetworkManager
         private string _pendingType = "";
         private int _pendingCarNumber = -1;
 
+        public INetwork Network { get; set; }
+        public INetworkView NetworkView { get; set; }
+
+        public void Start()
+        {
+            Network = new NetworkWrapper();
+            NetworkView = new NetworkViewWrapper();
+            NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
+        }
+
         public void ChooseJobWhenConnected(string typeString, int carNumber)
         {
             _pendingType = typeString;
@@ -21,13 +32,14 @@ namespace NetworkManager
 
         public void OnConnectedToServer()
         {
-            networkView.RPC("chooseJob", RPCMode.Server, _pendingType, _pendingCarNumber);
+            NetworkView.RPC("chooseJob", RPCMode.Server, _pendingType, _pendingCarNumber);
         }
 
         public void OnDisconnectedFromServer()
         {
             foreach (GameObject go in GameObject.FindGameObjectsWithTag("Player"))
             {
+                Debug.Log("yes");
                 Destroy(go);
             }
             NetworkController.connected = false;
@@ -80,6 +92,16 @@ namespace NetworkManager
         public void chooseJobNotAvailable()
         {
             Network.Disconnect();
+        }
+
+        public string GetPendingType()
+        {
+            return _pendingType;
+        }
+
+        public int GetPendingCarNumber()
+        {
+            return _pendingCarNumber;
         }
     }
 }

@@ -2,8 +2,6 @@ using Behaviours;
 using Mock;
 using NetworkManager;
 using UnityEngine;
-using Utilities;
-using UnityException = UnityEngine.UnityException;
 
 namespace Cars
 {
@@ -25,7 +23,7 @@ namespace Cars
 
         public Car(int carNumber)
         {
-            this.CarNumber = carNumber;
+            CarNumber = carNumber;
         }
 
         public Car()
@@ -35,12 +33,6 @@ namespace Cars
 
         public Car(AutoBehaviour gameObject)
         {
-            // The car may not have more than the maximum allowed players.
-            if (_amountPlayers >= GameData.MAX_PLAYERS_PER_CAR)
-            {
-                throw new UnityException(GameData.ERROR_AMOUNT_PLAYERS);
-            }
-
             CarObject = gameObject;
         }
 
@@ -57,35 +49,6 @@ namespace Cars
             if (ShouldSend())
             {
                 MainScript.SelfPlayer.Role.SendToOther(this);
-            }
-        }
-
-        public void AddPlayer(Player p)
-        {
-            // The amount of players should not exceed the maximum allowed.
-            if (_amountPlayers >= GameData.MAX_PLAYERS_PER_CAR)
-            {
-                throw new UnityException(GameData.ERROR_AMOUNT_PLAYERS);
-            }
-
-            if (p != null)
-            {
-                if (p.Role is Driver)
-                {
-                    Driver = p;
-                    Driver.Car = this;
-                    ++_amountPlayers;
-                }
-                else if (p.Role is Throttler)
-                {
-                    Throttler = p;
-                    Throttler.Car = this;
-                    ++_amountPlayers;
-                }
-                else
-                {
-                    throw new UnityException("Failsafe: The player is not a driver or throttler!");
-                }
             }
         }
 

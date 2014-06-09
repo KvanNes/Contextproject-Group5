@@ -29,6 +29,7 @@ namespace CarsTests
             Assert.IsNull(Player.Role);
         }
 
+        [Test]
         public void TestConstructorNotNull()
         {
             Assert.IsNotNull(PlayerPar);

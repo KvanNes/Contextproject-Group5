@@ -29,6 +29,7 @@ namespace NetworkManagerTests
         private const int CarNumberInit = 0;
         private const int CarNumberNegative = -1;
         private const int CarNumberTen = 10;
+        private bool started = false;
 
         /*
          * Setup for the tests by creating the appropiate mocks and setting up the server
@@ -44,20 +45,11 @@ namespace NetworkManagerTests
             NetworkView = new Mock<INetworkView>();
             _testServer.Game = new Game();
             _testServer.Network = Network.Object;
-            _testServer.StartServer();
+            if (!started)
+                _testServer.StartServer();
             _testServer.NetworkView = NetworkView.Object;
             _carObject.NetworkView = NetworkView.Object;
-
-            //_networkManagerGameObject = GameObject.FindGameObjectWithTag("Network");
-
-            _networkManagerGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            _networkManagerGameObject.AddComponent<Server>();
-            _networkManagerGameObject.GetComponent<Server>().PlayerPrefab =
-                GameObject.Instantiate(Resources.LoadAssetAtPath("Assets/Auto.prefab", typeof(GameObject))) as GameObject;
-            _networkManagerGameObject.GetComponent<Server>().SpawnObject = _networkManagerGameObject.transform;
-            // */
-            _testServer.PlayerPrefab = _networkManagerGameObject.GetComponent<Server>().PlayerPrefab;
-            _testServer.SpawnObject = _networkManagerGameObject.GetComponent<Server>().SpawnObject;
+            started = true;
 
             var cars = new List<Car>();
             for (var i = 0; i < GameData.CARS_AMOUNT; i++)
@@ -74,6 +66,7 @@ namespace NetworkManagerTests
             Utils.DestroyObject(_gameObject);
             _testServer.Game.Cars.Clear();
             _testServer.DisconnectServer();
+            Utils.DestroyObject(_testServer);
             Utils.DestroyObjects(GameObject.FindGameObjectsWithTag("Player"));
         }
 
@@ -83,7 +76,6 @@ namespace NetworkManagerTests
         [Test]
         public void TestInitialization()
         {
-            _testServer.Network = Network.Object;
             _testServer.StartServer();
             Network.Verify(net => net.InitializeServer(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()));
         }
@@ -91,6 +83,7 @@ namespace NetworkManagerTests
         [Test]
         public void TestConnected()
         {
+            _testServer.StartServer();
             Assert.IsTrue(_testServer.IsConnected());
         }
 

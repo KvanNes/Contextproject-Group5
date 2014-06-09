@@ -18,5 +18,6 @@ namespace Mock
         void RPC(string name, RPCMode mode, int position);
         void RPC(string name, RPCMode mode, Quaternion currentRotation, int carNumber);
         void RPC(string name, RPCMode mode, Vector3 currentPosition, float speed, int carNumber);
+        void RPC(string name, RPCMode mode, string pendingType, int pendingCarNumber);
     }
 }

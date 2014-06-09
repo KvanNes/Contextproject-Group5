@@ -264,15 +264,11 @@ namespace CarsTests
         {
             Vector3 expectedPosition = new Vector3(5.6f, 1f, -8f);
             const float expectedOrthographicSize = 1.4f;
-            GameObject tempGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            AutoBehaviour tempAutoBehaviour = tempGameObject.AddComponent<AutoBehaviour>();
 
-            _throttler.PositionUpdated(tempAutoBehaviour, true);
+            _throttler.PositionUpdated(_autoBehaviour, true);
 
             Assert.AreEqual(expectedPosition, Camera.main.transform.position);
             Assert.AreEqual(expectedOrthographicSize, Camera.main.orthographicSize);
-
-            Utils.DestroyObject(tempGameObject);
         }
 
         [Test]
@@ -280,15 +276,11 @@ namespace CarsTests
         {
             Vector3 expectedPosition = Camera.main.transform.position;
             float expectedOrthographicSize = Camera.main.orthographicSize;
-            GameObject tempGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            AutoBehaviour tempAutoBehaviour = tempGameObject.AddComponent<AutoBehaviour>();
 
-            _throttler.PositionUpdated(tempAutoBehaviour, false);
+            _throttler.PositionUpdated(_autoBehaviour, false);
 
             Assert.AreEqual(expectedPosition, Camera.main.transform.position);
             Assert.AreEqual(expectedOrthographicSize, Camera.main.orthographicSize);
-
-            Utils.DestroyObject(tempGameObject);
         }
     }
 }

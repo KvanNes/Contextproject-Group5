@@ -27,12 +27,6 @@ namespace Cars
 
         public IPlayerRole Role { get; set; }
 
-        public Player(Car car, IPlayerRole role)
-        {
-            Car = car;
-            Role = role;
-        }
-
         public Player(ICar car, IPlayerRole role)
         {
             Car = car;

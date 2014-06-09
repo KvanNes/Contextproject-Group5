@@ -66,5 +66,11 @@ namespace Mock
         {
             _nativeNetworkView.RPC(name, mode, currentPosition, speed, carNumber);
         }
+
+
+        public void RPC(string name, RPCMode mode, string pendingType, int pendingCarNumber)
+        {
+            _nativeNetworkView.RPC(name, mode, pendingType, pendingCarNumber);
+        }
     }
 }
