@@ -105,7 +105,7 @@ namespace NetworkManager
             ab.networkView.RPC("setCarNumber", RPCMode.OthersBuffered, carNumber - 1);
         }
 
-        public void OnServerInitialized()
+        private void OnServerInitialized()
         {
             Game = new Game();
             Camera.main.transform.position = new Vector3(0, 0, 10);

@@ -30,7 +30,7 @@ namespace Cars
 
         public PlayerAction GetPlayerAction()
         {
-            int separatingColumn = Screen.width/2;
+            int separatingColumn = Screen.width / 2;
 
             // When touching with one finger: check whether on left/right half.
             if (InputWrapper.GetTouchCount() >= 1)
@@ -60,26 +60,26 @@ namespace Cars
             float forwardAccelerationFactor)
         {
             // Calculate acceleration.
-            ab.Acceleration = ab.Acceleration + accelerationIncrease*deltaTime;
+            ab.Acceleration = ab.Acceleration + accelerationIncrease * deltaTime;
             ab.Acceleration = Utils.ForceInInterval(ab.Acceleration, GameData.MIN_ACCELERATION,
                 GameData.MAX_ACCELERATION);
 
             // Calculate speed.
             if (GameData.MIN_SPEED <= ab.Speed && ab.Speed < 0)
             {
-                ab.Speed = ab.Speed + backAccelerationFactor*ab.Acceleration*deltaTime;
+                ab.Speed = ab.Speed + backAccelerationFactor * ab.Acceleration * deltaTime;
             }
             else if (0 <= ab.Speed && ab.Speed <= GameData.MAX_SPEED)
             {
-                ab.Speed = ab.Speed + forwardAccelerationFactor*ab.Acceleration
-                           *deltaTime;
+                ab.Speed = ab.Speed + forwardAccelerationFactor * ab.Acceleration
+                           * deltaTime;
             }
         }
 
         private void applyFriction(AutoBehaviour ab, float deltaTime, float delta)
         {
             float signBefore = Mathf.Sign(ab.Speed);
-            ab.Speed += deltaTime*delta;
+            ab.Speed += deltaTime * delta;
             float signAfter = Mathf.Sign(ab.Speed);
 
             if (Math.Abs(signAfter - signBefore) > GameData.TOLERANCE)
@@ -114,7 +114,7 @@ namespace Cars
             }
 
             // Move the car according to current speed.
-            ab.transform.Translate(ab.Speed*Time.deltaTime*4f, 0, 0);
+            ab.transform.Translate(ab.Speed * Time.deltaTime * 4f, 0, 0);
             ab.PositionUpdated();
         }
 
@@ -130,17 +130,14 @@ namespace Cars
             else
             {
                 // Go back a little.
-                ab.Speed = -(ab.Speed + Mathf.Sign(ab.Speed)*GameData.COLLISION_CONSTANT)*GameData.COLLISION_FACTOR;
+                ab.Speed = -(ab.Speed + Mathf.Sign(ab.Speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
                 ab.RestoreConfiguration();
             }
         }
 
         public void PositionUpdated(AutoBehaviour ab, bool isSelf)
         {
-            if (!isSelf)
-            {
-                return;
-            }
+            if (!isSelf) return;
 
             Camera.main.transform.position = new Vector3(5.6f, 1f, -8f);
             Camera.main.orthographicSize = 1.4f;
@@ -150,9 +147,9 @@ namespace Cars
         {
             GameObject sphere = ab.GetSphere();
             Transform carTransform = ab.transform;
-            float angle = Mathf.Deg2Rad*carTransform.rotation.eulerAngles.z;
-            Vector3 v = Utils.Vector2To3(Utils.Rotate(new Vector2(5f/0.07f, 0f), Vector2.zero, -angle));
-            v.y *= 0.07f/0.03f; // Scale ratio of Auto needs to be taken into account here.
+            float angle = Mathf.Deg2Rad * carTransform.rotation.eulerAngles.z;
+            Vector3 v = Utils.Vector2To3(Utils.Rotate(new Vector2(5f / 0.07f, 0f), Vector2.zero, -angle));
+            v.y *= 0.07f / 0.03f; // Scale ratio of Auto needs to be taken into account here.
             v.z = -0.3f;
             sphere.transform.localPosition = v;
         }

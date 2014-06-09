@@ -251,4 +251,28 @@ public class ThrottlerTest
 
         Utils.DestroyObject(gameObject);
     }
+
+    [Test]
+    public void Test_PositionUpdated_IsSelf()
+    {
+        Vector3 expectedPosition = new Vector3(5.6f, 1f, -8f);
+        const float expectedOrthographicSize = 1.4f;
+
+        _throttler.PositionUpdated(new AutoBehaviour(), true);
+
+        Assert.AreEqual(expectedPosition, Camera.main.transform.position);
+        Assert.AreEqual(expectedOrthographicSize, Camera.main.orthographicSize);
+    }
+
+    [Test]
+    public void Test_PositionUpdated_NotIsSelf()
+    {
+        Vector3 expectedPosition = Camera.main.transform.position;
+        float expectedOrthographicSize = Camera.main.orthographicSize;
+
+        _throttler.PositionUpdated(new AutoBehaviour(), false);
+
+        Assert.AreEqual(expectedPosition, Camera.main.transform.position);
+        Assert.AreEqual(expectedOrthographicSize, Camera.main.orthographicSize);
+    }
 }
