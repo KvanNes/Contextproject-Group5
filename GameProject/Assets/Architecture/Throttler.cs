@@ -14,7 +14,7 @@ public class Throttler : PlayerRole {
     public void SendToOther(Car car) {
         Vector3 currentPosition = car.CarObject.transform.position;
         if (currentPosition != lastSentPosition) {
-            lastSentPosition = Utils.copy(currentPosition);
+            lastSentPosition = MathUtils.copy(currentPosition);
             car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, currentPosition, car.CarObject.speed, car.carNumber);
         }
     }
@@ -51,7 +51,7 @@ public class Throttler : PlayerRole {
                                   float forwardAccelerationFactor) {
         // Calculate acceleration.
         ab.acceleration = ab.acceleration + accelerationIncrease * deltaTime;
-        ab.acceleration = Utils.forceInInterval(ab.acceleration, GameData.MIN_ACCELERATION,
+        ab.acceleration = MathUtils.forceInInterval(ab.acceleration, GameData.MIN_ACCELERATION,
                                                 GameData.MAX_ACCELERATION);
 
         // Calculate speed.
@@ -125,7 +125,7 @@ public class Throttler : PlayerRole {
         GameObject sphere = ab.GetSphere();
         Transform carTransform = ab.transform;
         float angle = Mathf.Deg2Rad * carTransform.rotation.eulerAngles.z;
-        Vector3 v = Utils.Vector2to3(Utils.Rotate(new Vector2(5f / 0.07f, 0f), Vector2.zero, -angle));
+        Vector3 v = MathUtils.Vector2to3(MathUtils.Rotate(new Vector2(5f / 0.07f, 0f), Vector2.zero, -angle));
         v.y *= 0.07f / 0.03f;  // Scale ratio of Auto needs to be taken into account here.
         v.z = -0.3f;
         sphere.transform.localPosition = v;

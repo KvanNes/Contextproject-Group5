@@ -12,12 +12,12 @@ public class ControlButtonsGUI : MonoBehaviour {
 	Texture2D DriverNormalRightTexture, DriverPressedRightTexture;
 
 	private void Start() {
-		ThrottlerNormalTexture = Utils.LoadTexture("gaspedaal-normaal");
-        ThrottlerPressedTexture = Utils.LoadTexture("gaspedaal-ingedrukt");
-        DriverNormalLeftTexture = Utils.LoadTexture("stuur-links-normaal");
-        DriverPressedLeftTexture = Utils.LoadTexture("stuur-links-ingedrukt");
-        DriverNormalRightTexture = Utils.LoadTexture("stuur-rechts-normaal");
-        DriverPressedRightTexture = Utils.LoadTexture("stuur-rechts-ingedrukt");
+		ThrottlerNormalTexture = TextureUtils.LoadTexture("gaspedaal-normaal");
+		ThrottlerPressedTexture = TextureUtils.LoadTexture("gaspedaal-ingedrukt");
+		DriverNormalLeftTexture = TextureUtils.LoadTexture("stuur-links-normaal");
+		DriverPressedLeftTexture = TextureUtils.LoadTexture("stuur-links-ingedrukt");
+		DriverNormalRightTexture = TextureUtils.LoadTexture("stuur-rechts-normaal");
+		DriverPressedRightTexture = TextureUtils.LoadTexture("stuur-rechts-ingedrukt");
 	}
 
     private void DrawControl(Texture2D texture, float left, float top) {
