@@ -55,7 +55,6 @@ namespace NetworkManager
             }
 
             Player player = (typeString == "Throttler" ? car.Throttler : car.Driver);
-            Debug.Log(UnityEngine.Network.player.port + " | " + default(NetworkPlayer).port);
             if (player.NetworkPlayer != default(NetworkPlayer))
             {
                 return false;

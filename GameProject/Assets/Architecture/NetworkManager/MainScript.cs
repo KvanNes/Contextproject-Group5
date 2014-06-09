@@ -101,6 +101,11 @@ namespace NetworkManager
             SelfCar = c;
         }
 
+        public ICar GetSelfCar()
+        {
+            return SelfCar;
+        }
+
         public void Clear()
         {
             Server = null;

@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace AssemblyCSharp {
+namespace BehavioursTests {
     
     [TestFixture]
     public class TestTrackBehaviour {
