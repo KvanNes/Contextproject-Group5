@@ -13,6 +13,8 @@ public class ServerTest
 {
     private Server _testServer;
     private GameObject _gameObject;
+    private GameObject _networkManagerGameObject;
+    private GameObject _playerPrefabGameObject;
     private AutoBehaviour _carObject;
     private NetworkPlayer _networkPlayer;
 
@@ -29,7 +31,7 @@ public class ServerTest
     /*
      * Setup for the tests by creating the appropiate mocks and setting up the server
     */
-    [TestFixtureSetUp]
+    [SetUp]
     public void SetupServer()
     {
         _networkPlayer = new NetworkPlayer();
@@ -42,6 +44,11 @@ public class ServerTest
         _testServer.Network = Network.Object;
         _testServer.StartServer();
         _testServer.NetworkView = NetworkView.Object;
+        _carObject.NetworkView = NetworkView.Object;
+
+        _networkManagerGameObject = GameObject.FindGameObjectWithTag("Network");
+        _testServer.PlayerPrefab = _networkManagerGameObject.GetComponent<Server>().PlayerPrefab;
+        _testServer.SpawnObject = _networkManagerGameObject.GetComponent<Server>().transform;
 
         var cars = new List<Car>();
         for (var i = 0; i < GameData.CARS_AMOUNT; i++)
@@ -57,6 +64,8 @@ public class ServerTest
     {
         Utils.DestroyObject(_gameObject);
         _testServer.Game.Cars.Clear();
+        _testServer.DisconnectServer();
+        Utils.DestroyObjects(GameObject.FindGameObjectsWithTag("Player"));
     }
 
     /**
@@ -65,6 +74,8 @@ public class ServerTest
     [Test]
     public void TestInitialization()
     {
+        _testServer.Network = Network.Object;
+        _testServer.StartServer();
         Network.Verify(net => net.InitializeServer(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()));
     }
 
@@ -197,6 +208,57 @@ public class ServerTest
         var startingPosition = Server.GetStartingPosition(CarNumberInit);
 
         Assert.AreEqual(expectedPosition, startingPosition);
+    }
 
+    [Test]
+    public void Test_OnServerInitialized_Game()
+    {
+        _testServer.Network = new NetworkWrapper();
+        _testServer.StartServer();
+
+        _testServer.OnServerInitialized();
+
+        Assert.IsNotNull(_testServer.Game);
+    }
+
+    [Test]
+    public void Test_OnServerInitialized_Camera()
+    {
+        Vector3 expected = new Vector3(0, 0, 10);
+        _testServer.Network = new NetworkWrapper();
+        _testServer.StartServer();
+
+        _testServer.OnServerInitialized();
+
+        Assert.AreEqual(expected, Camera.main.transform.position);
+    }
+
+    [Test]
+    public void Test_OnServerInitialized_TwoCarsAdded()
+    {
+        const int expected = 2;
+        _testServer.Network = new NetworkWrapper();
+        _testServer.StartServer();
+
+        _testServer.OnServerInitialized();
+
+        Assert.AreEqual(expected, _testServer.Game.Cars.Count);
+    }
+
+    [Test]
+    public void Test_OnServerInitialized_TwoDriversTwoThrottlers()
+    {
+        _testServer.Network = new NetworkWrapper();
+        _testServer.StartServer();
+
+        _testServer.OnServerInitialized();
+
+        foreach (Car c in _testServer.Game.Cars)
+        {
+            Assert.IsNotNull(c.Driver);
+            Assert.IsTrue(c.Driver.Role.GetType() == typeof(Driver));
+            Assert.IsNotNull(c.Throttler);
+            Assert.IsTrue(c.Throttler.Role.GetType() == typeof(Throttler));
+        }
     }
 }

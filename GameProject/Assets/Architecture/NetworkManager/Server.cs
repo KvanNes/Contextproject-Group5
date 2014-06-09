@@ -43,18 +43,19 @@ namespace NetworkManager
         [RPC]
         public bool checkJobAvailableAndMaybeAdd(string typeString, int carNumber, NetworkPlayer networkPlayer)
         {
-            if (carNumber < 0 || carNumber >= this.Game.Cars.Count)
+            if (carNumber < 0 || carNumber >= Game.Cars.Count)
             {
                 return false;
             }
 
-            Car car = this.Game.Cars[carNumber];
+            Car car = Game.Cars[carNumber];
             if (car == null)
             {
                 return false;
             }
 
             Player player = (typeString == "Throttler" ? car.Throttler : car.Driver);
+            Debug.Log(UnityEngine.Network.player.port + " | " + default(NetworkPlayer).port);
             if (player.NetworkPlayer != default(NetworkPlayer))
             {
                 return false;
@@ -95,7 +96,7 @@ namespace NetworkManager
             float y = GetStartingPosition(carNumber);
             Vector3 pos = SpawnObject.position + new Vector3(0, y, 0);
 
-            Object obj = UnityEngine.Network.Instantiate(PlayerPrefab, pos, Quaternion.identity, 0);
+            Object obj = Network.Instantiate(PlayerPrefab, pos, Quaternion.identity, 0);
             AutoBehaviour ab = (AutoBehaviour)((GameObject)obj).GetComponent(typeof(AutoBehaviour));
             Car car = new Car(ab);
             car.Throttler = new Player(car, new Throttler());
@@ -104,7 +105,7 @@ namespace NetworkManager
             ab.networkView.RPC("setCarNumber", RPCMode.OthersBuffered, carNumber - 1);
         }
 
-        private void OnServerInitialized()
+        public void OnServerInitialized()
         {
             Game = new Game();
             Camera.main.transform.position = new Vector3(0, 0, 10);

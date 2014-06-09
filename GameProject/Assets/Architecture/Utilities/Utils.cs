@@ -93,5 +93,13 @@ namespace Utilities
         {
             Object.DestroyImmediate(obj);
         }
+
+        public static void DestroyObjects(Object[] objs)
+        {
+            foreach (Object o in objs)
+            {
+                DestroyObject(o);
+            }
+        }
     }
 }
