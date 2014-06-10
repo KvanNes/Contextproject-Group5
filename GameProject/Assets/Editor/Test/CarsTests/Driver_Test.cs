@@ -76,7 +76,7 @@ namespace CarsTests
             _carOther.CarObject.transform.rotation = rot;
             _player.Role.SendToOther(_carOther);
 
-            Assert.AreEqual(Utils.Copy(rot), _driver.GetLastSentRotation());
+            Assert.AreEqual(MathUtils.Copy(rot), _driver.GetLastSentRotation());
             NetworkViewOther.Verify(
                 net => net.RPC(It.IsAny<string>(), It.IsAny<RPCMode>(), It.IsAny<Quaternion>(), It.IsAny<int>()));
         }

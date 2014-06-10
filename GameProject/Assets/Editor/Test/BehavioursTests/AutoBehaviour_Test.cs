@@ -107,7 +107,7 @@ namespace BehavioursTests
         public void Test_RestoreConfiguration_Rotation()
         {
             _autoBehaviour.AddToQueues(3);
-            var lastRotation = Utils.Copy(_autoBehaviour.GetLastRotations().Peek());
+            var lastRotation = MathUtils.Copy(_autoBehaviour.GetLastRotations().Peek());
 
             _autoBehaviour.RestoreConfiguration();
 
@@ -118,7 +118,7 @@ namespace BehavioursTests
         public void Test_RestoreConfiguration_Position()
         {
             _autoBehaviour.AddToQueues(3);
-            var lastPosition = Utils.Copy(_autoBehaviour.GetLastPositions().Peek());
+            var lastPosition = MathUtils.Copy(_autoBehaviour.GetLastPositions().Peek());
 
             _autoBehaviour.RestoreConfiguration();
 

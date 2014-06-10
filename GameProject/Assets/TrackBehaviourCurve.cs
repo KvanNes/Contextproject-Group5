@@ -23,8 +23,8 @@ public class TrackBehaviourCurve : TrackBehaviour {
 	
 	public override void Start() {
 		addEdges(
-            Utils.RotateVectors(pointsAbove, rotateTimes),
-            Utils.RotateVectors(pointsBelow, rotateTimes)
+            MathUtils.RotateVectors(pointsAbove, rotateTimes),
+            MathUtils.RotateVectors(pointsBelow, rotateTimes)
         );
 	}
 }

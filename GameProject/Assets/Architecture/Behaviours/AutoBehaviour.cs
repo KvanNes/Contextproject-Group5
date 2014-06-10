@@ -55,8 +55,8 @@ namespace Behaviours
             {
                 _lastPositions.Dequeue();
             }
-            _lastRotations.Enqueue(Utils.Copy(transform.rotation));
-            _lastPositions.Enqueue(Utils.Copy(transform.position));
+            _lastRotations.Enqueue(MathUtils.Copy(transform.rotation));
+            _lastPositions.Enqueue(MathUtils.Copy(transform.position));
         }
 
         // Restore last position and rotation.
@@ -64,9 +64,9 @@ namespace Behaviours
         {
             try
             {
-                transform.rotation = Utils.Copy(_lastRotations.Dequeue());
+                transform.rotation = MathUtils.Copy(_lastRotations.Dequeue());
                 RotationUpdated();
-                transform.position = Utils.Copy(_lastPositions.Dequeue());
+                transform.position = MathUtils.Copy(_lastPositions.Dequeue());
                 PositionUpdated();
             }
             catch (InvalidOperationException)
@@ -98,7 +98,7 @@ namespace Behaviours
             StoreConfiguration();
 
             // Make sure speed is in constrained interval.
-            Speed = Utils.ForceInInterval(Speed, GameData.MIN_SPEED, GameData.MAX_SPEED);
+            Speed = MathUtils.ForceInInterval(Speed, GameData.MIN_SPEED, GameData.MAX_SPEED);
 
             if (MainScript.IsDebug)
             {
@@ -167,8 +167,8 @@ namespace Behaviours
         {
             for (var i = 0; i < count; i++)
             {
-                _lastRotations.Enqueue(Utils.Copy(transform.rotation));
-                _lastPositions.Enqueue(Utils.Copy(transform.position));
+                _lastRotations.Enqueue(MathUtils.Copy(transform.rotation));
+                _lastPositions.Enqueue(MathUtils.Copy(transform.position));
             }
         }
 

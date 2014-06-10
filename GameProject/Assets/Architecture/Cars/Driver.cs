@@ -25,7 +25,7 @@ namespace Cars
             Quaternion currentRotation = car.CarObject.transform.rotation;
             if (currentRotation != _lastSentRotation)
             {
-                _lastSentRotation = Utils.Copy(currentRotation);
+                _lastSentRotation = MathUtils.Copy(currentRotation);
                 car.CarObject.NetworkView.RPC("UpdateRotation", RPCMode.Others, currentRotation, car.CarNumber);
             }
         }

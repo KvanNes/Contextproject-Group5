@@ -22,7 +22,7 @@ namespace Cars
             Vector3 currentPosition = car.CarObject.transform.position;
             if (currentPosition != _lastSentPosition)
             {
-                _lastSentPosition = Utils.Copy(currentPosition);
+                _lastSentPosition = MathUtils.Copy(currentPosition);
                 car.CarObject.NetworkView.RPC("UpdatePosition", RPCMode.Others, currentPosition, car.CarObject.Speed,
                     car.CarNumber);
             }
@@ -61,7 +61,7 @@ namespace Cars
         {
             // Calculate acceleration.
             ab.Acceleration = ab.Acceleration + accelerationIncrease * deltaTime;
-            ab.Acceleration = Utils.ForceInInterval(ab.Acceleration, GameData.MIN_ACCELERATION,
+            ab.Acceleration = MathUtils.ForceInInterval(ab.Acceleration, GameData.MIN_ACCELERATION,
                 GameData.MAX_ACCELERATION);
 
             // Calculate speed.
@@ -155,7 +155,7 @@ namespace Cars
             GameObject sphere = ab.GetSphere();
             Transform carTransform = ab.transform;
             float angle = Mathf.Deg2Rad * carTransform.rotation.eulerAngles.z;
-            Vector3 v = Utils.Vector2To3(Utils.Rotate(new Vector2(5f / 0.07f, 0f), Vector2.zero, -angle));
+            Vector3 v = MathUtils.Vector2To3(MathUtils.Rotate(new Vector2(5f / 0.07f, 0f), Vector2.zero, -angle));
             v.y *= 0.07f / 0.03f; // Scale ratio of Auto needs to be taken into account here.
             v.z = -0.3f;
             sphere.transform.localPosition = v;

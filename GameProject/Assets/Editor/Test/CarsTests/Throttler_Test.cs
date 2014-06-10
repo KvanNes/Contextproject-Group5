@@ -74,7 +74,7 @@ namespace CarsTests
             _carOther.CarObject.transform.position = pos;
             _player.Role.SendToOther(_carOther);
 
-            Assert.AreEqual(Utils.Copy(pos), _throttler.GetLastSentPosition());
+            Assert.AreEqual(MathUtils.Copy(pos), _throttler.GetLastSentPosition());
             NetworkViewOther.Verify(
                 net =>
                     net.RPC(It.IsAny<string>(), It.IsAny<RPCMode>(), It.IsAny<Vector3>(), It.IsAny<float>(),

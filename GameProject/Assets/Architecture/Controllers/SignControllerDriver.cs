@@ -12,7 +12,7 @@ public class SignControllerDriver : SignController
 
     public override void Start()
     {
-        Texture2D textureSlow = Utils.LoadTexture("TextureSlow");
+        Texture2D textureSlow = TextureUtils.LoadTexture("TextureSlow");
 
         AddArrow(0, 0, textureSlow);
     }

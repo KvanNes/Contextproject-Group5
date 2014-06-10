@@ -28,8 +28,8 @@ namespace Behaviours
         public override void Start()
         {
             AddEdges(
-                Utils.RotateVectors(pointsAbove, RotateTimes),
-                Utils.RotateVectors(pointsBelow, RotateTimes)
+                MathUtils.RotateVectors(pointsAbove, RotateTimes),
+                MathUtils.RotateVectors(pointsBelow, RotateTimes)
                 );
         }
     }
