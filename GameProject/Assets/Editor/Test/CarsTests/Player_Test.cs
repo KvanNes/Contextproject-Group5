@@ -1,4 +1,5 @@
 ﻿using Cars;
+using Interfaces;
 using NUnit.Framework;
 
 namespace CarsTests

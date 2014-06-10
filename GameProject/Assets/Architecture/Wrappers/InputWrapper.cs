@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Mock
+namespace Wrappers
 {
     public class InputWrapper
     {

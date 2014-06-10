@@ -1,8 +1,9 @@
 using Behaviours;
 using Cars;
-using Mock;
+using Interfaces;
 using UnityEngine;
 using Utilities;
+using Wrappers;
 
 namespace NetworkManager
 {
@@ -130,10 +131,12 @@ namespace NetworkManager
 
         }
 
-        private void OnPlayerDisconnected(NetworkPlayer player)
+        public void OnPlayerDisconnected(NetworkPlayer player)
         {
-            UnityEngine.Network.RemoveRPCs(player);
-            UnityEngine.Network.DestroyPlayerObjects(player);
+            //UnityEngine.Network.RemoveRPCs(player);
+            //UnityEngine.Network.DestroyPlayerObjects(player);
+            Network.RemoveRPCs(player);
+            Network.DestroyPlayerObjects(player);
 
             foreach (Car car in Game.Cars)
             {

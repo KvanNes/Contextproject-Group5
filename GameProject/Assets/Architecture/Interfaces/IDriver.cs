@@ -1,7 +1,7 @@
 ﻿using Behaviours;
 using Cars;
 
-namespace Mock
+namespace Interfaces
 {
     public interface IDriver
     {

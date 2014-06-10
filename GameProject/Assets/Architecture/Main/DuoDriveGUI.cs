@@ -1,5 +1,6 @@
 ﻿using Cars;
 using Controllers;
+using Interfaces;
 using NetworkManager;
 using UnityEngine;
 using System;
@@ -82,12 +83,13 @@ public class DuoDriveGUI : MonoBehaviour {
 
         CreateTutorialButton();
 
+        int buttonY_ = buttonY;
         if (ServerAvailable() && !Network.isServer && !Network.isClient) {
-            int buttonY = DuoDriveGUI.buttonY;
             for (int i = 0; i < NetworkController.hostData.Length; i++) {
                 CreateClientButtons(buttonX, buttonY, NetworkController.hostData[i]);
-                buttonY += buttonH * GameData.CARS_AMOUNT + 30;
+                buttonY_ += buttonH * GameData.CARS_AMOUNT + 30;
             }
+            buttonY = buttonY_;
         }
     }
 }

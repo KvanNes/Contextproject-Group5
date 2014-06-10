@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Interfaces;
+using UnityEngine;
 
-namespace Mock
+namespace Wrappers
 {
     public class NetworkWrapper : INetwork
     {
@@ -13,6 +14,16 @@ namespace Mock
         public NetworkConnectionError InitializeServer(int maxConnection, int portnumber, bool natPunchthrough)
         {
             return Network.InitializeServer(maxConnection, portnumber, natPunchthrough);
+        }
+
+        public void RemoveRPCs(NetworkPlayer networkPlayer)
+        {
+            Network.RemoveRPCs(networkPlayer);
+        }
+
+        public void DestroyPlayerObjects(NetworkPlayer networkPlayer)
+        {
+            Network.DestroyPlayerObjects(networkPlayer);
         }
 
         public void Disconnect()

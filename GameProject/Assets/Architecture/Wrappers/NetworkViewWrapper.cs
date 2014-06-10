@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Interfaces;
+using UnityEngine;
 
-namespace Mock
+namespace Wrappers
 {
     public class NetworkViewWrapper : INetworkView
     {

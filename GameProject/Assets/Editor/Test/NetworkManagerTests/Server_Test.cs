@@ -1,6 +1,6 @@
 ﻿using Behaviours;
 using Cars;
-using Mock;
+using Interfaces;
 using NetworkManager;
 using UnityEngine;
 using NUnit.Framework;
@@ -29,7 +29,6 @@ namespace NetworkManagerTests
         private const int CarNumberInit = 0;
         private const int CarNumberNegative = -1;
         private const int CarNumberTen = 10;
-        private bool started = false;
 
         /*
          * Setup for the tests by creating the appropiate mocks and setting up the server
@@ -45,11 +44,9 @@ namespace NetworkManagerTests
             NetworkView = new Mock<INetworkView>();
             _testServer.Game = new Game();
             _testServer.Network = Network.Object;
-            if (!started)
-                _testServer.StartServer();
+            _testServer.StartServer();
             _testServer.NetworkView = NetworkView.Object;
             _carObject.NetworkView = NetworkView.Object;
-            started = true;
 
             var cars = new List<Car>();
             for (var i = 0; i < GameData.CARS_AMOUNT; i++)
@@ -210,6 +207,45 @@ namespace NetworkManagerTests
             var startingPosition = Server.GetStartingPosition(CarNumberInit);
 
             Assert.AreEqual(expectedPosition, startingPosition);
+        }
+
+        [Test]
+        public void Test_OnPlayerDisconnected()
+        {
+            NetworkPlayer networkPlayer = new NetworkPlayer();
+
+            _testServer.OnPlayerDisconnected(networkPlayer);
+
+            Network.Verify(net => net.RemoveRPCs(It.IsAny<NetworkPlayer>()));
+            Network.Verify(net => net.DestroyPlayerObjects(It.IsAny<NetworkPlayer>()));
+        }
+
+        [Test]
+        public void Test_OnPlayerDisconnected_Driver()
+        {
+            NetworkPlayer networkPlayer = new NetworkPlayer();
+            Car car = new Car { Driver = new Player { NetworkPlayer = networkPlayer }, CarObject = _carObject };
+
+            _testServer.Game = new Game();
+            _testServer.Game.AddCar(car);
+
+            _testServer.OnPlayerDisconnected(networkPlayer);
+
+            Assert.AreEqual(default(NetworkPlayer), car.Driver.NetworkPlayer);
+        }
+
+        [Test]
+        public void Test_OnPlayerDisconnected_Throttler()
+        {
+            NetworkPlayer networkPlayer = new NetworkPlayer();
+            Car car = new Car { Driver = new Player { NetworkPlayer = networkPlayer }, Throttler = new Player { NetworkPlayer = networkPlayer }, CarObject = _carObject };
+
+            _testServer.Game = new Game();
+            _testServer.Game.AddCar(car);
+
+            _testServer.OnPlayerDisconnected(networkPlayer);
+
+            Assert.AreEqual(default(NetworkPlayer), car.Throttler.NetworkPlayer);
         }
     }
 }

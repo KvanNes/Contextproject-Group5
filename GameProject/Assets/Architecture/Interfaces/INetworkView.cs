@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Mock
+namespace Interfaces
 {
     public interface INetworkView
     {

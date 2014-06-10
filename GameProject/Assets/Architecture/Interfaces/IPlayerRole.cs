@@ -1,7 +1,8 @@
 using Behaviours;
+using Cars;
 using UnityEngine;
 
-namespace Cars
+namespace Interfaces
 {
     public interface IPlayerRole
     {

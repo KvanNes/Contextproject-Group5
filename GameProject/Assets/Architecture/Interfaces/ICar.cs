@@ -1,6 +1,6 @@
 ﻿using Behaviours;
 
-namespace Mock
+namespace Interfaces
 {
     public interface ICar
     {
