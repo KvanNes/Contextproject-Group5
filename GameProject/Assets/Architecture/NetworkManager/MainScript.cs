@@ -65,7 +65,7 @@ namespace NetworkManager
                 Cars.Add(new Car());
             }
 
-            Tutorial = GameObject.FindGameObjectWithTag("Tutorial").GetComponent<Tutorial>();
+            Tutorial = (Tutorial)GameObject.FindGameObjectWithTag("Tutorial").GetComponent(typeof(Tutorial));
         }
 
         public void SendToOther()
