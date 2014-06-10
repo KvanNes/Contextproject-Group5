@@ -95,16 +95,21 @@ public class Throttler : PlayerRole {
     }
 
     public void HandleCollision(AutoBehaviour ab, Collider2D collider) {
-        if (collider.gameObject.tag == "Mud") {
-            if (ab.speed > GameData.MAX_SPEED - 0.01) {
-                ab.speed = 0;
-            }
-        } else {
-            // Go back a little.
-            ab.speed = -(ab.speed + Mathf.Sign(ab.speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
-            ab.restoreConfiguration();
-        }
-    }
+				if (collider.gameObject.tag == "Mud") {
+						if (ab.speed > GameData.MAX_SPEED - 0.01) {
+								ab.speed = 0;
+						} 
+				} else if (collider.gameObject.tag == "Finish") {
+						ab.speed = 0-0.01f;
+						ab.acceleration = -0.001f;
+						
+				} else {
+						// Go back a little.
+						ab.speed = -(ab.speed + Mathf.Sign (ab.speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
+						ab.restoreConfiguration ();
+				}
+				
+		}
     
     public void PositionUpdated(AutoBehaviour ab, bool isSelf) {
         if (!isSelf) {
