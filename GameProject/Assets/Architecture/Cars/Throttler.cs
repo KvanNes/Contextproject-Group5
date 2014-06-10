@@ -130,8 +130,15 @@ namespace Cars
             else
             {
                 // Go back a little.
-                ab.Speed = -(ab.Speed + Mathf.Sign(ab.Speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
+                //ab.Speed = -(ab.Speed + Mathf.Sign(ab.Speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
                 ab.RestoreConfiguration();
+                ab.Speed = -ab.Speed * GameData.COLLISION_FACTOR;
+                ab.gameObject.transform.Translate(
+                    -0.005f * Mathf.Cos(ab.gameObject.transform.rotation.eulerAngles.z),
+                    -0.005f * Mathf.Sin(ab.gameObject.transform.rotation.eulerAngles.z),
+                    0f
+                );
+                ab.PositionUpdated();
             }
         }
 

@@ -39,7 +39,6 @@ namespace NetworkManager
         {
             foreach (GameObject go in GameObject.FindGameObjectsWithTag("Player"))
             {
-                Debug.Log("yes");
                 Destroy(go);
             }
             NetworkController.connected = false;

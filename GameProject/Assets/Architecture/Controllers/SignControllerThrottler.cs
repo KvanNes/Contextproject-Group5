@@ -1,22 +1,18 @@
-using System;
 using Cars;
 using NetworkManager;
 using UnityEngine;
-using System.Collections.Generic;
 using Utilities;
 
 namespace Controllers
 {
-    public class ArrowController : MonoBehaviour
+    public class SignControllerThrottler : SignController
     {
-        private Dictionary<Vector2, Texture2D> Textures = new Dictionary<Vector2, Texture2D>();
-
-        private void AddArrow(float x, float y, Texture2D texture)
+        public override bool Enabled()
         {
-            Textures.Add(new Vector2(x * 0.3f, y * 0.3f), texture);
+            return MainScript.SelfPlayer.Role is Throttler;
         }
 
-        public void Start()
+        public override void Start()
         {
             Texture2D TextureStraight = Utils.LoadTexture("ArrowTextureStraight");
             Texture2D TextureUTurnLeft = Utils.LoadTexture("ArrowTextureUTurnLeft");
@@ -67,55 +63,6 @@ namespace Controllers
             AddArrow(4, 6, TextureLeftCurve);
             AddArrow(5, 6, TextureLeftCurve);
             AddArrow(5, 7, TextureStraight);
-        }
-
-        private static Vector2 GetCenter(Vector2 point)
-        {
-            const float half = 0.3f / 2f;
-            Vector2 p = point + new Vector2(half, half);
-            bool xWasNegative = p.x < 0;
-            bool yWasNegative = p.y < 0;
-            p.x -= p.x % 0.3f;
-            if (xWasNegative)
-            {
-                p.x -= 0.3f;
-            }
-            p.y -= p.y % 0.3f;
-            if (yWasNegative)
-            {
-                p.y -= 0.3f;
-            }
-            return p;
-        }
-
-        public void OnGUI()
-        {
-            if (MainScript.SelfCar == null || MainScript.SelfCar.CarObject == null ||
-                MainScript.SelfPlayer.Role is Driver)
-            {
-                return;
-            }
-
-            Vector3 p = MainScript.SelfCar.CarObject.transform.position;
-            Vector2 point = GetCenter(new Vector2(p.x, p.y));
-            Texture2D texture = null;
-
-            // Using Utils.getDictionaryValue yields null for some reason.
-            foreach (KeyValuePair<Vector2, Texture2D> k in Textures)
-            {
-                if (k.Key == point)
-                {
-                    texture = k.Value;
-                    break;
-                }
-            }
-
-            if (texture == null)
-            {
-                return;
-            }
-
-            GUI.DrawTexture(new Rect(0, 0, 145, 135), texture);
         }
     }
 }
