@@ -25,6 +25,7 @@ namespace NetworkManager
         public static ICar SelfCar { get; set; }
         public static PlayerType SelfType = PlayerType.None;
         public static bool SelectionIsFinal = false;
+        public static Tutorial Tutorial;
 
         // FIXME: Remove the following variables in release.
         public static bool IsDebug = false;
@@ -63,6 +64,8 @@ namespace NetworkManager
             {
                 Cars.Add(new Car());
             }
+
+            Tutorial = (Tutorial)GameObject.FindGameObjectWithTag("Tutorial").GetComponent(typeof(Tutorial));
         }
 
         public void SendToOther()
