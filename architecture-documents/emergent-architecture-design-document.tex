@@ -20,11 +20,11 @@
   DuoDrive
 }
 \author{
-	Pim van den Bogaerdt, pvandenbogaerd, 4215516\\
-	Ramin Erfani, rsafarpourerfa, 4205502\\
-	Robert Luijendijk, rluijendijk, 4161467\\
-	Mourad el Maouchi, melmaouchi, 4204379\\
-	Kevin van Nes, kjmvannes, 4020871
+    Pim van den Bogaerdt, pvandenbogaerd, 4215516\\
+    Ramin Erfani, rsafarpourerfa, 4205502\\
+    Robert Luijendijk, rluijendijk, 4161467\\
+    Mourad el Maouchi, melmaouchi, 4204379\\
+    Kevin van Nes, kjmvannes, 4020871
 }
 
 \begin{document}
@@ -63,7 +63,7 @@ After the final release we will want to make sure that the server is up as much 
     A design goal that we consider to be specific for our product is replayability. We want the players to enjoy the game in such a way that the game will be replayable in both the short and long term. We want the players to find our product memorable, so they may even look forward to playing the game the next time. To reach this goal, the game should make a solid first impression, after which elements such as randomness and other unpredictable events will keep the game interesting to play.
 \item[Usability] \hfill \\
     The game is designed in such a way that without, or with few, instructions the player will be able to play the game. After a few minutes, or even seconds, the player will have learned how to work with the system and play the game even better. The physics in the game are set to make the user experience better and making the efficiency of playing the game at its best. \\
-		Moreover, with feedback given during the game, the user will be able to see progress and see how well he is playing the game.
+        Moreover, with feedback given during the game, the user will be able to see progress and see how well he is playing the game.
 \item[Performance] \hfill \\
     The system will have a central server which is situated in the same room/building/area as the players who are playing the game. Also, all the players should be connected on the same network as the server is. Since the server will be the machine sending and receiving the data of the players, it is necessary that the connection between the player and the server is fast enough. This is needed to ensure that the players will not encounter any \emph{latency issues}. \\
     In a future release we might implement a system where some of the server's calculations will be calculated locally on the player's device. This will take load off the server and may improve the connection speed throughout the game.
@@ -97,6 +97,38 @@ The software that is being used on the described hardware is the same. Depending
 
 \subsection{Persistent Data Management}
 Persistent data management is not needed in our product. There is no data that needs to be saved persistently.
+
+\newpage
+
+\section{Architecture}
+\subsection{Introduction}
+In first instance a class diagram was created to maintain a fast view of the architecture. However, during the development of the project, we came to the conclusion that it is not possible. In Unity there is use of GameObjects which have Scripts attached to them as components. And depending on the variables of the GameObjects how the attached Scripts interact with other GameObjects or simple classes. This made it very hard for us to maintain a class diagram for a clear overview. 
+Instead of a class diagram, there has been chosen to have a section dedicated to the setup and interactions between classes. In that way it is possible to discuss the hierarchy of the classes and their inbetween interactions. Throughout the project a changelog, in Appendix A, will be kept up-to-date with new classes, interactions or even deletion of parts.
+
+\subsection{Classes}
+Within the whole project we count X classes. Every class has been split up in such a way that it has its own functionality. There where it was needed or usefull Design Patterns have been used. In this project we have only made use of the Strategy Pattern. Furthermore, a client-server architecture has been used since this was ideal to maintain and control the new joined players.
+
+\subsection{Packages}
+The classes have been managed to be split into different packages, every package has its own responsibility. In the upcoming descriptions every package and their responsibility have been explained. Furthermore, if a Design Pattern has been used within a package, it has been described with it.
+\begin{description}
+\item[Behaviours] \hfill \\
+    In this package the Scripts have been bundled that belong to certain GameObjects which control behaviours. Such as a Car, has the AutoBehaviour-script attached to it. This script manages how the Car should behave during the game. Furthermore, there are other Behaviour-classes which are ment for the track.
+\item[Cars] \hfill \\
+    The Cars-package contains classes which create the Car and the players attached to it. Here we used a Strategy Pattern, this was recommended to us and in practice also seems much better than using simple Inheritance. See figure 1 for the classes in the Strategy Pattern form.
+\item[Main] \hfill \\
+    In the Main-package we have four classes: ControlButtonsGUI, DuoDriveGUI, Game and Tutorial. The package contains the main elements for the game which are the GUI for every player and/or the server, the controll buttons which are shown to the player, the actual Game-class which handles the overall game and a Tutorial-class which will show a simple tutorial based on the player role.
+\item[NetworkManager] \hfill \\
+    Within the NetworkManager-package, three classes can be found: MainScript, Server and Client. The Server-class handles all the operations and commands that should go to and/or through the server. The Client-class handles the job that should be assigned to the newly connected player, which is in fact a new client. Moreover, the MainScript-class is intended to do the first steps which are required. The first steps are initializing the Server, Client -and Tutorial GameObjects and initializing the cars.
+\item[Utilities] \hfill \\
+    The Utilities-package contains some simple utility-classes which are intended to access several functions with ease and without the need of the special MonoBehaviour class in Unity.
+\item[Interfaces] \hfill \\
+    Within this package all interfaces are placed together. Some of these interfaces were not needed for the actual game, but to be able to test several classes we needed to Mock them. In C\#, the programming language we chose to program in, Mock-objects can only be made of virtual objects and/or interfaces. 
+\item[Wrappers] \hfill \\
+    In this package several wrappers are written. These wrappers were needed so that the classes which use the interfaces, as variables, still will have their functionality. However, for the Input a wrapper was also made so that we can simulate certain inputs. Without the wrapper it was impossible to test certain touch-events and thus some methods could not be tested. But with this wrapper that was all possible again.
+    
+\end{description}
+
+As mentioned above, a changelog will be held and kept up-to-date in this document in Appendix A. With this changelog the changes that are made on the architecture will be clear much faster. This will be done so that there is no need to search for changes within this section. 
 
 \newpage
 
