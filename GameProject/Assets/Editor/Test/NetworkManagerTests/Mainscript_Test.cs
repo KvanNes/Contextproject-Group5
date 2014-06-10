@@ -14,6 +14,7 @@ namespace MainTests
         private MainScript _mainScript;
         private GameObject _gameObject;
         private GameObject _gObjNetwork;
+        private GameObject _gObjTutorial;
 
         private Mock<ICar> _selfCar;
 
@@ -27,6 +28,9 @@ namespace MainTests
             _gObjNetwork.AddComponent<Client>();
             _gObjNetwork.GetComponent<Client>().tag = "Network";
             _gObjNetwork.tag = "Network";
+            _gObjTutorial = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            _gObjTutorial.AddComponent<Tutorial>();
+            _gObjTutorial.tag = "Tutorial";
 
             _mainScript = _gameObject.AddComponent<MainScript>();
             _selfCar = new Mock<ICar>();
