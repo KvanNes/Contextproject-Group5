@@ -9,7 +9,7 @@ using Utilities;
 public class DuoDriveGUI : MonoBehaviour {
 
     private static int buttonX = 10;
-    private static int buttonY = 10;
+    private static int buttonY = 75;
     private static int buttonW = 150;
     private static int buttonH = 50;
 
@@ -31,6 +31,7 @@ public class DuoDriveGUI : MonoBehaviour {
         if (GUI.Button(new Rect(Screen.width / 2 - 75, Screen.height / 2 - 75, 150, 150), "Start server!")) {
             MainScript.SelfType = MainScript.PlayerType.Server;
             MainScript.Server.StartServer();
+            NetworkController.connected = true;
         }
     }
 
@@ -61,8 +62,14 @@ public class DuoDriveGUI : MonoBehaviour {
         }
     }
 
+    private void CreateTutorialButton() {
+        if (GUI.Button(new Rect(10, 10, 100, 50), new GUIContent("Tutorial"))) {
+            MainScript.Tutorial.Show();
+        }
+    }
+
     public void OnGUI() {
-        if (NetworkController.connected || Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork) {
+        if (MainScript.Tutorial.Enabled || NetworkController.connected || Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork) {
             return;
         }
 
@@ -72,6 +79,8 @@ public class DuoDriveGUI : MonoBehaviour {
         if (!Network.isServer) {
             CreateServerButton();
         }
+
+        CreateTutorialButton();
 
         if (ServerAvailable() && !Network.isServer && !Network.isClient) {
             int buttonY = DuoDriveGUI.buttonY;
