@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Utilities;
 
 public class TrackBehaviourCurve : TrackBehaviour {
 
