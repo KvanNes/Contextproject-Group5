@@ -1,19 +1,26 @@
-﻿using UnityEngine;
-using System;
+﻿using Cars;
+using NetworkManager;
+using UnityEngine;
 using Utilities;
 
-public class SignControllerDriver : SignController
+namespace Controllers
 {
-    public override bool Enabled()
+    public class SignControllerDriver : SignController
     {
-        return false; // Disable until mud tiles are added to the track.
-        // return MainScipt.selfPlayer.Role is Driver;
-    }
+        public override bool Enabled()
+        {
+            return MainScript.SelfPlayer.Role is Driver;
+        }
 
-    public override void Start()
-    {
-        Texture2D textureSlow = TextureUtils.LoadTexture("TextureSlow");
+        public override void Start()
+        {
+            Texture2D textureSlow = TextureUtils.LoadTexture("TextureSlow");
 
-        AddArrow(0, 0, textureSlow);
+            AddArrow(1, 3, textureSlow);
+            AddArrow(0, 3, textureSlow);
+
+            AddArrow(1, 6, textureSlow);
+            AddArrow(2, 6, textureSlow);
+        }
     }
 }

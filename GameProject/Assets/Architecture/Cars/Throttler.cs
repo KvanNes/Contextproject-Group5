@@ -123,7 +123,7 @@ namespace Cars
         {
             if (collider.gameObject.tag == "Mud")
             {
-                if (ab.Speed > GameData.MAX_SPEED - 0.01)
+                if (ab.Speed > GameData.MAX_SPEED * 0.5f)
                 {
                     ab.Speed = 0;
                 }

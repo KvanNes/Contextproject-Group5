@@ -86,10 +86,9 @@ public class DuoDriveGUI : MonoBehaviour {
         int buttonY_ = buttonY;
         if (ServerAvailable() && !Network.isServer && !Network.isClient) {
             for (int i = 0; i < NetworkController.hostData.Length; i++) {
-                CreateClientButtons(buttonX, buttonY, NetworkController.hostData[i]);
+                CreateClientButtons(buttonX, buttonY_, NetworkController.hostData[i]);
                 buttonY_ += buttonH * GameData.CARS_AMOUNT + 30;
             }
-            buttonY = buttonY_;
         }
     }
 }
