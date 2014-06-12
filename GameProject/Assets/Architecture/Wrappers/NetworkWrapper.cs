@@ -30,5 +30,10 @@ namespace Wrappers
         {
             Network.Disconnect();
         }
+
+        public bool IsServer()
+        {
+            return Network.isServer;
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace Interfaces
         void RemoveRPCs(NetworkPlayer networkPlayer);
         void DestroyPlayerObjects(NetworkPlayer networkPlayer);
         void Disconnect();
+        bool IsServer();
     }
 }

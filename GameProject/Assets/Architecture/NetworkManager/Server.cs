@@ -23,8 +23,9 @@ namespace NetworkManager
             NetworkView = new NetworkViewWrapper();
             NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
             Network.InitializeServer(32, GameData.PORT, !UnityEngine.Network.HavePublicAddress());
-            MasterServer.RegisterHost(GameData.GAME_NAME, "2P1C");
             Connected = true;
+            if (!Network.IsServer()) return;
+            MasterServer.RegisterHost(GameData.GAME_NAME, "2P1C");
         }
 
         public void DisconnectServer()
@@ -133,8 +134,6 @@ namespace NetworkManager
 
         public void OnPlayerDisconnected(NetworkPlayer player)
         {
-            //UnityEngine.Network.RemoveRPCs(player);
-            //UnityEngine.Network.DestroyPlayerObjects(player);
             Network.RemoveRPCs(player);
             Network.DestroyPlayerObjects(player);
 

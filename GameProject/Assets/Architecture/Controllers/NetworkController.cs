@@ -5,7 +5,7 @@ using NetworkManager;
 using UnityEngine;
 using System;
 using Utilities;
-using UnityException = UnityEngine.UnityException;
+using UnityException = Utilities.UnityException;
 
 namespace Controllers
 {
@@ -16,7 +16,7 @@ namespace Controllers
         public static HostData[] hostData;
         public static Boolean connected = false;
 
-        private void Start()
+        public void Start()
         {
             if (MainScript.NetworkController != null)
             {
