@@ -96,44 +96,43 @@ namespace Cars
 			if(Car.hasFinished == true) {
 				return;
 			}
-			else {
-				if (action == PlayerAction.SpeedUp)
-				{
-					applySpeedUpDown(ab, Time.deltaTime, GameData.ACCELERATION_INCREASE, 10, 5);
-				}
-				else if (action == PlayerAction.SpeedDown)
-				{
-					applySpeedUpDown(ab, Time.deltaTime, GameData.ACCELERATION_DECREASE, 10, 20);
-				}
-				else
-				{
-					if (ab.Speed > 0)
-					{
-						applyFriction(ab, Time.deltaTime, -GameData.FRICTION_AMOUNT);
-					}
-					else if (ab.Speed < 0)
-					{
-						applyFriction(ab, Time.deltaTime, GameData.FRICTION_AMOUNT);
-					}
-				}
-				
-				// Move the car according to current speed.
-				ab.transform.Translate(ab.Speed * Time.deltaTime * 4f, 0, 0);
-				ab.PositionUpdated();
+
+			if (action == PlayerAction.SpeedUp)
+			{
+				applySpeedUpDown(ab, Time.deltaTime, GameData.ACCELERATION_INCREASE, 10, 5);
 			}
+			else if (action == PlayerAction.SpeedDown)
+			{
+				applySpeedUpDown(ab, Time.deltaTime, GameData.ACCELERATION_DECREASE, 10, 20);
+			}
+			else
+			{
+				if (ab.Speed > 0)
+				{
+					applyFriction(ab, Time.deltaTime, -GameData.FRICTION_AMOUNT);
+				}
+				else if (ab.Speed < 0)
+				{
+					applyFriction(ab, Time.deltaTime, GameData.FRICTION_AMOUNT);
+				}
+			}
+			
+			// Move the car according to current speed.
+			ab.transform.Translate(ab.Speed * Time.deltaTime * 4f, 0, 0);
+			ab.PositionUpdated();
         }
 
         public void HandleCollision(AutoBehaviour ab, Collider2D collider)
         {
-            if (collider.gameObject.tag == "Mud")
+            if (collider.gameObject.tag == "Finish") {
+                Car.hasFinished = true;             
+            }
+            else if (collider.gameObject.tag == "Mud")
             {
                 if (ab.Speed > GameData.MAX_SPEED * 0.25f)
                 {
                     ab.Speed = 0;
                 }
-				if (collider.gameObject.tag == "Finish") {
-					Car.hasFinished = true;				
-				}
             }
             else
             {
