@@ -13,6 +13,29 @@ public class ControlButtonsGUI : MonoBehaviour
     Texture2D _driverNormalLeftTexture, _driverPressedLeftTexture;
     Texture2D _driverNormalRightTexture, _driverPressedRightTexture;
 
+	int seconds = 0;
+	int minutes = 0;
+
+	private void Timer() {
+		if ((++this.seconds % 60) == 0 && this.seconds != 0) {
+			this.minutes++;
+			this.seconds = 0;
+		}
+	}
+
+	private void Update() {
+		Debug.Log("Minutes: " + this.minutes + ", Seconds: " + this.seconds);
+	}
+
+	private void DrawTimer() {
+		GUI.Label(new Rect(Screen.width-50, 0, 50, 30), new GUIContent(this.minutes.ToString("D2") + ":" + this.seconds.ToString("D2")));
+	}
+
+	private void ResetTimer() {
+		this.seconds = 0;
+		this.minutes = 0;
+	}
+
     public void Start()
     {
 		_throttlerNormalTexture = TextureUtils.LoadTexture("gaspedaal-normaal");
@@ -21,6 +44,7 @@ public class ControlButtonsGUI : MonoBehaviour
 		_driverPressedLeftTexture = TextureUtils.LoadTexture("stuur-links-ingedrukt");
 		_driverNormalRightTexture = TextureUtils.LoadTexture("stuur-rechts-normaal");
 		_driverPressedRightTexture = TextureUtils.LoadTexture("stuur-rechts-ingedrukt");
+		InvokeRepeating ("Timer", 1.0f, 1.0f);
     }
 
     private void DrawControl(Texture2D texture, float left, float top)
@@ -54,6 +78,17 @@ public class ControlButtonsGUI : MonoBehaviour
         );
     }
 
+	private void ResetCar(Car car, Vector3 pos) {
+		Quaternion rot = Quaternion.identity;
+		car.CarObject.transform.rotation = rot;
+		car.CarObject.Speed = 0f;
+		car.CarObject.Acceleration = 0f;
+		car.CarObject.GetSphere().transform.localPosition = new Vector3(5f / 0.07f, 0f, -0.3f);
+		car.CarObject.GetSphere().transform.localRotation = Quaternion.identity;
+		car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.CarNumber - 1);
+		car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, rot, car.CarNumber - 1);
+	}
+
     private void CreateRestartButton()
     {
         if (GUI.Button(new Rect(Screen.width / 2 - 75, 10, 150, 25), "Restart Game"))
@@ -62,17 +97,12 @@ public class ControlButtonsGUI : MonoBehaviour
             Transform spawnObject = (Transform)GameObject.Find("SpawnPositionBase").GetComponent("Transform");
             foreach (Car car in cars)
             {
-                float y = Server.GetStartingPosition(car.CarNumber);
-                Vector3 pos = spawnObject.position + new Vector3(0, y, 0);
-                car.CarObject.transform.position = pos;
-                Quaternion rot = Quaternion.identity;
-                car.CarObject.transform.rotation = rot;
-                car.CarObject.Speed = 0f;
-                car.CarObject.Acceleration = 0f;
-                car.CarObject.GetSphere().transform.localPosition = new Vector3(5f / 0.07f, 0f, -0.3f);
-                car.CarObject.GetSphere().transform.localRotation = Quaternion.identity;
-                car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.CarNumber - 1);
-                car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, rot, car.CarNumber - 1);
+				float yPos = Server.GetStartingPosition(car.CarNumber);
+				Vector3 resetPos = spawnObject.position + new Vector3(0, yPos, 0);
+				car.CarObject.transform.position = resetPos;
+				ResetCar(car, resetPos);
+				ResetTimer();
+				Car.hasFinished = false;
             }
         }
     }
@@ -115,5 +145,6 @@ public class ControlButtonsGUI : MonoBehaviour
             DrawThrottlerControls();
         }
         CreateRestartButton();
+		DrawTimer();
     }
 }
