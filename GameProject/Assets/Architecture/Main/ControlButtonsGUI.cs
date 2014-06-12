@@ -102,6 +102,7 @@ public class ControlButtonsGUI : MonoBehaviour
 				car.CarObject.transform.position = resetPos;
 				ResetCar(car, resetPos);
 				ResetTimer();
+				Car.hasFinished = false;
             }
         }
     }
