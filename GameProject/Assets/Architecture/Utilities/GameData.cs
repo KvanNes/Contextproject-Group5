@@ -13,13 +13,13 @@ namespace Utilities
         public static readonly float UPDATE_TIME_DELTA = 0.05f;
 
         // Constants used for physics.
-        public static readonly float MIN_SPEED = -0.07f;
-        public static readonly float MAX_SPEED = 0.15f;
+        public static readonly float MIN_SPEED = -0.15f;
+        public static readonly float MAX_SPEED = 0.3f;
         public static readonly float MIN_ACCELERATION = -0.005f;
-        public static readonly float MAX_ACCELERATION = 0.005f;
+        public static readonly float MAX_ACCELERATION = 0.03f;
         public static readonly float ACCELERATION_DECREASE = -0.2f;
-        public static readonly float ACCELERATION_INCREASE = 0.4f;
-        public static readonly float FRICTION_AMOUNT = 0.05f;
+        public static readonly float ACCELERATION_INCREASE = 0.3f;
+        public static readonly float FRICTION_AMOUNT = 0.12f;
 //        public static readonly float COLLISION_CONSTANT = 0.005f;
         public static readonly float COLLISION_FACTOR = 0.8f;
 

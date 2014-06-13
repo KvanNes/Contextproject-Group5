@@ -88,7 +88,7 @@ namespace NetworkManager
 
         public static float GetStartingPosition(int carNumber)
         {
-            return 0.12f - 0.05f * carNumber;
+            return 0.45f - 0.3f * carNumber;
         }
 
         private void SpawnPlayer(int carNumber)

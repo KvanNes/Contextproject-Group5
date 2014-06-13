@@ -126,6 +126,11 @@ namespace Behaviours
         public static readonly int RotationInitialized = 1 << 1;
 
         [RPC]
+        public void ResetCar() {
+            Car.hasFinished = false;
+        }
+
+        [RPC]
         public void UpdateRotation(Quaternion rot, int carNumber)
         {
             if (CarNumber != carNumber) return;

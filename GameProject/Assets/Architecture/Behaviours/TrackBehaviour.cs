@@ -17,11 +17,9 @@ namespace Behaviours
             Vector2[] res = new Vector2[input.Length];
             for (int i = 0; i < input.Length; i++)
             {
-                const float unit = 10f;
                 res[i] = input[i];
                 res[i] -= new Vector2(0.5f, 0.5f); // Make (0.5, 0.5) the center.
-                res[i] *= unit;
-                res[i].y *= 0.03f; // Take scale ratio into account.
+                res[i].x *= 10f; // Take scale ratio into account.
             }
             return res;
         }

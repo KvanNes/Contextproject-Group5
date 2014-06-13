@@ -11,7 +11,7 @@ namespace Cars
 
         public void Initialize()
         {
-            Camera.main.orthographicSize = 0.1f;
+            Camera.main.orthographicSize = 0.3f;
         }
 
         private Quaternion _lastSentRotation;
@@ -65,7 +65,7 @@ namespace Cars
         // Rotate (steer) this car.
         private void rotate(AutoBehaviour ab, float factor)
         {
-            float angle = factor * Mathf.Min(3, ab.Speed * 10f);
+            float angle = factor * MathUtils.ForceInInterval(ab.Speed * 3f, -3, 3);
             ab.transform.Rotate(new Vector3(0, 0, angle));
             ab.RotationUpdated();
         }
