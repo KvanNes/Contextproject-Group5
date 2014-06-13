@@ -12,7 +12,8 @@ namespace Cars
         public void Initialize()
         {
             RenderSettings.ambientLight = Color.white;
-            Camera.main.orthographicSize = 0.7f;
+            Camera.main.transform.position = new Vector3(27f, 3.5f, -8f);
+            Camera.main.orthographicSize = 4.5f;
         }
 
         private Vector3 _lastSentPosition;
@@ -115,6 +116,10 @@ namespace Cars
 				{
 					applyFriction(ab, Time.deltaTime, GameData.FRICTION_AMOUNT);
 				}
+                else
+                {
+                    ab.Acceleration = 0f;
+                }
 			}
 			
 			// Move the car according to current speed.
@@ -125,7 +130,9 @@ namespace Cars
         public void HandleCollision(AutoBehaviour ab, Collider2D collider)
         {
             if (collider.gameObject.tag == "Finish") {
-                Car.hasFinished = true;             
+                Car.hasFinished = true;
+                ab.Speed = 0;
+                ab.Acceleration = 0;
             }
             else if (collider.gameObject.tag == "Mud")
             {
@@ -140,21 +147,14 @@ namespace Cars
                 //ab.Speed = -(ab.Speed + Mathf.Sign(ab.Speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
                 ab.RestoreConfiguration();
                 ab.Speed = -ab.Speed * GameData.COLLISION_FACTOR;
-                ab.gameObject.transform.Translate(
-                    -0.005f * Mathf.Cos(ab.gameObject.transform.rotation.eulerAngles.z),
-                    -0.005f * Mathf.Sin(ab.gameObject.transform.rotation.eulerAngles.z),
-                    0f
-                );
+                ab.gameObject.transform.Translate(-0.05f, 0f, 0f);
                 ab.PositionUpdated();
             }
         }
 
         public void PositionUpdated(AutoBehaviour ab, bool isSelf)
         {
-            if (!isSelf) return;
 
-            Camera.main.transform.position = new Vector3(5.6f, 1f, -8f);
-            Camera.main.orthographicSize = 1.4f;
         }
 
         public void RotationUpdated(AutoBehaviour ab, bool isSelf)
@@ -162,8 +162,8 @@ namespace Cars
             GameObject sphere = ab.GetSphere();
             Transform carTransform = ab.transform;
             float angle = Mathf.Deg2Rad * carTransform.rotation.eulerAngles.z;
-            Vector3 v = MathUtils.Vector2To3(MathUtils.Rotate(new Vector2(5f / 0.07f, 0f), Vector2.zero, -angle));
-            v.y *= 0.07f / 0.03f; // Scale ratio of Auto needs to be taken into account here.
+            Vector3 v = MathUtils.Vector2To3(MathUtils.Rotate(new Vector2(25f / 0.3f, 0f), Vector2.zero, -angle));
+            v.y *= 2f; // Scale ratio of Auto needs to be taken into account here.
             v.z = -0.3f;
             sphere.transform.localPosition = v;
         }

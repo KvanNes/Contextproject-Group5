@@ -87,6 +87,7 @@ public class ControlButtonsGUI : MonoBehaviour
 		car.CarObject.GetSphere().transform.localRotation = Quaternion.identity;
 		car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.CarNumber - 1);
 		car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, rot, car.CarNumber - 1);
+        car.CarObject.networkView.RPC("ResetCar", RPCMode.Others);
 	}
 
     private void CreateRestartButton()

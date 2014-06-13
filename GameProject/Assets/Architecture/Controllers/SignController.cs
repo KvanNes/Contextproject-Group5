@@ -9,7 +9,7 @@ public class SignController : MonoBehaviour
 
     protected void AddArrow(float x, float y, Texture2D texture)
     {
-        Textures.Add(new Vector2(x * 0.3f, y * 0.3f), texture);
+        Textures.Add(new Vector2(x, y), texture);
     }
 
     public virtual void Start()
@@ -24,19 +24,19 @@ public class SignController : MonoBehaviour
 
     private static Vector2 GetCenter(Vector2 point)
     {
-        const float half = 0.3f / 2f;
+        const float half = 1f / 2f;
         Vector2 p = point + new Vector2(half, half);
         bool xWasNegative = p.x < 0;
         bool yWasNegative = p.y < 0;
-        p.x -= p.x % 0.3f;
+        p.x -= p.x % 1f;
         if (xWasNegative)
         {
-            p.x -= 0.3f;
+            p.x -= 1f;
         }
-        p.y -= p.y % 0.3f;
+        p.y -= p.y % 1f;
         if (yWasNegative)
         {
-            p.y -= 0.3f;
+            p.y -= 1f;
         }
         return p;
     }
