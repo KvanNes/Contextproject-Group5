@@ -48,6 +48,7 @@ namespace NetworkManager
             MainScript.SelfType = MainScript.PlayerType.None;
             MainScript.SelectionIsFinal = false;
             Camera.main.transform.position = Vector3.zero;
+            MainScript.GUIController.Remove();
         }
 
         private AutoBehaviour GetCarObjectByNumber(int carNumber)

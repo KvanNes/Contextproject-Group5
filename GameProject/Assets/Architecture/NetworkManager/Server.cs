@@ -4,6 +4,7 @@ using Interfaces;
 using UnityEngine;
 using Utilities;
 using Wrappers;
+using GraphicalUI;
 
 namespace NetworkManager
 {
@@ -113,17 +114,7 @@ namespace NetworkManager
             {
                 SpawnPlayer(i);
             }
-        }
-
-        private void OnGUI()
-        {
-            if (Game != null)
-            {
-                // Gebaseerd op: http://answers.unity3d.com/questions/296204/gui-font-size.html
-                GUI.skin.label.fontSize = 20;
-
-                GUI.Label(new Rect(10, 10, 200, 50), new GUIContent("Server started"));
-            }
+            MainScript.GUIController.Add(GraphicalUIController.ServerConfiguration);
         }
 
         private void OnPlayerConnected(NetworkPlayer player)

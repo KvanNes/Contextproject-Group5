@@ -4,6 +4,8 @@ using Interfaces;
 using UnityEngine;
 using Utilities;
 using Wrappers;
+using NetworkManager;
+using GraphicalUI;
 
 namespace Cars
 {
@@ -14,6 +16,7 @@ namespace Cars
             RenderSettings.ambientLight = Color.white;
             Camera.main.transform.position = new Vector3(27f, 3.5f, -8f);
             Camera.main.orthographicSize = 4.5f;
+            MainScript.GUIController.Add(GraphicalUIController.ThrottlerConfiguration);
         }
 
         private Vector3 _lastSentPosition;

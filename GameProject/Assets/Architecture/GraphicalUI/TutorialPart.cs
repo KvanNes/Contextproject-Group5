@@ -1,16 +1,13 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using NetworkManager;
 
-namespace NetworkManager
-{
-    public class Tutorial : MonoBehaviour {
+namespace GraphicalUI {
+    public class TutorialPart : GraphicalUIPart {
         
         private static readonly int MARGIN = 10;
         private static readonly int BUTTON_WIDTH = 150;
         private static readonly int BUTTON_HEIGHT = 50;
-        
-        public bool Enabled { get; set; }
         
         private readonly List<string> TutorialStrings = new List<string>() {
             { "To play DuoDrive, pair up with a mate and sit back-to-back.\n\nPick either the driver or throttler job, and make sure to pick the same car number." },
@@ -23,7 +20,8 @@ namespace NetworkManager
         private void DrawNextButton() {
             if (GUI.Button(new Rect(Screen.width - BUTTON_WIDTH, 0, BUTTON_WIDTH, BUTTON_HEIGHT), new GUIContent("Next"))) {
                 if (CurrentStringIndex == TutorialStrings.Count - 1) {
-                    Enabled = false;
+                    MainScript.GUIController.Remove();
+                    CurrentStringIndex = 0;
                 } else {
                     CurrentStringIndex++;
                 }
@@ -36,25 +34,12 @@ namespace NetworkManager
                 BUTTON_HEIGHT + MARGIN,
                 Screen.width - 2 * MARGIN,
                 Screen.height - BUTTON_HEIGHT - 2 * MARGIN
-                );
+            );
             GUIContent content = new GUIContent(TutorialStrings[CurrentStringIndex]);
             GUI.Label(rect, content);
         }
         
-        public void Show() {
-            CurrentStringIndex = 0;
-            Enabled = true;
-        }
-        
-        private void Start() {
-            Enabled = false;
-        }
-        
-        private void OnGUI() {
-            if (!Enabled || MainScript.SelfType != MainScript.PlayerType.None) {
-                return;
-            }
-            
+        public override void DrawGraphicalUI() {
             DrawNextButton();
             DrawCurrentString();
         }
