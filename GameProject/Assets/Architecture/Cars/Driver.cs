@@ -3,6 +3,8 @@ using Interfaces;
 using UnityEngine;
 using Utilities;
 using Wrappers;
+using NetworkManager;
+using GraphicalUI;
 
 namespace Cars
 {
@@ -12,6 +14,7 @@ namespace Cars
         public void Initialize()
         {
             Camera.main.orthographicSize = 0.3f;
+            MainScript.GUIController.Add(GraphicalUIController.DriverConfiguration);
         }
 
         private Quaternion _lastSentRotation;

@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Utilities;
 using Wrappers;
+using GraphicalUI;
 
 namespace NetworkManager
 {
@@ -26,7 +27,7 @@ namespace NetworkManager
         public static ICar SelfCar { get; set; }
         public static PlayerType SelfType = PlayerType.None;
         public static bool SelectionIsFinal = false;
-        public static Tutorial Tutorial;
+        public static GraphicalUIController GUIController;
 
         // FIXME: Remove the following variables in release.
         public static bool IsDebug = false;
@@ -48,6 +49,7 @@ namespace NetworkManager
             }
 
             InvokeRepeating("SendToOther", GameData.UPDATE_TIME_DELTA, GameData.UPDATE_TIME_DELTA);
+            InvokeRepeating("UpdateHostList", 0f, 5f);
 
             Initialize();
         }
@@ -66,7 +68,14 @@ namespace NetworkManager
                 Cars.Add(new Car());
             }
 
-            Tutorial = (Tutorial)GameObject.FindGameObjectWithTag("Tutorial").GetComponent(typeof(Tutorial));
+            GUIController = (GraphicalUIController)GameObject.FindGameObjectWithTag("GUI").GetComponent(typeof(GraphicalUIController));
+            RestartButtonPart.ResetTimer();
+        }
+        
+        public void UpdateHostList() {
+            if (!NetworkController.connected) {
+                NetworkController.refreshHostList();
+            }
         }
 
         public void SendToOther()
