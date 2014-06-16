@@ -3,7 +3,7 @@ using Utilities;
 
 namespace GraphicalUI
 {
-    public class SignControllerThrottler : SignController
+    public class SignPartThrottler : SignPart
     {
         public override void Initialize()
         {

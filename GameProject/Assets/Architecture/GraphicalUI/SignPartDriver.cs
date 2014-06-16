@@ -3,7 +3,7 @@ using Utilities;
 
 namespace GraphicalUI
 {
-    public class SignControllerDriver : SignController
+    public class SignPartDriver : SignPart
     {
         public override void Initialize()
         {

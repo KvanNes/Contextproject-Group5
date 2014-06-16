@@ -1,10 +1,15 @@
 using System;
 using UnityEngine;
+using Controllers;
 
-namespace GraphicalUI{
-	public class TimerPart : GraphicalUIPart{
+namespace GraphicalUI {
+	public class TimerPart : GraphicalUIPart {
 		
-		private TimeController timeController = TimeController.getInstance();
+        private TimeController timeController;
+
+        public override void Initialize() {
+            timeController = TimeController.getInstance();
+        }
 		
 		public override void DrawGraphicalUI() {
 			double diff = timeController.getTime();
@@ -13,7 +18,7 @@ namespace GraphicalUI{
 			GUI.Label(
 				new Rect(Screen.width - 50, 0, 50, 30),
 				new GUIContent(minutes.ToString("D2") + ":" + seconds.ToString("D2"))
-				);
+			);
 		}
 	}
 }

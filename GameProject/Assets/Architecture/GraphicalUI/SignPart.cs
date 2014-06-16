@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace GraphicalUI
 {
-    public class SignController : GraphicalUIPart
+    public class SignPart : GraphicalUIPart
     {
         private Dictionary<Vector2, Texture2D> Textures = new Dictionary<Vector2, Texture2D>();
 
