@@ -48,7 +48,7 @@ namespace GraphicalUI {
                     car.CarObject.transform.position = resetPos;
                     ResetCar(car, resetPos);
                     ResetTimer();
-					car.CarObject.NetworkView.RPC("ResetCar", RPCMode.Others);
+					car.CarObject.NetworkView.RPC("ResetCar", RPCMode.All);
                 }
             }
         }
