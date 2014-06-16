@@ -97,7 +97,7 @@ namespace Cars
         public void HandlePlayerAction(AutoBehaviour ab)
         {
             PlayerAction action = GetPlayerAction();
-			if(Car.hasFinished == true) {
+			if(ab.state == Behaviours.AutoBehaviour.FinishedState.won) {
 				return;
 			}
 
@@ -133,8 +133,8 @@ namespace Cars
         public void HandleCollision(AutoBehaviour ab, Collider2D collider)
         {
             if (collider.gameObject.tag == "Finish") {
-                Car.hasFinished = true;
-                ab.Speed = 0;
+				ab.NetworkView.RPC("notifyHasFinished", RPCMode.All, ab.CarNumber);
+				ab.Speed = 0;
                 ab.Acceleration = 0;
             }
             else if (collider.gameObject.tag == "Mud")

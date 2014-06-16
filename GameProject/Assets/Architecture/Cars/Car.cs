@@ -17,7 +17,6 @@ namespace Cars
 
         // Variables
         private int _amountPlayers;
-		public static bool hasFinished = false;
 
         private static int _carNumberGenerator;
         public int CarNumber { get; set; }
