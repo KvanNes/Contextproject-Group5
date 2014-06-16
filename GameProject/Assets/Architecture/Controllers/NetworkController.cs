@@ -7,7 +7,6 @@ using UnityEngine;
 using System;
 using Utilities;
 using Wrappers;
-using UnityException = Utilities.UnityException;
 
 namespace Controllers
 {
@@ -18,39 +17,18 @@ namespace Controllers
         public static HostData[] hostData;
         public static Boolean connected = false;
         public INetworkView NetworkView;
-		public int countDownValue = -100;  // FIXME: This value should cause the countdown not be shown when starting the app.
-		public bool allowedToDrive = false;
 
         public void Start()
         {
-            if (MainScript.NetworkController != null)
-            {
-                throw new UnityException("NetworkController is being created twice, it seems");
-            }
-
-            MainScript.NetworkController = this;
-            MainScript.NetworkController.NetworkView = new NetworkViewWrapper();
-            MainScript.NetworkController.NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
-
+            NetworkView = new NetworkViewWrapper();
+            NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
         }
 
 		[RPC]
-		public void StartCountdown() {
-			allowedToDrive = false;
-			countDownValue = 3;
-            CancelInvoke("DecrementCounter");
-			InvokeRepeating("DecrementCounter", 1f, 1f);
-		}
-		
-        private void DecrementCounter() {
-            countDownValue--;
-			if (countDownValue == 0) {
-                allowedToDrive = true;
-            }
-            if (countDownValue == -4) {
-				CancelInvoke("DecrementCounter");
-            }
-		}
+		public void RestartGame() {
+            MainScript.CountdownController.StartCountdown();
+            TimeController.getInstance().Reset();
+     	}
 
         public static void refreshHostList()
         {
