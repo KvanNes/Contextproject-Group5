@@ -33,14 +33,18 @@ namespace Controllers
 		public void StartCountdown() {
 			allowedToDrive = false;
 			countDownValue = 3;
-			InvokeRepeating("DecrementCounter", 0f, 1f);
+            CancelInvoke("DecrementCounter");
+			InvokeRepeating("DecrementCounter", 1f, 1f);
 		}
 		
-		private void DecrementCounter() {
-			if(--countDownValue == 0) {
-				allowedToDrive = true;
+        private void DecrementCounter() {
+            countDownValue--;
+			if (countDownValue == 0) {
+                allowedToDrive = true;
+            }
+            if (countDownValue == -4) {
 				CancelInvoke("DecrementCounter");
-			}
+            }
 		}
 
         public static void refreshHostList()
