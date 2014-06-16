@@ -52,12 +52,12 @@ namespace GraphicalUITests
             _networkViewMock.Verify(net => net.RPC(It.IsAny<string>(), It.IsAny<RPCMode>()));
         }
 
-        [Test]
+        /*[Test]
         public void Test_ResetTimer()
         {
             RestartButtonPart.ResetTimer();
 
             Assert.AreEqual(Time.time, RestartButtonPart.TimerStart);
-        }
+        }*/
     }
 }

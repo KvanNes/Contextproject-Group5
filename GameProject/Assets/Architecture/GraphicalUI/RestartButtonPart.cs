@@ -6,8 +6,6 @@ using Cars;
 namespace GraphicalUI {
     public class RestartButtonPart : GraphicalUIPart {
 
-        public static float TimerStart;
-
         public void ResetCar(Car car, Vector3 pos) {
             Quaternion rot = Quaternion.identity;
             car.CarObject.transform.rotation = rot;
@@ -15,27 +13,11 @@ namespace GraphicalUI {
             car.CarObject.Acceleration = 0f;
             car.CarObject.GetSphere().transform.localPosition = new Vector3(25f / 0.3f, 0f, -0.3f);
             car.CarObject.GetSphere().transform.localRotation = Quaternion.identity;
-            car.CarObject.NetworkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.CarNumber - 1);
-            car.CarObject.NetworkView.RPC("UpdateRotation", RPCMode.Others, rot, car.CarNumber - 1);
-            car.CarObject.NetworkView.RPC("ResetCar", RPCMode.All);
-        }
-
-        public static void ResetTimer() {
-            TimerStart = Time.time;
-        }
-        
-        private void DrawTimer() {
-            float diff = Time.time - TimerStart;
-            int minutes = Mathf.FloorToInt(diff / 60);
-            int seconds = Mathf.FloorToInt(diff % 60);
-            GUI.Label(
-                new Rect(Screen.width - 50, 0, 50, 30),
-                new GUIContent(minutes.ToString("D2") + ":" + seconds.ToString("D2"))
-            );
+            car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.CarNumber - 1);
+            car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, rot, car.CarNumber - 1);
         }
 
         public override void DrawGraphicalUI() {
-            DrawTimer();
 
             if (GUI.Button(new Rect(Screen.width / 2 - 75, 10, 150, 25), "Restart Game"))
             {
@@ -47,8 +29,8 @@ namespace GraphicalUI {
                     Vector3 resetPos = spawnObject.position + new Vector3(0, yPos, 0);
                     car.CarObject.transform.position = resetPos;
                     ResetCar(car, resetPos);
-                    ResetTimer();
 					car.CarObject.NetworkView.RPC("ResetCar", RPCMode.All);
+                    MainScript.NetworkController.networkView.RPC("StartCountdown", RPCMode.All);
                 }
             }
         }
