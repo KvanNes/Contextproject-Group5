@@ -1,36 +1,30 @@
-using Interfaces;
 using UnityEngine;
 using System.Collections.Generic;
 using NetworkManager;
 using Cars;
-using Wrappers;
 
-namespace GraphicalUI
-{
-    public class RestartButtonPart : GraphicalUIPart
-    {
-        public static float TimerStart;
+namespace GraphicalUI {
+    public class RestartButtonPart : GraphicalUIPart {
 
-        public void ResetCar(Car car, Vector3 pos)
-        {
+        private static float TimerStart;
+
+        private void ResetCar(Car car, Vector3 pos) {
             Quaternion rot = Quaternion.identity;
             car.CarObject.transform.rotation = rot;
             car.CarObject.Speed = 0f;
             car.CarObject.Acceleration = 0f;
             car.CarObject.GetSphere().transform.localPosition = new Vector3(25f / 0.3f, 0f, -0.3f);
             car.CarObject.GetSphere().transform.localRotation = Quaternion.identity;
-            car.CarObject.NetworkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.CarNumber - 1);
-            car.CarObject.NetworkView.RPC("UpdateRotation", RPCMode.Others, rot, car.CarNumber - 1);
-            car.CarObject.NetworkView.RPC("ResetCar", RPCMode.Others);
+            car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.CarNumber - 1);
+            car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, rot, car.CarNumber - 1);
+            car.CarObject.networkView.RPC("ResetCar", RPCMode.Others);
         }
 
-        public static void ResetTimer()
-        {
+        public static void ResetTimer() {
             TimerStart = Time.time;
         }
-
-        private void DrawTimer()
-        {
+        
+        private void DrawTimer() {
             float diff = Time.time - TimerStart;
             int minutes = Mathf.FloorToInt(diff / 60);
             int seconds = Mathf.FloorToInt(diff % 60);
@@ -40,8 +34,7 @@ namespace GraphicalUI
             );
         }
 
-        public override void DrawGraphicalUI()
-        {
+        public override void DrawGraphicalUI() {
             DrawTimer();
 
             if (GUI.Button(new Rect(Screen.width / 2 - 75, 10, 150, 25), "Restart Game"))
@@ -55,9 +48,10 @@ namespace GraphicalUI
                     car.CarObject.transform.position = resetPos;
                     ResetCar(car, resetPos);
                     ResetTimer();
-                    Car.hasFinished = false;
+					car.CarObject.NetworkView.RPC("ResetCar", RPCMode.All);
                 }
             }
         }
     }
 }
+>>>>>>> 3701d6efdcc4cced1324521900ac2b145264503b

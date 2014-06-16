@@ -13,6 +13,8 @@ namespace Behaviours
     {
 
         public int CarNumber = -1;
+		public enum FinishedState { won, lost, inprogress }
+		public FinishedState state = FinishedState.inprogress;
 
         // The current speed and acceleration of this car.
         public float Speed = 0f;
@@ -37,6 +39,14 @@ namespace Behaviours
                 ab.NetworkView.RPC("UpdateRotation", info.sender, ab.transform.rotation, ab.CarNumber);
             }
         }
+
+		[RPC]
+		public void notifyHasFinished(int CarNumber) {
+			if (CarNumber == this.CarNumber) {
+				state = FinishedState.won;
+			} else
+				state = FinishedState.lost;
+		}
 
 
         // These are used to recover to the last position/rotation when a
@@ -127,7 +137,7 @@ namespace Behaviours
 
         [RPC]
         public void ResetCar() {
-            Car.hasFinished = false;
+			state = FinishedState.inprogress;
         }
 
         [RPC]
