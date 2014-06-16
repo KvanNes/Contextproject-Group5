@@ -7,7 +7,7 @@ namespace GraphicalUI
 {
     public class ThrottlerPart : ClientPart
     {
-        private Texture2D TextureNormal, TexturePressed;
+        public Texture2D TextureNormal, TexturePressed;
 
         public override void Initialize()
         {

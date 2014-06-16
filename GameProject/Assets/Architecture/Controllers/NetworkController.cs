@@ -1,10 +1,12 @@
 ﻿// Gebaseerd op: http://cgcookie.com/unity/2011/12/20/introduction-to-networking-in-unity/
 
 using Cars;
+using Interfaces;
 using NetworkManager;
 using UnityEngine;
 using System;
 using Utilities;
+using Wrappers;
 using UnityException = Utilities.UnityException;
 
 namespace Controllers
@@ -15,6 +17,7 @@ namespace Controllers
 
         public static HostData[] hostData;
         public static Boolean connected = false;
+        public INetworkView NetworkView;
 
         public void Start()
         {
@@ -24,6 +27,9 @@ namespace Controllers
             }
 
             MainScript.NetworkController = this;
+            MainScript.NetworkController.NetworkView = new NetworkViewWrapper();
+            MainScript.NetworkController.NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
+
         }
 
         public static void refreshHostList()
