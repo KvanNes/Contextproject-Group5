@@ -6,8 +6,6 @@ using Cars;
 namespace GraphicalUI {
     public class RestartButtonPart : GraphicalUIPart {
 
-        private static float TimerStart;
-
         private void ResetCar(Car car, Vector3 pos) {
             Quaternion rot = Quaternion.identity;
             car.CarObject.transform.rotation = rot;
@@ -20,22 +18,7 @@ namespace GraphicalUI {
             car.CarObject.networkView.RPC("ResetCar", RPCMode.Others);
         }
 
-        public static void ResetTimer() {
-            TimerStart = Time.time;
-        }
-        
-        private void DrawTimer() {
-            float diff = Time.time - TimerStart;
-            int minutes = Mathf.FloorToInt(diff / 60);
-            int seconds = Mathf.FloorToInt(diff % 60);
-            GUI.Label(
-                new Rect(Screen.width - 50, 0, 50, 30),
-                new GUIContent(minutes.ToString("D2") + ":" + seconds.ToString("D2"))
-            );
-        }
-
         public override void DrawGraphicalUI() {
-            DrawTimer();
 
             if (GUI.Button(new Rect(Screen.width / 2 - 75, 10, 150, 25), "Restart Game"))
             {
@@ -47,7 +30,6 @@ namespace GraphicalUI {
                     Vector3 resetPos = spawnObject.position + new Vector3(0, yPos, 0);
                     car.CarObject.transform.position = resetPos;
                     ResetCar(car, resetPos);
-                    ResetTimer();
                     Car.hasFinished = false;
                 }
             }
