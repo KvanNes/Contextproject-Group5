@@ -38,6 +38,10 @@ namespace Cars
         {
             int separatingColumn = Screen.width / 2;
 
+
+			if(!MainScript.NetworkController.allowedToDrive) {
+				return PlayerAction.None;
+			}
             // When touching with one finger: check whether on left/right half.
             if (InputWrapper.GetTouchCount() >= 1)
             {

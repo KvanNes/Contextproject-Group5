@@ -14,7 +14,10 @@ namespace Controllers
     {
 
         public static HostData[] hostData;
-        public static Boolean connected = false;
+		public static Boolean connected = false;
+
+		public int countDownValue = 0;
+		public bool allowedToDrive = false;
 
         public void Start()
         {
@@ -25,6 +28,20 @@ namespace Controllers
 
             MainScript.NetworkController = this;
         }
+
+		[RPC]
+		public void StartCountdown() {
+			allowedToDrive = false;
+			countDownValue = 3;
+			InvokeRepeating("DecrementCounter", 0f, 1f);
+		}
+		
+		private void DecrementCounter() {
+			if(--countDownValue == 0) {
+				allowedToDrive = true;
+				CancelInvoke("DecrementCounter");
+			}
+		}
 
         public static void refreshHostList()
         {
