@@ -13,7 +13,9 @@ namespace NetworkManager
         public Game Game { get; set; }
         public bool Connected = false;
 
-        public GameObject PlayerPrefab = null;
+        private GameObject _prefabGameObject;
+        public GameObject FirstCarPrefab = null;
+        public GameObject SecondCarPrefab = null;
         public Transform SpawnObject = null;
 
         public INetwork Network { get; set; }
@@ -24,8 +26,9 @@ namespace NetworkManager
             NetworkView = new NetworkViewWrapper();
             NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
             Network.InitializeServer(32, GameData.PORT, !UnityEngine.Network.HavePublicAddress());
-            MasterServer.RegisterHost(GameData.GAME_NAME, "2P1C");
             Connected = true;
+            if (!Network.IsServer()) return;
+            MasterServer.RegisterHost(GameData.GAME_NAME, "2P1C");
         }
 
         public void DisconnectServer()
@@ -96,8 +99,9 @@ namespace NetworkManager
         {
             float y = GetStartingPosition(carNumber);
             Vector3 pos = SpawnObject.position + new Vector3(0, y, 0);
+            _prefabGameObject = carNumber == 1 ? FirstCarPrefab : SecondCarPrefab;
 
-            Object obj = Network.Instantiate(PlayerPrefab, pos, Quaternion.identity, 0);
+            Object obj = Network.Instantiate(_prefabGameObject, pos, Quaternion.identity, 0);
             AutoBehaviour ab = (AutoBehaviour)((GameObject)obj).GetComponent(typeof(AutoBehaviour));
             Car car = new Car(ab);
             car.Throttler = new Player(car, new Throttler());
@@ -124,8 +128,6 @@ namespace NetworkManager
 
         public void OnPlayerDisconnected(NetworkPlayer player)
         {
-            //UnityEngine.Network.RemoveRPCs(player);
-            //UnityEngine.Network.DestroyPlayerObjects(player);
             Network.RemoveRPCs(player);
             Network.DestroyPlayerObjects(player);
 

@@ -1,8 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace GraphicalUI {
-    public class GraphicalUIController : MonoBehaviour {
+namespace GraphicalUI
+{
+    public class GraphicalUIController : MonoBehaviour
+    {
         public static readonly PartsConfiguration ServerConfiguration = new PartsConfiguration(new ServerPart(), new RestartButtonPart());
         public static readonly PartsConfiguration DriverConfiguration = new PartsConfiguration(new DriverPart(), new RestartButtonPart(), new SignControllerDriver());
         public static readonly PartsConfiguration ThrottlerConfiguration = new PartsConfiguration(new ThrottlerPart(), new RestartButtonPart(), new SignControllerThrottler());
@@ -11,26 +13,33 @@ namespace GraphicalUI {
 
         private Stack<PartsConfiguration> Configurations = new Stack<PartsConfiguration>();
 
-        public void Add(PartsConfiguration configuration) {
+        public void Add(PartsConfiguration configuration)
+        {
             Configurations.Push(configuration);
         }
 
-        public void Remove() {
+        public void Remove()
+        {
             Configurations.Pop();
         }
 
-        public void Start() {
+        public void Start()
+        {
             Add(MainConfiguration);
         }
 
-        public void OnGUI() {
-            if (Configurations.Count == 0) {
+        public void OnGUI()
+        {
+            if (Configurations.Count == 0)
+            {
                 return;
             }
 
             PartsConfiguration configuration = Configurations.Peek();
-            foreach(GraphicalUIPart part in configuration.Parts) {
-                if(!part.Initialized) {
+            foreach (GraphicalUIPart part in configuration.Parts)
+            {
+                if (!part.Initialized)
+                {
                     part.Initialized = true;
                     part.Initialize();
                 }
