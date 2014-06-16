@@ -28,8 +28,7 @@ namespace GraphicalUITests
 
             if (_gameObject == null) return;
             _autoBehaviour = _gameObject.AddComponent<AutoBehaviour>();
-            _car = new Car(_autoBehaviour);
-            _car.CarObject.NetworkView = _networkViewMock.Object;
+            _car = new Car(_autoBehaviour) { CarObject = { NetworkView = _networkViewMock.Object } };
         }
 
         [Test]

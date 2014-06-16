@@ -6,18 +6,18 @@ using Cars;
 namespace GraphicalUI {
     public class RestartButtonPart : GraphicalUIPart {
 
-        private static float TimerStart;
+        public static float TimerStart;
 
-        private void ResetCar(Car car, Vector3 pos) {
+        public void ResetCar(Car car, Vector3 pos) {
             Quaternion rot = Quaternion.identity;
             car.CarObject.transform.rotation = rot;
             car.CarObject.Speed = 0f;
             car.CarObject.Acceleration = 0f;
             car.CarObject.GetSphere().transform.localPosition = new Vector3(25f / 0.3f, 0f, -0.3f);
             car.CarObject.GetSphere().transform.localRotation = Quaternion.identity;
-            car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.CarNumber - 1);
-            car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, rot, car.CarNumber - 1);
-            car.CarObject.networkView.RPC("ResetCar", RPCMode.Others);
+            car.CarObject.NetworkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.CarNumber - 1);
+            car.CarObject.NetworkView.RPC("UpdateRotation", RPCMode.Others, rot, car.CarNumber - 1);
+            car.CarObject.NetworkView.RPC("ResetCar", RPCMode.All);
         }
 
         public static void ResetTimer() {
