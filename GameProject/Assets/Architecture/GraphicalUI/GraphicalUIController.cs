@@ -1,21 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-<<<<<<< HEAD
-namespace GraphicalUI
-{
-    public class GraphicalUIController : MonoBehaviour
-    {
-        public static readonly PartsConfiguration ServerConfiguration = new PartsConfiguration(new ServerPart(), new RestartButtonPart());
-        public static readonly PartsConfiguration DriverConfiguration = new PartsConfiguration(new DriverPart(), new RestartButtonPart(), new SignControllerDriver());
-        public static readonly PartsConfiguration ThrottlerConfiguration = new PartsConfiguration(new ThrottlerPart(), new RestartButtonPart(), new SignControllerThrottler());
-=======
 namespace GraphicalUI {
     public class GraphicalUIController : MonoBehaviour {
 		public static readonly PartsConfiguration ServerConfiguration = new PartsConfiguration(new ServerPart(), new RestartButtonPart());
 		public static readonly PartsConfiguration DriverConfiguration = new PartsConfiguration(new DriverPart(), new RestartButtonPart(), new SignControllerDriver(), new FinishedPart());
 		public static readonly PartsConfiguration ThrottlerConfiguration = new PartsConfiguration(new ThrottlerPart(), new RestartButtonPart(), new SignControllerThrottler(), new FinishedPart());
->>>>>>> NOTIFY_WHEN_WON
         public static readonly PartsConfiguration MainConfiguration = new PartsConfiguration(new MainPart());
         public static readonly PartsConfiguration TutorialConfiguration = new PartsConfiguration(new TutorialPart());
 
