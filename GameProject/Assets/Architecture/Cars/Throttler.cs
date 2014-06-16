@@ -133,7 +133,9 @@ namespace Cars
         public void HandleCollision(AutoBehaviour ab, Collider2D collider)
         {
             if (collider.gameObject.tag == "Finish") {
-				ab.NetworkView.RPC("notifyHasFinished", RPCMode.All, ab.CarNumber);
+				foreach (Car car in MainScript.Cars) {
+					car.CarObject.NetworkView.RPC ("notifyHasFinished", RPCMode.All, ab.CarNumber);
+				}
 				ab.Speed = 0;
                 ab.Acceleration = 0;
             }

@@ -42,6 +42,7 @@ namespace Behaviours
 
 		[RPC]
 		public void notifyHasFinished(int CarNumber) {
+			Debug.Log (CarNumber);
 			if (CarNumber == this.CarNumber) {
 				state = FinishedState.won;
 			} else
