@@ -8,13 +8,9 @@ namespace GraphicalUI {
 
         public void ResetCar(Car car, Vector3 pos) {
             Quaternion rot = Quaternion.identity;
-            car.CarObject.transform.rotation = rot;
-            car.CarObject.Speed = 0f;
             car.CarObject.Acceleration = 0f;
-            car.CarObject.GetSphere().transform.localPosition = new Vector3(25f / 0.3f, 0f, -0.3f);
-            car.CarObject.GetSphere().transform.localRotation = Quaternion.identity;
-            car.CarObject.networkView.RPC("UpdatePosition", RPCMode.Others, pos, 0f, car.CarNumber - 1);
-            car.CarObject.networkView.RPC("UpdateRotation", RPCMode.Others, rot, car.CarNumber - 1);
+            car.CarObject.networkView.RPC("UpdatePosition", RPCMode.All, pos, 0f, car.CarNumber - 1);
+            car.CarObject.networkView.RPC("UpdateRotation", RPCMode.All, rot, car.CarNumber - 1);
         }
 
         public override void DrawGraphicalUI() {

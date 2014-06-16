@@ -110,7 +110,7 @@ namespace Cars
 			}
 			else if (action == PlayerAction.SpeedDown)
 			{
-				applySpeedUpDown(ab, Time.deltaTime, GameData.ACCELERATION_DECREASE, 10, 20);
+				applySpeedUpDown(ab, Time.deltaTime, GameData.ACCELERATION_DECREASE, 10, 50);
 			}
 			else
 			{
@@ -157,7 +157,7 @@ namespace Cars
                 a = (a + 360) % 180;
                 b = (b + 360) % 180;
                 float d = Math.Abs(a - b);
-                if(60 <= d && d <= 120) {
+                if(75 <= d && d <= 105) {
                     // Slide, handled by Unity
                 } else {
                     // Go back a little.
@@ -169,12 +169,7 @@ namespace Cars
             }
         }
 
-        public void PositionUpdated(AutoBehaviour ab, bool isSelf)
-        {
-
-        }
-
-        public void RotationUpdated(AutoBehaviour ab, bool isSelf)
+        private void NormalizeSphere(AutoBehaviour ab)
         {
             GameObject sphere = ab.GetSphere();
             Transform carTransform = ab.transform;
@@ -183,6 +178,16 @@ namespace Cars
             v.y *= 2f; // Scale ratio of Auto needs to be taken into account here.
             v.z = -0.3f;
             sphere.transform.localPosition = v;
+        }
+
+        public void PositionUpdated(AutoBehaviour ab, bool isSelf)
+        {
+            NormalizeSphere(ab);
+        }
+
+        public void RotationUpdated(AutoBehaviour ab, bool isSelf)
+        {
+            NormalizeSphere(ab);
         }
 
         public Vector3 GetLastSentPosition()
