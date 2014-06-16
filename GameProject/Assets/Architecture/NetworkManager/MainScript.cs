@@ -28,6 +28,7 @@ namespace NetworkManager
         public static PlayerType SelfType = PlayerType.None;
         public static bool SelectionIsFinal = false;
         public static GraphicalUIController GUIController;
+        public static CountdownController CountdownController;
 
         // FIXME: Remove the following variables in release.
         public static bool IsDebug = false;
@@ -68,7 +69,9 @@ namespace NetworkManager
                 Cars.Add(new Car());
             }
 
+            NetworkController = (NetworkController)GameObject.FindGameObjectWithTag("Network").GetComponent(typeof(NetworkController));
             GUIController = (GraphicalUIController)GameObject.FindGameObjectWithTag("GUI").GetComponent(typeof(GraphicalUIController));
+            CountdownController = (CountdownController)GameObject.FindGameObjectWithTag("CountdownController").GetComponent(typeof(CountdownController));
         }
         
         public void UpdateHostList() {
