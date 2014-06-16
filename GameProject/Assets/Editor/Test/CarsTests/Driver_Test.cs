@@ -43,13 +43,13 @@ namespace CarsTests
             NetworkViewOther = new Mock<INetworkView>();
 
             _gameObject =
-                Object.Instantiate(Resources.LoadAssetAtPath("Assets/Auto.prefab", typeof(GameObject))) as GameObject;
+                Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarRed.prefab", typeof(GameObject))) as GameObject;
             if (_gameObject == null) return;
             _autoBehaviour = _gameObject.AddComponent<AutoBehaviour>();
             _autoBehaviour.NetworkView = NetworkView.Object;
 
             _gameObjectOther =
-                Object.Instantiate(Resources.LoadAssetAtPath("Assets/Auto.prefab", typeof(GameObject))) as GameObject;
+                Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarBlue.prefab", typeof(GameObject))) as GameObject;
             if (_gameObjectOther == null) return;
             _autoBehaviourOther = _gameObjectOther.AddComponent<AutoBehaviour>();
             _autoBehaviourOther.NetworkView = NetworkViewOther.Object;
@@ -179,4 +179,6 @@ namespace CarsTests
             Assert.AreEqual(expectedPosition, Camera.main.transform.position);
         }
     }
+
+
 }

@@ -1,9 +1,9 @@
-﻿using System;
-using NetworkManager;
+﻿using NetworkManager;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace GraphicalUI {
+namespace GraphicalUI
+{
     public class SignController : GraphicalUIPart
     {
         private Dictionary<Vector2, Texture2D> Textures = new Dictionary<Vector2, Texture2D>();

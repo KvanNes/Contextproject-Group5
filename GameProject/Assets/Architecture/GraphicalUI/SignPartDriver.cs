@@ -1,9 +1,8 @@
-﻿using Cars;
-using NetworkManager;
-using UnityEngine;
+﻿using UnityEngine;
 using Utilities;
 
-namespace GraphicalUI {
+namespace GraphicalUI
+{
     public class SignControllerDriver : SignController
     {
         public override void Initialize()

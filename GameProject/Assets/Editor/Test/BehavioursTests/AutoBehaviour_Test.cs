@@ -22,16 +22,15 @@ namespace BehavioursTests
         private GameObject _gameObject;
 
         /*
-     * Setup for the tests by creating the appropiate mocks and setting up the server
-    */
-
+         * Setup for the tests by creating the appropiate mocks and setting up the server
+         */
         [SetUp]
         public void Setup()
         {
             NetworkView = new Mock<INetworkView>();
 
             _gameObject =
-                Object.Instantiate(Resources.LoadAssetAtPath("Assets/Auto.prefab", typeof(GameObject))) as GameObject;
+                Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarRed.prefab", typeof(GameObject))) as GameObject;
             if (_gameObject != null)
             {
                 _autoBehaviour = _gameObject.AddComponent<AutoBehaviour>();

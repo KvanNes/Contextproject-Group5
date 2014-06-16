@@ -1,7 +1,9 @@
 using UnityEngine;
 
-namespace GraphicalUI {
-    public abstract class ClientPart : GraphicalUIPart {
+namespace GraphicalUI
+{
+    public abstract class ClientPart : GraphicalUIPart
+    {
         private const float ButtonsFactor = 0.4f;
 
         private void DrawControl(Texture2D texture, float left, float top)
@@ -11,7 +13,7 @@ namespace GraphicalUI {
                 texture
             );
         }
-        
+
         protected void DrawControls(Texture2D leftTexture, Texture2D rightTexture)
         {
             DrawControl(leftTexture, 0, Screen.height - leftTexture.height * ButtonsFactor);

@@ -20,7 +20,8 @@ namespace GraphicalUI
 
         public void Remove()
         {
-            Configurations.Pop();
+            if (Configurations.Count > 0)
+                Configurations.Pop();
         }
 
         public void Start()

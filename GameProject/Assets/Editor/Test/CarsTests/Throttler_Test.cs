@@ -31,6 +31,7 @@ namespace CarsTests
         private Car _carOther;
 
         private float _midScreenWidth;
+        private float _delta = 0.001f;
 
         [SetUp]
         public void SetUp()
@@ -42,7 +43,7 @@ namespace CarsTests
             NetworkViewOther = new Mock<INetworkView>();
 
             _gameObject =
-                Object.Instantiate(Resources.LoadAssetAtPath("Assets/Auto.prefab", typeof(GameObject))) as GameObject;
+                Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarRed.prefab", typeof(GameObject))) as GameObject;
             if (_gameObject == null) return;
             _autoBehaviour = _gameObject.AddComponent<AutoBehaviour>();
             _gameObject.GetComponent<AutoBehaviour>().NetworkView = NetworkView.Object;
@@ -50,7 +51,7 @@ namespace CarsTests
             _player = new Player(_carDriver, _throttler);
 
             _gameObjectOther =
-                Object.Instantiate(Resources.LoadAssetAtPath("Assets/Auto.prefab", typeof(GameObject))) as GameObject;
+                Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarBlue.prefab", typeof(GameObject))) as GameObject;
             if (_gameObjectOther == null) return;
             _autoBehaviourOther = _gameObjectOther.AddComponent<AutoBehaviour>();
             _gameObjectOther.GetComponent<AutoBehaviour>().NetworkView = NetworkViewOther.Object;
@@ -176,7 +177,7 @@ namespace CarsTests
             _throttler.HandlePlayerAction(_autoBehaviour);
 
             // Assertions
-            Assert.AreEqual(speed, _autoBehaviour.Speed, 0.000001);
+            Assert.AreEqual(speed, _autoBehaviour.Speed, _delta);
         }
 
         [Test]
@@ -192,7 +193,7 @@ namespace CarsTests
             _throttler.HandlePlayerAction(_autoBehaviour);
 
             // Assertions
-            Assert.AreEqual(speed, _autoBehaviour.Speed, 0.000001);
+            Assert.AreEqual(speed, _autoBehaviour.Speed, _delta);
         }
 
         [Test]
@@ -258,30 +259,6 @@ namespace CarsTests
             Assert.AreEqual(pos, _autoBehaviour.transform.position);
 
             Utils.DestroyObject(gameObject);
-        }
-
-        [Test]
-        public void Test_PositionUpdated_IsSelf()
-        {
-            Vector3 expectedPosition = new Vector3(5.6f, 1f, -8f);
-            const float expectedOrthographicSize = 1.4f;
-
-            _throttler.PositionUpdated(_autoBehaviour, true);
-
-            Assert.AreEqual(expectedPosition, Camera.main.transform.position);
-            Assert.AreEqual(expectedOrthographicSize, Camera.main.orthographicSize);
-        }
-
-        [Test]
-        public void Test_PositionUpdated_NotIsSelf()
-        {
-            Vector3 expectedPosition = Camera.main.transform.position;
-            float expectedOrthographicSize = Camera.main.orthographicSize;
-
-            _throttler.PositionUpdated(_autoBehaviour, false);
-
-            Assert.AreEqual(expectedPosition, Camera.main.transform.position);
-            Assert.AreEqual(expectedOrthographicSize, Camera.main.orthographicSize);
         }
     }
 }

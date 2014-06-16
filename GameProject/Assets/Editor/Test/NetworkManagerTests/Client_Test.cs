@@ -1,4 +1,5 @@
 ﻿using Controllers;
+using GraphicalUI;
 using Interfaces;
 using Moq;
 using NetworkManager;
@@ -14,6 +15,7 @@ namespace MainTests
     {
         private Client _client;
         private GameObject _gameObject;
+        private GameObject _gameObjectGui;
 
         public Mock<INetwork> Network;
         public Mock<INetworkView> NetworkView;
@@ -27,12 +29,18 @@ namespace MainTests
             NetworkView = new Mock<INetworkView>();
             _client.NetworkView = NetworkView.Object;
             _client.Network = Network.Object;
+
+            _gameObjectGui = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            _gameObjectGui.AddComponent<GraphicalUIController>();
+            _gameObjectGui.tag = "GUI";
+            MainScript.GUIController = (GraphicalUIController)GameObject.FindGameObjectWithTag("GUI").GetComponent(typeof(GraphicalUIController));
         }
 
         [TearDown]
         public void Clear()
         {
             Utils.DestroyObject(_gameObject);
+            Utils.DestroyObject(_gameObjectGui);
         }
 
         [Test]

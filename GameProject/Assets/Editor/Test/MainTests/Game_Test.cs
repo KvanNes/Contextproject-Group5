@@ -27,13 +27,13 @@ namespace MainTests
             _game = new Game();
 
             _gameObject =
-                Object.Instantiate(Resources.LoadAssetAtPath("Assets/Auto.prefab", typeof(GameObject))) as GameObject;
+                Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarRed.prefab", typeof(GameObject))) as GameObject;
             if (_gameObject == null) return;
             _autoBehaviour = _gameObject.AddComponent<AutoBehaviour>();
             _car = new Car(_autoBehaviour);
 
             _gameObjectOther =
-                Object.Instantiate(Resources.LoadAssetAtPath("Assets/Auto.prefab", typeof(GameObject))) as GameObject;
+                Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarBlue.prefab", typeof(GameObject))) as GameObject;
             if (_gameObjectOther == null) return;
             _gameObjectOther.AddComponent<AutoBehaviour>();
             _carOther = new Car(_gameObjectOther.GetComponent<AutoBehaviour>());
@@ -58,9 +58,6 @@ namespace MainTests
         [Test]
         public void Test_ConstructorVariables()
         {
-            Assert.IsNotNull(_game.SpawnController);
-            Assert.IsNotNull(_game.AvailabilityController);
-            Assert.IsNotNull(_game.StartController);
             Assert.IsNotNull(_game.Cars);
         }
 

@@ -1,18 +1,17 @@
-using Cars;
-using NetworkManager;
 using UnityEngine;
 using Utilities;
 
-namespace GraphicalUI {
+namespace GraphicalUI
+{
     public class SignControllerThrottler : SignController
     {
         public override void Initialize()
         {
             Texture2D TextureStraight = TextureUtils.LoadTexture("ArrowTextureStraight");
-			Texture2D TextureUTurnLeft = TextureUtils.LoadTexture("ArrowTextureUTurnLeft");
-			Texture2D TextureUTurnRight = TextureUtils.LoadTexture("ArrowTextureUTurnRight");
-			Texture2D TextureLeftCurve = TextureUtils.LoadTexture("ArrowTextureCurveLeft");
-			Texture2D TextureRightCurve = TextureUtils.LoadTexture("ArrowTextureCurveRight");
+            Texture2D TextureUTurnLeft = TextureUtils.LoadTexture("ArrowTextureUTurnLeft");
+            Texture2D TextureUTurnRight = TextureUtils.LoadTexture("ArrowTextureUTurnRight");
+            Texture2D TextureLeftCurve = TextureUtils.LoadTexture("ArrowTextureCurveLeft");
+            Texture2D TextureRightCurve = TextureUtils.LoadTexture("ArrowTextureCurveRight");
 
             AddArrow(0, 0, TextureStraight);
             AddArrow(1, 0, TextureStraight);

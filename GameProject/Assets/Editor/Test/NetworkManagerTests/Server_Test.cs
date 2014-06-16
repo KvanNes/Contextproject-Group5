@@ -203,7 +203,7 @@ namespace NetworkManagerTests
         [Test]
         public void Test_GetStartingPosition()
         {
-            const float expectedPosition = 0.12f - 0.05f * CarNumberInit;
+            const float expectedPosition = 0.45f - 0.3f * CarNumberInit;
             var startingPosition = Server.GetStartingPosition(CarNumberInit);
 
             Assert.AreEqual(expectedPosition, startingPosition);

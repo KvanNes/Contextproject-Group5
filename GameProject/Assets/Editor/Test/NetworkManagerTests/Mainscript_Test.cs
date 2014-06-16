@@ -1,4 +1,5 @@
 ﻿using Cars;
+using GraphicalUI;
 using Interfaces;
 using NetworkManager;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace MainTests
         private GameObject _gameObject;
         private GameObject _gObjNetwork;
         private GameObject _gObjTutorial;
+        private GameObject _gObjGui;
 
         private Mock<ICar> _selfCar;
 
@@ -28,6 +30,11 @@ namespace MainTests
             _gObjNetwork.AddComponent<Client>();
             _gObjNetwork.GetComponent<Client>().tag = "Network";
             _gObjNetwork.tag = "Network";
+
+            _gObjGui = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            _gObjGui.AddComponent<GraphicalUIController>();
+            _gObjGui.tag = "GUI";
+
             /*_gObjTutorial = GameObject.CreatePrimitive(PrimitiveType.Cube);
             _gObjTutorial.AddComponent<Tutorial>();
             _gObjTutorial.tag = "Tutorial";*/

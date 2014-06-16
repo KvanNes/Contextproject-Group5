@@ -1,9 +1,11 @@
 using UnityEngine;
 using NetworkManager;
 
-namespace GraphicalUI {
-    public class ServerPart : GraphicalUIPart {
-        
+namespace GraphicalUI
+{
+    public class ServerPart : GraphicalUIPart
+    {
+
         private void DrawLightControl()
         {
             if (GUI.Button(new Rect(0, 50, 300, 50), new GUIContent("Toggle light")))
@@ -11,7 +13,7 @@ namespace GraphicalUI {
                 MainScript.NetworkController.networkView.RPC("ToggleLight", RPCMode.Others);
             }
         }
-        
+
         private void DrawOverviewControl()
         {
             if (GUI.Button(new Rect(0, 100, 300, 50), new GUIContent("Toggle overview")))
@@ -20,12 +22,13 @@ namespace GraphicalUI {
             }
         }
 
-        public override void DrawGraphicalUI() {
+        public override void DrawGraphicalUI()
+        {
             if (MainScript.Server.Game != null)
             {
                 // Gebaseerd op: http://answers.unity3d.com/questions/296204/gui-font-size.html
                 GUI.skin.label.fontSize = 20;
-                
+
                 GUI.Label(new Rect(10, 10, 200, 50), new GUIContent("Server started"));
 
                 DrawLightControl();

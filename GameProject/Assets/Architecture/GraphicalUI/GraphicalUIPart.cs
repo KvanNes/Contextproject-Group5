@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace GraphicalUI {
     public abstract class GraphicalUIPart {
         public bool Initialized = false;

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using NetworkManager;
 using Cars;
 
-namespace GraphicalUI {
-    public class RestartButtonPart : GraphicalUIPart {
+namespace GraphicalUI
+{
+    public class RestartButtonPart : GraphicalUIPart
+    {
 
         private static float TimerStart;
 
-        private void ResetCar(Car car, Vector3 pos) {
+        private void ResetCar(Car car, Vector3 pos)
+        {
             Quaternion rot = Quaternion.identity;
             car.CarObject.transform.rotation = rot;
             car.CarObject.Speed = 0f;
@@ -20,11 +23,13 @@ namespace GraphicalUI {
             car.CarObject.networkView.RPC("ResetCar", RPCMode.Others);
         }
 
-        public static void ResetTimer() {
+        public static void ResetTimer()
+        {
             TimerStart = Time.time;
         }
-        
-        private void DrawTimer() {
+
+        private void DrawTimer()
+        {
             float diff = Time.time - TimerStart;
             int minutes = Mathf.FloorToInt(diff / 60);
             int seconds = Mathf.FloorToInt(diff % 60);
@@ -34,7 +39,8 @@ namespace GraphicalUI {
             );
         }
 
-        public override void DrawGraphicalUI() {
+        public override void DrawGraphicalUI()
+        {
             DrawTimer();
 
             if (GUI.Button(new Rect(Screen.width / 2 - 75, 10, 150, 25), "Restart Game"))
