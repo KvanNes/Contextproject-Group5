@@ -132,40 +132,54 @@ namespace Cars
 			ab.transform.Translate(ab.Speed * Time.deltaTime * 4f, 0, 0);
 			ab.PositionUpdated();
         }
+        
+        private void CollisionFinish(AutoBehaviour ab) {
+            foreach (Car car in MainScript.Cars) {
+                car.CarObject.NetworkView.RPC ("notifyHasFinished", RPCMode.All, ab.CarNumber);
+            }
+            ab.Speed = 0;
+            ab.Acceleration = 0;
+        }
+
+        private void CollisionMud(AutoBehaviour ab) {
+            if (ab.Speed > GameData.MAX_SPEED * 0.25f)
+            {
+                ab.Speed = 0;
+            }
+        }
+
+        private void CollisionEdge(AutoBehaviour ab, Collision2D collision) {
+            Vector2 normal = collision.contacts[0].normal;
+            float a = MathUtils.CalculateAngle(normal) * Mathf.Rad2Deg;
+            float b = ab.transform.rotation.eulerAngles.z % 360;
+            a = (a + 360) % 180;
+            b = (b + 360) % 180;
+            float d = Math.Abs(a - b);
+            const float angle = 25f;
+            if (90 - angle <= d && d <= 90 + angle) {
+                // Slide, handled by Unity
+            } else {
+                // Go back a little.
+                ab.RestoreConfiguration();
+                ab.Speed = -ab.Speed * GameData.COLLISION_FACTOR;
+                ab.gameObject.transform.Translate(-0.05f, 0f, 0f);
+                ab.PositionUpdated();
+            }
+        }
 
         public void HandleCollision(AutoBehaviour ab, Collision2D collision)
         {
-            if (collision.gameObject.tag == "Finish") {
-				foreach (Car car in MainScript.Cars) {
-					car.CarObject.NetworkView.RPC ("notifyHasFinished", RPCMode.All, ab.CarNumber);
-				}
-				ab.Speed = 0;
-                ab.Acceleration = 0;
+            if (collision.gameObject.tag == "Finish")
+            {
+                CollisionFinish(ab);
             }
             else if (collision.gameObject.tag == "Mud")
             {
-                if (ab.Speed > GameData.MAX_SPEED * 0.25f)
-                {
-                    ab.Speed = 0;
-                }
+                CollisionMud(ab);
             }
             else
             {
-                Vector2 normal = collision.contacts[0].normal;
-                float a = MathUtils.CalculateAngle(normal) * Mathf.Rad2Deg;
-                float b = ab.transform.rotation.eulerAngles.z;
-                a = (a + 360) % 180;
-                b = (b + 360) % 180;
-                float d = Math.Abs(a - b);
-                if(75 <= d && d <= 105) {
-                    // Slide, handled by Unity
-                } else {
-                    // Go back a little.
-                    ab.RestoreConfiguration();
-                    ab.Speed = -ab.Speed * GameData.COLLISION_FACTOR;
-                    ab.gameObject.transform.Translate(-0.05f, 0f, 0f);
-                    ab.PositionUpdated();
-                }
+                CollisionEdge(ab, collision);
             }
         }
 
