@@ -7,14 +7,14 @@ namespace GraphicalUI
 {
     public class DriverPart : ClientPart
     {
-        private Texture2D _textureLeftNormal, _textureLeftPressed, _textureRightNormal, _textureRightPressed;
+        public Texture2D TextureLeftNormal, TextureLeftPressed, TextureRightNormal, TextureRightPressed;
 
         public override void Initialize()
         {
-            _textureLeftNormal = TextureUtils.LoadTexture("stuur-links-normaal");
-            _textureLeftPressed = TextureUtils.LoadTexture("stuur-links-ingedrukt");
-            _textureRightNormal = TextureUtils.LoadTexture("stuur-rechts-normaal");
-            _textureRightPressed = TextureUtils.LoadTexture("stuur-rechts-ingedrukt");
+            TextureLeftNormal = TextureUtils.LoadTexture("stuur-links-normaal");
+            TextureLeftPressed = TextureUtils.LoadTexture("stuur-links-ingedrukt");
+            TextureRightNormal = TextureUtils.LoadTexture("stuur-rechts-normaal");
+            TextureRightPressed = TextureUtils.LoadTexture("stuur-rechts-ingedrukt");
         }
 
         public override void DrawGraphicalUI()
@@ -22,8 +22,8 @@ namespace GraphicalUI
             PlayerAction currentAction = MainScript.SelfPlayer.Role.GetPlayerAction();
 
             DrawControls(
-                currentAction == PlayerAction.SteerLeft ? _textureLeftPressed : _textureLeftNormal,
-                currentAction == PlayerAction.SteerRight ? _textureRightPressed : _textureRightNormal
+                currentAction == PlayerAction.SteerLeft ? TextureLeftPressed : TextureLeftNormal,
+                currentAction == PlayerAction.SteerRight ? TextureRightPressed : TextureRightNormal
             );
         }
     }

@@ -35,10 +35,6 @@ namespace MainTests
             _gObjGui.AddComponent<GraphicalUIController>();
             _gObjGui.tag = "GUI";
 
-            /*_gObjTutorial = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            _gObjTutorial.AddComponent<Tutorial>();
-            _gObjTutorial.tag = "Tutorial";*/
-
             _mainScript = _gameObject.AddComponent<MainScript>();
             _selfCar = new Mock<ICar>();
         }

@@ -11,7 +11,7 @@ namespace GraphicalUI
         public static readonly PartsConfiguration MainConfiguration = new PartsConfiguration(new MainPart());
         public static readonly PartsConfiguration TutorialConfiguration = new PartsConfiguration(new TutorialPart());
 
-        private Stack<PartsConfiguration> Configurations = new Stack<PartsConfiguration>();
+        public Stack<PartsConfiguration> Configurations = new Stack<PartsConfiguration>();
 
         public void Add(PartsConfiguration configuration)
         {
@@ -22,6 +22,11 @@ namespace GraphicalUI
         {
             if (Configurations.Count > 0)
                 Configurations.Pop();
+        }
+
+        public void Clear()
+        {
+            Configurations.Clear();
         }
 
         public void Start()

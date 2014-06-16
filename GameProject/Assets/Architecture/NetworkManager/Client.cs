@@ -40,7 +40,7 @@ namespace NetworkManager
         {
             foreach (GameObject go in GameObject.FindGameObjectsWithTag("Player"))
             {
-                Destroy(go);
+                DestroyImmediate(go);
             }
             NetworkController.connected = false;
             MainScript.SelfCar = null;
