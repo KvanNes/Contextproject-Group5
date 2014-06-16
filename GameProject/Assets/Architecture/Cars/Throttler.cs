@@ -133,16 +133,16 @@ namespace Cars
 			ab.PositionUpdated();
         }
 
-        public void HandleCollision(AutoBehaviour ab, Collider2D collider)
+        public void HandleCollision(AutoBehaviour ab, Collision2D collision)
         {
-            if (collider.gameObject.tag == "Finish") {
+            if (collision.gameObject.tag == "Finish") {
 				foreach (Car car in MainScript.Cars) {
 					car.CarObject.NetworkView.RPC ("notifyHasFinished", RPCMode.All, ab.CarNumber);
 				}
 				ab.Speed = 0;
                 ab.Acceleration = 0;
             }
-            else if (collider.gameObject.tag == "Mud")
+            else if (collision.gameObject.tag == "Mud")
             {
                 if (ab.Speed > GameData.MAX_SPEED * 0.25f)
                 {
@@ -151,12 +151,21 @@ namespace Cars
             }
             else
             {
-                // Go back a little.
-                //ab.Speed = -(ab.Speed + Mathf.Sign(ab.Speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
-                ab.RestoreConfiguration();
-                ab.Speed = -ab.Speed * GameData.COLLISION_FACTOR;
-                ab.gameObject.transform.Translate(-0.05f, 0f, 0f);
-                ab.PositionUpdated();
+                Vector2 normal = collision.contacts[0].normal;
+                float a = MathUtils.CalculateAngle(normal) * Mathf.Rad2Deg;
+                float b = ab.transform.rotation.eulerAngles.z;
+                a = (a + 360) % 180;
+                b = (b + 360) % 180;
+                float d = Math.Abs(a - b);
+                if(60 <= d && d <= 120) {
+                    // Slide, handled by Unity
+                } else {
+                    // Go back a little.
+                    ab.RestoreConfiguration();
+                    ab.Speed = -ab.Speed * GameData.COLLISION_FACTOR;
+                    ab.gameObject.transform.Translate(-0.05f, 0f, 0f);
+                    ab.PositionUpdated();
+                }
             }
         }
 

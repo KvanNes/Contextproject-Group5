@@ -15,6 +15,11 @@ namespace Utilities
 		{
 			return new Vector3(v.x, v.y, 0f);
 		}
+
+        public static float CalculateAngle(Vector2 v)
+        {
+            return Mathf.Atan2(v.y, v.x);
+        }
 		
 		public static Vector2 Rotate(Vector2 point, Vector2 midpoint, float angle)
 		{

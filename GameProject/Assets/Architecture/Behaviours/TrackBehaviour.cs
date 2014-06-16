@@ -8,7 +8,7 @@ namespace Behaviours
     {
 
         // The margin that the collision lines have with respect to the border.
-        protected const float Margin = 0.1f;
+        protected const float Margin = 0.18f;
 
         // Normalizes the input vectors so that (0, 0) is top left and (1, 1) is bottom
         // right.
@@ -24,18 +24,20 @@ namespace Behaviours
             return res;
         }
 
+        private void AddEdgeCollider(Vector2[] points) {
+            EdgeCollider2D edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
+            edgeCollider.isTrigger = false;
+            edgeCollider.points = Normalize(points);
+        }
+
         // Add the collision edges to this game object.
         protected void AddEdges(Vector2[] pointsAbove, Vector2[] pointsBelow)
         {
-            EdgeCollider2D ec1 = (EdgeCollider2D)gameObject.AddComponent(typeof(EdgeCollider2D));
-            EdgeCollider2D ec2 = (EdgeCollider2D)gameObject.AddComponent(typeof(EdgeCollider2D));
-            Rigidbody2D rb = (Rigidbody2D)gameObject.AddComponent(typeof(Rigidbody2D));
-
-            ec1.points = Normalize(pointsAbove);
-            ec2.points = Normalize(pointsBelow);
-            ec1.isTrigger = true;
-            ec2.isTrigger = true;
+            Rigidbody2D rb = gameObject.AddComponent<Rigidbody2D>();
+            rb.isKinematic = true;
             rb.gravityScale = 0;
+            AddEdgeCollider(pointsAbove);
+            AddEdgeCollider(pointsBelow);
         }
 
         public virtual void Start()

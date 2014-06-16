@@ -236,7 +236,7 @@ namespace CarsTests
 //
 //            Utils.DestroyObject(gameObject);
 //        }
-
+		/*
         [Test]
         public void Test_HandleCollision_Mud()
         {
@@ -259,6 +259,6 @@ namespace CarsTests
             Assert.AreEqual(pos, _autoBehaviour.transform.position);
 
             Utils.DestroyObject(gameObject);
-        }
+        }*/
     }
 }
