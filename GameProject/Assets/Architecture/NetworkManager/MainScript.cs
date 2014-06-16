@@ -69,7 +69,6 @@ namespace NetworkManager
             }
 
             GUIController = (GraphicalUIController)GameObject.FindGameObjectWithTag("GUI").GetComponent(typeof(GraphicalUIController));
-            RestartButtonPart.ResetTimer();
         }
         
         public void UpdateHostList() {
