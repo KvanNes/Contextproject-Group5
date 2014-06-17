@@ -177,14 +177,7 @@ namespace Cars
 
         public void HandleCollision(AutoBehaviour ab, Collision2D collision)
         {
-            if (collision.gameObject.tag == "Finish")
-            {
-                CollisionFinish(ab);
-            }
-            else
-            {
-                CollisionEdge(ab, collision);
-            }
+            CollisionEdge(ab, collision);
         }
 
         public void HandleTrigger(AutoBehaviour ab, Collider2D collider)
@@ -192,6 +185,10 @@ namespace Cars
             if (collider.tag == "Mud")
             {
                 CollisionMud(ab);
+            }
+            else if (collider.tag == "Finish")
+            {
+                CollisionFinish(ab);
             }
         }
 
