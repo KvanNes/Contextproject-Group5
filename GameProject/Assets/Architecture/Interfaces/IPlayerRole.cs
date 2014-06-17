@@ -12,7 +12,7 @@ namespace Interfaces
         void HandlePlayerAction(AutoBehaviour ab);
         void HandleCollision(AutoBehaviour ab, Collision2D collision);
         void HandleTrigger(AutoBehaviour ab, Collider2D collider);
-        void PositionUpdated(AutoBehaviour ab, bool isSelf);
-        void RotationUpdated(AutoBehaviour ab, bool isSelf);
+		void MoveCameraWhenPositionUpdated(AutoBehaviour ab, bool isSelf);
+		void MoveCameraWhenRotationUpdated(AutoBehaviour ab, bool isSelf);
     }
 }

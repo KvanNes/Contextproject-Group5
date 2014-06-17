@@ -39,26 +39,23 @@ namespace Cars
             if(!MainScript.CountdownController.AllowedToDrive()) {
 				return PlayerAction.None;
 			}
-            // When touching with one finger: check whether on left/right half.
+
             if (InputWrapper.GetTouchCount() >= 1)
             {
-                var pos = InputWrapper.GetTouchPosition(0); //Input.GetTouch(0).position;
+				var pos = InputWrapper.GetTouchPosition(0);
                 return pos.x > separatingColumn ? PlayerAction.SpeedUp : PlayerAction.SpeedDown;
             }
 
-            // When down key pressed: speed down.
             if (InputWrapper.GetKey(KeyCode.DownArrow))
             {
                 return PlayerAction.SpeedDown;
             }
 
-            // When up key pressed: speed up.
             if (InputWrapper.GetKey(KeyCode.UpArrow))
             {
                 return PlayerAction.SpeedUp;
             }
 
-            // If none of the above applies, do nothing with respect to throttling.
             return PlayerAction.None;
         }
 
@@ -66,12 +63,11 @@ namespace Cars
             float backAccelerationFactor,
             float forwardAccelerationFactor)
         {
-            // Calculate acceleration.
+
             ab.Acceleration = ab.Acceleration + accelerationIncrease * deltaTime;
             ab.Acceleration = MathUtils.ForceInInterval(ab.Acceleration, GameData.MIN_ACCELERATION,
                 GameData.MAX_ACCELERATION);
-
-            // Calculate speed.
+				
             if (GameData.MIN_SPEED <= ab.Speed && ab.Speed < 0)
             {
                 ab.Speed = ab.Speed + backAccelerationFactor * ab.Acceleration * deltaTime;
@@ -91,8 +87,6 @@ namespace Cars
 
             if (Math.Abs(signAfter - signBefore) > GameData.TOLERANCE)
             {
-                // Friction can only slow down the car, not moving it in
-                // the other direction.
                 ab.Speed = 0;
             }
         }
@@ -127,15 +121,14 @@ namespace Cars
                     ab.Acceleration = 0f;
                 }
 			}
-			
-			// Move the car according to current speed.
+
 			ab.transform.Translate(ab.Speed * Time.deltaTime * 4f, 0, 0);
 			ab.PositionUpdated();
         }
         
         private void CollisionFinish(AutoBehaviour ab) {
             foreach (Car car in MainScript.Cars) {
-                car.CarObject.NetworkView.RPC ("notifyHasFinished", RPCMode.All, ab.CarNumber);
+				car.CarObject.NetworkView.RPC ("notifySomeCarHasFinished", RPCMode.All, ab.CarNumber);
             }
             ab.Speed = 0;
             ab.Acceleration = 0;
@@ -158,16 +151,14 @@ namespace Cars
                 b = 180 - b;  // Backward angle is the opposite.
             }
             float d = Math.Abs(a - b);
-            const float angle = 60f;  // This angle is approximately when sliding happens.
-            if (90 - angle <= d && d <= 90 + angle) {
-                // Slide, handled by Unity
+			const float minAngleToSlide = 60f;
+			if (90 - minAngleToSlide <= d && d <= 90 + minAngleToSlide) {
                 if(ab.Speed < 0) {
                     ab.Speed = Mathf.Min(0, ab.Speed + GameData.SLIDE_SLOWDOWN);
                 } else {
                     ab.Speed = Mathf.Max(0, ab.Speed - GameData.SLIDE_SLOWDOWN);
                 }
             } else {
-                // Go back a little.
                 ab.RestoreConfiguration();
                 ab.gameObject.transform.Translate(Mathf.Sign(ab.Speed) * -GameData.BOUNCE_AMOUNT, 0f, 0f);
                 ab.Speed = -ab.Speed * GameData.COLLISION_FACTOR;
@@ -203,12 +194,12 @@ namespace Cars
             sphere.transform.localPosition = v;
         }
 
-        public void PositionUpdated(AutoBehaviour ab, bool isSelf)
+		public void MoveCameraWhenPositionUpdated(AutoBehaviour ab, bool isSelf)
         {
             NormalizeSphere(ab);
         }
 
-        public void RotationUpdated(AutoBehaviour ab, bool isSelf)
+		public void MoveCameraWhenRotationUpdated(AutoBehaviour ab, bool isSelf)
         {
             NormalizeSphere(ab);
         }

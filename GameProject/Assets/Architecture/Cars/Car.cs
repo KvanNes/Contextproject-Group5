@@ -28,7 +28,7 @@ namespace Cars
 
         public Car()
         {
-            CarNumber = ++_carNumberGenerator; // Start with 1.
+            CarNumber = ++_carNumberGenerator;
         }
 
         public Car(AutoBehaviour gameObject)

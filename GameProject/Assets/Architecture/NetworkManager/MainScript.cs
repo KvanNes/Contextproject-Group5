@@ -30,10 +30,6 @@ namespace NetworkManager
         public static GraphicalUIController GUIController;
         public static CountdownController CountdownController;
 
-        // FIXME: Remove the following variables in release.
-        public static bool IsDebug = false;
-        public static bool FixedCamera = false;
-
         // Use this for initialization
         public void Start()
         {
@@ -47,7 +43,7 @@ namespace NetworkManager
             else
             {
                 Application.runInBackground = false;
-            }
+			}
 
             InvokeRepeating("SendToOther", GameData.UPDATE_TIME_DELTA, GameData.UPDATE_TIME_DELTA);
             InvokeRepeating("UpdateHostList", 0f, 5f);
@@ -60,7 +56,6 @@ namespace NetworkManager
             Server = (Server)GameObject.FindGameObjectWithTag("Network").GetComponent(typeof(Server));
             Client = (Client)GameObject.FindGameObjectWithTag("Network").GetComponent(typeof(Client));
 
-            // Use the NetworkWrapper so that the Server maintains it's actual functionallity.
             Server.Network = new NetworkWrapper();
 
             Cars = new List<Car>();
@@ -84,7 +79,6 @@ namespace NetworkManager
         {
             if (Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork)
             {
-                // Make sure to only send/receive data on local network.
                 Network.Disconnect();
                 Application.Quit();
                 return;

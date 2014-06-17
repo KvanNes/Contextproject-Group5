@@ -18,8 +18,8 @@ namespace Behaviours
             for (int i = 0; i < input.Length; i++)
             {
                 res[i] = input[i];
-                res[i] -= new Vector2(0.5f, 0.5f); // Make (0.5, 0.5) the center.
-                res[i].x *= 10f; // Take scale ratio into account.
+                res[i] -= new Vector2(0.5f, 0.5f);
+                res[i].x *= 10f;
             }
             return res;
         }

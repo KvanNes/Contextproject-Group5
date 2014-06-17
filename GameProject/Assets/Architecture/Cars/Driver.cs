@@ -33,7 +33,7 @@ namespace Cars
                 car.CarObject.NetworkView.RPC("UpdateRotation", RPCMode.Others, currentRotation, car.CarNumber);
             }
         }
-
+			
         public PlayerAction GetPlayerAction()
         {
             int separatingColumn = Screen.width / 2;
@@ -42,34 +42,30 @@ namespace Cars
 			if(!MainScript.CountdownController.AllowedToDrive()) {
 				return PlayerAction.None;
 			}
-            // When touching with one finger: check whether on left/right half.
+
             if (InputWrapper.GetTouchCount() >= 1)
             {
-                Vector2 pos = InputWrapper.GetTouchPosition(0); // Input.GetTouch(0).position;
+                Vector2 pos = InputWrapper.GetTouchPosition(0);
                 if (pos.x <= separatingColumn)
                 {
                     return PlayerAction.SteerLeft;
                 }
                 return PlayerAction.SteerRight;
             }
-
-            // When left key pressed: steer left.
+				
             if (InputWrapper.GetKey(KeyCode.LeftArrow))
             {
                 return PlayerAction.SteerLeft;
             }
-
-            // When right key pressed: steer right.
+				
             if (InputWrapper.GetKey(KeyCode.RightArrow))
             {
                 return PlayerAction.SteerRight;
             }
-
-            // If none of the above applies, do nothing with respect to steering.
+				
             return PlayerAction.None;
         }
-
-        // Rotate (steer) this car.
+			
         private void rotate(AutoBehaviour ab, float factor)
         {
             float angle = factor * MathUtils.ForceInInterval(ab.Speed * 3f, -3, 3);
@@ -100,19 +96,18 @@ namespace Cars
 
         }
 
-        public void PositionUpdated(AutoBehaviour ab, bool isSelf)
+		public void MoveCameraWhenPositionUpdated(AutoBehaviour ab, bool isSelf)
         {
             if (!isSelf)
             {
                 return;
             }
 
-            // Move camera along with car.
             Camera.main.transform.position = ab.transform.position;
             Camera.main.transform.Translate(new Vector3(0f, 0f, -1f));
         }
 
-        public void RotationUpdated(AutoBehaviour ab, bool isSelf)
+		public void MoveCameraWhenRotationUpdated(AutoBehaviour ab, bool isSelf)
         {
 
         }

@@ -200,7 +200,7 @@ namespace CarsTests
             Vector3 expectedPosition = _autoBehaviour.transform.position;
             expectedPosition.z -= 1.0f;
 
-            _driver.PositionUpdated(_autoBehaviour, true);
+			_driver.MoveCameraWhenPositionUpdated(_autoBehaviour, true);
 
             Assert.AreEqual(expectedPosition, Camera.main.transform.position);
         }
@@ -211,7 +211,7 @@ namespace CarsTests
             Vector3 expectedPosition = _autoBehaviour.transform.position;
             expectedPosition.z -= 1.0f;
 
-            _driver.PositionUpdated(_autoBehaviour, false);
+			_driver.MoveCameraWhenPositionUpdated(_autoBehaviour, false);
 
             Assert.AreEqual(expectedPosition, Camera.main.transform.position);
         }
