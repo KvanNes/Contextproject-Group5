@@ -13,6 +13,7 @@ namespace GraphicalUI {
             car.CarObject.NetworkView.RPC("UpdateRotation", RPCMode.All, rot, car.CarNumber - 1);
         }
 
+		// FIXME
         public override void DrawGraphicalUI() {
 
             if (GUI.Button(new Rect(Screen.width / 2 - 75, 10, 150, 25), "Restart Game"))

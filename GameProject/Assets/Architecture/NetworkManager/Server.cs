@@ -46,6 +46,7 @@ namespace NetworkManager
         }
 
         [RPC]
+		// FIXME
         public bool checkJobAvailableAndMaybeAdd(string typeString, int carNumber, NetworkPlayer networkPlayer)
         {
             if (carNumber < 0 || carNumber >= Game.Cars.Count)
@@ -95,6 +96,7 @@ namespace NetworkManager
             return 0.45f - 0.3f * carNumber;
         }
 
+		// FIXME
         private void SpawnPlayer(int carNumber)
         {
             float y = GetStartingPosition(carNumber);

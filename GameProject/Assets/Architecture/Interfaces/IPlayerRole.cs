@@ -9,10 +9,10 @@ namespace Interfaces
         void Initialize();
         void SendToOther(Car car);
         PlayerAction GetPlayerAction();
-        void HandlePlayerAction(AutoBehaviour ab);
-        void HandleCollision(AutoBehaviour ab, Collision2D collision);
-        void HandleTrigger(AutoBehaviour ab, Collider2D collider);
-		void MoveCameraWhenPositionUpdated(AutoBehaviour ab, bool isSelf);
-		void MoveCameraWhenRotationUpdated(AutoBehaviour ab, bool isSelf);
+		void HandlePlayerAction(AutoBehaviour autoBehaviour);
+		void HandleCollision(AutoBehaviour autoBehaviour, Collision2D collision);
+		void HandleTrigger(AutoBehaviour autoBehaviour, Collider2D collider);
+		void MoveCameraWhenPositionUpdated(AutoBehaviour autoBehaviour, bool isSelf);
+		void MoveCameraWhenRotationUpdated(AutoBehaviour autoBehaviour, bool isSelf);
     }
 }

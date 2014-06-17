@@ -67,7 +67,7 @@ namespace GraphicalUI
         {
             if (GUI.Button(new Rect(10, 10, 100, 50), new GUIContent("Tutorial")))
             {
-                MainScript.GUIController.Add(GraphicalUIController.TutorialConfiguration); //Tutorial.Show();
+                MainScript.GUIController.Add(GraphicalUIController.TutorialConfiguration);
             }
         }
 

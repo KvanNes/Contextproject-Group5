@@ -6,6 +6,6 @@ namespace Interfaces
     public interface IDriver
     {
         PlayerAction GetPlayerAction();
-        void HandlePlayerAction(AutoBehaviour ab);
+		void HandlePlayerAction(AutoBehaviour autoBehaviour);
     }
 }

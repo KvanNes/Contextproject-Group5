@@ -59,6 +59,7 @@ namespace Cars
             return PlayerAction.None;
         }
 
+		// FIXME
         private void applySpeedUpDown(AutoBehaviour ab, float deltaTime, float accelerationIncrease,
             float backAccelerationFactor,
             float forwardAccelerationFactor)
@@ -91,6 +92,7 @@ namespace Cars
             }
         }
 
+		// FIXME
         public void HandlePlayerAction(AutoBehaviour ab)
         {
             PlayerAction action = GetPlayerAction();
@@ -126,43 +128,44 @@ namespace Cars
 			ab.PositionUpdated();
         }
         
-        private void CollisionFinish(AutoBehaviour ab) {
+		private void CollisionFinish(AutoBehaviour autoBehaviour) {
             foreach (Car car in MainScript.Cars) {
-				car.CarObject.NetworkView.RPC ("notifySomeCarHasFinished", RPCMode.All, ab.CarNumber);
+				car.CarObject.NetworkView.RPC ("notifySomeCarHasFinished", RPCMode.All, autoBehaviour.CarNumber);
             }
-            ab.Speed = 0;
-            ab.Acceleration = 0;
+			autoBehaviour.Speed = 0;
+			autoBehaviour.Acceleration = 0;
         }
 
-        private void CollisionMud(AutoBehaviour ab) {
-            if (ab.Speed > GameData.MAX_SPEED * 0.5f)
+		private void CollisionMud(AutoBehaviour autoBehaviour) {
+			if (autoBehaviour.Speed > GameData.MAX_SPEED * 0.5f)
             {
-                ab.Speed = 0;
+				autoBehaviour.Speed = 0;
             }
         }
 
-        private void CollisionEdge(AutoBehaviour ab, Collision2D collision) {
+		// FIXME
+		private void CollisionEdge(AutoBehaviour autoBehaviour, Collision2D collision) {
             Vector2 normal = collision.contacts[0].normal;
             float a = MathUtils.CalculateAngle(normal) * Mathf.Rad2Deg;
-            float b = ab.transform.rotation.eulerAngles.z % 360;
+			float b = autoBehaviour.transform.rotation.eulerAngles.z % 360;
             a = (a + 360) % 180;
             b = (b + 360) % 180;
-            if (ab.Speed < 0) {
+			if (autoBehaviour.Speed < 0) {
                 b = 180 - b;  // Backward angle is the opposite.
             }
             float d = Math.Abs(a - b);
 			const float minAngleToSlide = 60f;
 			if (90 - minAngleToSlide <= d && d <= 90 + minAngleToSlide) {
-                if(ab.Speed < 0) {
-                    ab.Speed = Mathf.Min(0, ab.Speed + GameData.SLIDE_SLOWDOWN);
+				if(autoBehaviour.Speed < 0) {
+					autoBehaviour.Speed = Mathf.Min(0, autoBehaviour.Speed + GameData.SLIDE_SLOWDOWN);
                 } else {
-                    ab.Speed = Mathf.Max(0, ab.Speed - GameData.SLIDE_SLOWDOWN);
+					autoBehaviour.Speed = Mathf.Max(0, autoBehaviour.Speed - GameData.SLIDE_SLOWDOWN);
                 }
             } else {
-                ab.RestoreConfiguration();
-                ab.gameObject.transform.Translate(Mathf.Sign(ab.Speed) * -GameData.BOUNCE_AMOUNT, 0f, 0f);
-                ab.Speed = -ab.Speed * GameData.COLLISION_FACTOR;
-                ab.PositionUpdated();
+				autoBehaviour.RestoreConfiguration();
+				autoBehaviour.gameObject.transform.Translate(Mathf.Sign(autoBehaviour.Speed) * -GameData.BOUNCE_AMOUNT, 0f, 0f);
+				autoBehaviour.Speed = -autoBehaviour.Speed * GameData.COLLISION_FACTOR;
+				autoBehaviour.PositionUpdated();
             }
         }
 
@@ -183,25 +186,25 @@ namespace Cars
             }
         }
 
-        private void NormalizeSphere(AutoBehaviour ab)
+		private void NormalizeSphere(AutoBehaviour autoBehaviour)
         {
-            GameObject sphere = ab.GetSphere();
-            Transform carTransform = ab.transform;
+			GameObject sphere = autoBehaviour.GetSphere();
+			Transform carTransform = autoBehaviour.transform;
             float angle = Mathf.Deg2Rad * carTransform.rotation.eulerAngles.z;
-            Vector3 v = MathUtils.Vector2To3(MathUtils.Rotate(new Vector2(25f / 0.3f, 0f), Vector2.zero, -angle));
-            v.y *= 2f; // Scale ratio of Auto needs to be taken into account here.
-            v.z = -0.3f;
-            sphere.transform.localPosition = v;
+			Vector3 vectorPos = MathUtils.Vector2To3(MathUtils.Rotate(new Vector2(25f / 0.3f, 0f), Vector2.zero, -angle));
+			vectorPos.y *= 2f; // Scale ratio of Auto needs to be taken into account here.
+			vectorPos.z = -0.3f;
+			sphere.transform.localPosition = vectorPos;
         }
 
-		public void MoveCameraWhenPositionUpdated(AutoBehaviour ab, bool isSelf)
+		public void MoveCameraWhenPositionUpdated(AutoBehaviour autoBehaviour, bool isSelf)
         {
-            NormalizeSphere(ab);
+			NormalizeSphere(autoBehaviour);
         }
 
-		public void MoveCameraWhenRotationUpdated(AutoBehaviour ab, bool isSelf)
+		public void MoveCameraWhenRotationUpdated(AutoBehaviour autoBehaviour, bool isSelf)
         {
-            NormalizeSphere(ab);
+			NormalizeSphere(autoBehaviour);
         }
 
         public Vector3 GetLastSentPosition()

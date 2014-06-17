@@ -45,8 +45,8 @@ namespace Cars
 
             if (InputWrapper.GetTouchCount() >= 1)
             {
-                Vector2 pos = InputWrapper.GetTouchPosition(0);
-                if (pos.x <= separatingColumn)
+				Vector2 position = InputWrapper.GetTouchPosition(0);
+				if (position.x <= separatingColumn)
                 {
                     return PlayerAction.SteerLeft;
                 }
@@ -66,48 +66,48 @@ namespace Cars
             return PlayerAction.None;
         }
 			
-        private void rotate(AutoBehaviour ab, float factor)
+		private void rotateCar(AutoBehaviour autoBehaviour, float factor)
         {
-            float angle = factor * MathUtils.ForceInInterval(ab.Speed * 3f, -3, 3);
-            ab.transform.Rotate(new Vector3(0, 0, angle));
-            ab.RotationUpdated();
+			float angle = factor * MathUtils.ForceInInterval(autoBehaviour.Speed * 3f, -3, 3);
+			autoBehaviour.transform.Rotate(new Vector3(0, 0, angle));
+			autoBehaviour.RotationUpdated();
         }
 
-        public void HandlePlayerAction(AutoBehaviour ab)
+		public void HandlePlayerAction(AutoBehaviour autoBehaviour)
         {
             PlayerAction action = GetPlayerAction();
             if (action == PlayerAction.SteerLeft)
             {
-                rotate(ab, Time.deltaTime * 125f);
+				rotateCar(autoBehaviour, Time.deltaTime * 125f);
             }
             else if (action == PlayerAction.SteerRight)
             {
-                rotate(ab, Time.deltaTime * -125f);
+				rotateCar(autoBehaviour, Time.deltaTime * -125f);
             }
         }
 
-        public void HandleCollision(AutoBehaviour ab, Collision2D collision)
+		public void HandleCollision(AutoBehaviour autoBehaviour, Collision2D collision)
         {
 
         }
 
-        public void HandleTrigger(AutoBehaviour ab, Collider2D collider)
+		public void HandleTrigger(AutoBehaviour autoBehaviour, Collider2D collider)
         {
 
         }
 
-		public void MoveCameraWhenPositionUpdated(AutoBehaviour ab, bool isSelf)
+		public void MoveCameraWhenPositionUpdated(AutoBehaviour autoBehaviour, bool isSelf)
         {
             if (!isSelf)
             {
                 return;
             }
 
-            Camera.main.transform.position = ab.transform.position;
+			Camera.main.transform.position = autoBehaviour.transform.position;
             Camera.main.transform.Translate(new Vector3(0f, 0f, -1f));
         }
 
-		public void MoveCameraWhenRotationUpdated(AutoBehaviour ab, bool isSelf)
+		public void MoveCameraWhenRotationUpdated(AutoBehaviour autoBehaviour, bool isSelf)
         {
 
         }

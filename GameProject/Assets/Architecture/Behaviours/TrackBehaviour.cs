@@ -14,14 +14,14 @@ namespace Behaviours
         // right.
         public static Vector2[] Normalize(Vector2[] input)
         {
-            Vector2[] res = new Vector2[input.Length];
+			Vector2[] normalizationResult = new Vector2[input.Length];
             for (int i = 0; i < input.Length; i++)
             {
-                res[i] = input[i];
-                res[i] -= new Vector2(0.5f, 0.5f);
-                res[i].x *= 10f;
+				normalizationResult[i] = input[i];
+				normalizationResult[i] -= new Vector2(0.5f, 0.5f);
+				normalizationResult[i].x *= 10f;
             }
-            return res;
+			return normalizationResult;
         }
 
         private void AddEdgeCollider(Vector2[] points) {
@@ -33,9 +33,9 @@ namespace Behaviours
         // Add the collision edges to this game object.
         protected void AddEdges(Vector2[] pointsAbove, Vector2[] pointsBelow)
         {
-            Rigidbody2D rb = gameObject.AddComponent<Rigidbody2D>();
-            rb.isKinematic = true;
-            rb.gravityScale = 0;
+			Rigidbody2D rigidBody = gameObject.AddComponent<Rigidbody2D>();
+			rigidBody.isKinematic = true;
+			rigidBody.gravityScale = 0;
             AddEdgeCollider(pointsAbove);
             AddEdgeCollider(pointsBelow);
         }

@@ -34,9 +34,9 @@ namespace Behaviours
         {
             foreach (Car car in MainScript.Cars)
             {
-                AutoBehaviour ab = car.CarObject;
-                ab.NetworkView.RPC("UpdatePosition", info.sender, ab.transform.position, ab.Speed, ab.CarNumber);
-                ab.NetworkView.RPC("UpdateRotation", info.sender, ab.transform.rotation, ab.CarNumber);
+				AutoBehaviour autoBehaviour = car.CarObject;
+				autoBehaviour.NetworkView.RPC("UpdatePosition", info.sender, autoBehaviour.transform.position, autoBehaviour.Speed, autoBehaviour.CarNumber);
+				autoBehaviour.NetworkView.RPC("UpdateRotation", info.sender, autoBehaviour.transform.rotation, autoBehaviour.CarNumber);
             }
         }
 

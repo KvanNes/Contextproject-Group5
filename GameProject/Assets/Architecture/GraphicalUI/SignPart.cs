@@ -13,6 +13,7 @@ namespace GraphicalUI
             Textures.Add(new Vector2(x, y), texture);
         }
 
+		// FIXME
         private static Vector2 GetCenter(Vector2 point)
         {
             const float half = 1f / 2f;
@@ -32,6 +33,7 @@ namespace GraphicalUI
             return p;
         }
 
+		// FIXME
         public override void DrawGraphicalUI()
         {
             if (MainScript.SelfPlayer == null || MainScript.SelfCar == null || MainScript.SelfCar.CarObject == null)
