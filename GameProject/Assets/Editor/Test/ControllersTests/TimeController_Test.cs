@@ -1,10 +1,6 @@
 ﻿using Controllers;
-using Interfaces;
-using Moq;
 using NUnit.Framework;
 using UnityEngine;
-using Utilities;
-using Wrappers;
 
 namespace ControllersTests
 {
@@ -13,13 +9,12 @@ namespace ControllersTests
     {
         private TimeController _timeController;
 
-        private Mock<INetwork> _networkMock;
+        private const float Delta = 0.1f;
 
         [SetUp]
         public void SetUp()
         {
             _timeController = TimeController.GetInstance();
-            _networkMock = new Mock<INetwork>();
         }
 
         [TearDown]
@@ -39,19 +34,17 @@ namespace ControllersTests
         [Test]
         public void Test_ResetTimer()
         {
-            _timeController.Network = _networkMock.Object;
             _timeController.ResetTimer();
 
-            _networkMock.Verify(net => net.GetTime());
+            Assert.AreEqual(Network.time, _timeController.GetStartTime());
         }
 
         [Test]
         public void Test_StopTimer()
         {
-            _timeController.Network = _networkMock.Object;
             _timeController.StopTimer();
 
-            _networkMock.Verify(net => net.GetTime());
+            Assert.AreEqual(Network.time, _timeController.GetStopTime());
         }
 
         [Test]
@@ -67,11 +60,10 @@ namespace ControllersTests
         [Test]
         public void Test_GetTime_Negative()
         {
-            _timeController.Network = _networkMock.Object;
+            const double expected = 0;
+            double result = _timeController.GetTime();
 
-            _timeController.GetTime();
-
-            _networkMock.Verify(net => net.GetTime());
+            Assert.AreEqual(expected, result, Delta);
         }
 
         [Test]

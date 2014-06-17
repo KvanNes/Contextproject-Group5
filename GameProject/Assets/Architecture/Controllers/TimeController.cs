@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using Interfaces;
+using UnityEngine;
 using Wrappers;
 
 namespace Controllers
@@ -8,7 +9,6 @@ namespace Controllers
     public class TimeController
     {
 
-        public INetwork Network;
         private static TimeController _instance;
 
         private double _startTime;
@@ -18,27 +18,26 @@ namespace Controllers
 
         private TimeController()
         {
-            if (Network != null)
-                Reset();
+            Reset();
         }
 
         public static TimeController GetInstance()
         {
             if (_instance == null)
             {
-                _instance = new TimeController { Network = new NetworkWrapper() };
+                _instance = new TimeController();
             }
             return _instance;
         }
 
         public void ResetTimer()
         {
-            _startTime = Network.GetTime();
+            _startTime = Network.time;
         }
 
         public void StopTimer()
         {
-            _stopTime = Network.GetTime();
+            _stopTime = Network.time;
         }
 
         public void ResetStopTime()
@@ -56,7 +55,7 @@ namespace Controllers
         {
             if (Math.Abs(_stopTime - (-1)) < Delta)
             {
-                return Network.GetTime() - _startTime;
+                return Network.time - _startTime;
             }
             return _stopTime - _startTime;
         }

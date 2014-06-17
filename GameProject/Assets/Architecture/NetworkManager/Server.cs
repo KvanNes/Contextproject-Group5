@@ -107,7 +107,7 @@ namespace NetworkManager
             car.Throttler = new Player(car, new Throttler());
             car.Driver = new Player(car, new Driver());
             Game.AddCar(car);
-            ab.NetworkView.RPC("setCarNumber", RPCMode.OthersBuffered, carNumber - 1);
+            ab.networkView.RPC("setCarNumber", RPCMode.OthersBuffered, carNumber - 1);
         }
 
         private void OnServerInitialized()
