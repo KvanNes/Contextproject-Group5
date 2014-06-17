@@ -110,7 +110,7 @@ namespace Cars
 			}
 			else if (action == PlayerAction.SpeedDown)
 			{
-				applySpeedUpDown(ab, Time.deltaTime, GameData.ACCELERATION_DECREASE, 10, 20);
+				applySpeedUpDown(ab, Time.deltaTime, GameData.ACCELERATION_DECREASE, 10, 50);
 			}
 			else
 			{
@@ -132,27 +132,34 @@ namespace Cars
 			ab.transform.Translate(ab.Speed * Time.deltaTime * 4f, 0, 0);
 			ab.PositionUpdated();
         }
+        
+        private void CollisionFinish(AutoBehaviour ab) {
+            foreach (Car car in MainScript.Cars) {
+                car.CarObject.NetworkView.RPC ("notifyHasFinished", RPCMode.All, ab.CarNumber);
+            }
+            ab.Speed = 0;
+            ab.Acceleration = 0;
+        }
 
-        public void HandleCollision(AutoBehaviour ab, Collider2D collider)
-        {
-            if (collider.gameObject.tag == "Finish") {
-				foreach (Car car in MainScript.Cars) {
-					car.CarObject.NetworkView.RPC ("notifyHasFinished", RPCMode.All, ab.CarNumber);
-				}
-				ab.Speed = 0;
-                ab.Acceleration = 0;
-            }
-            else if (collider.gameObject.tag == "Mud")
+        private void CollisionMud(AutoBehaviour ab) {
+            if (ab.Speed > GameData.MAX_SPEED * 0.25f)
             {
-                if (ab.Speed > GameData.MAX_SPEED * 0.25f)
-                {
-                    ab.Speed = 0;
-                }
+                ab.Speed = 0;
             }
-            else
-            {
+        }
+
+        private void CollisionEdge(AutoBehaviour ab, Collision2D collision) {
+            Vector2 normal = collision.contacts[0].normal;
+            float a = MathUtils.CalculateAngle(normal) * Mathf.Rad2Deg;
+            float b = ab.transform.rotation.eulerAngles.z % 360;
+            a = (a + 360) % 180;
+            b = (b + 360) % 180;
+            float d = Math.Abs(a - b);
+            const float angle = 25f;
+            if (90 - angle <= d && d <= 90 + angle) {
+                // Slide, handled by Unity
+            } else {
                 // Go back a little.
-                //ab.Speed = -(ab.Speed + Mathf.Sign(ab.Speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
                 ab.RestoreConfiguration();
                 ab.Speed = -ab.Speed * GameData.COLLISION_FACTOR;
                 ab.gameObject.transform.Translate(-0.05f, 0f, 0f);
@@ -160,12 +167,23 @@ namespace Cars
             }
         }
 
-        public void PositionUpdated(AutoBehaviour ab, bool isSelf)
+        public void HandleCollision(AutoBehaviour ab, Collision2D collision)
         {
-
+            if (collision.gameObject.tag == "Finish")
+            {
+                CollisionFinish(ab);
+            }
+            else if (collision.gameObject.tag == "Mud")
+            {
+                CollisionMud(ab);
+            }
+            else
+            {
+                CollisionEdge(ab, collision);
+            }
         }
 
-        public void RotationUpdated(AutoBehaviour ab, bool isSelf)
+        private void NormalizeSphere(AutoBehaviour ab)
         {
             GameObject sphere = ab.GetSphere();
             Transform carTransform = ab.transform;
@@ -174,6 +192,16 @@ namespace Cars
             v.y *= 2f; // Scale ratio of Auto needs to be taken into account here.
             v.z = -0.3f;
             sphere.transform.localPosition = v;
+        }
+
+        public void PositionUpdated(AutoBehaviour ab, bool isSelf)
+        {
+            NormalizeSphere(ab);
+        }
+
+        public void RotationUpdated(AutoBehaviour ab, bool isSelf)
+        {
+            NormalizeSphere(ab);
         }
 
         public Vector3 GetLastSentPosition()

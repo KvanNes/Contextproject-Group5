@@ -123,11 +123,11 @@ namespace Behaviours
         }
 
         // Occurs when bumping into something (another car, or a track border).
-        public void OnTriggerEnter2D(Collider2D colliderPar)
-        {
+        public void OnCollisionEnter2D(Collision2D collision)
+           {
             if (MainScript.SelfType == MainScript.PlayerType.Client)
             {
-                MainScript.SelfPlayer.Role.HandleCollision(this, colliderPar);
+                MainScript.SelfPlayer.Role.HandleCollision(this, collision);
             }
         }
 

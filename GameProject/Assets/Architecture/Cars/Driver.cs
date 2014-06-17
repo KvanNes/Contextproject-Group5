@@ -90,7 +90,7 @@ namespace Cars
             }
         }
 
-        public void HandleCollision(AutoBehaviour ab, Collider2D collider)
+        public void HandleCollision(AutoBehaviour ab, Collision2D collision)
         {
 
         }
