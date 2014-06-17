@@ -48,5 +48,12 @@ namespace Utilities
                 DestroyObject(o);
             }
         }
+
+        public static string TimeToString(double time)
+        {
+            int minutes = (int)Math.Floor(time / 60);
+            int seconds = (int)Math.Floor(time % 60);
+            return minutes.ToString("D2") + ":" + seconds.ToString("D2");
+        }
     }
 }

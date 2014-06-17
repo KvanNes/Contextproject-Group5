@@ -13,12 +13,15 @@ namespace Behaviours
     {
 
         public int CarNumber = -1;
-		public enum FinishedState { won, lost, inprogress }
-		public FinishedState state = FinishedState.inprogress;
+        public enum FinishedState { won, lost, inprogress }
+        public FinishedState state = FinishedState.inprogress;
 
         // The current speed and acceleration of this car.
         public float Speed = 0f;
         public float Acceleration = 0.02f;
+
+        public float FinishedTime;
+        public bool Finished = false;
 
         public INetworkView NetworkView;
 
@@ -40,13 +43,13 @@ namespace Behaviours
             }
         }
 
-		[RPC]
-		public void notifyHasFinished(int CarNumber) {
-			if (CarNumber == this.CarNumber) {
-				state = FinishedState.won;
-			} else
-				state = FinishedState.lost;
-		}
+        [RPC]
+        public void notifyHasFinished(int carNumber, float finishedTime)
+        {
+            if (CarNumber != carNumber) return;
+            FinishedTime = finishedTime;
+            Finished = true;
+        }
 
 
         // These are used to recover to the last position/rotation when a
@@ -145,8 +148,9 @@ namespace Behaviours
         public static readonly int RotationInitialized = 1 << 1;
 
         [RPC]
-        public void ResetCar() {
-			state = FinishedState.inprogress;
+        public void ResetCar()
+        {
+            state = FinishedState.inprogress;
         }
 
         [RPC]

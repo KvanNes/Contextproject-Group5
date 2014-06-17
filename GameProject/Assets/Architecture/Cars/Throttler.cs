@@ -1,5 +1,6 @@
 ﻿using System;
 using Behaviours;
+using Controllers;
 using Interfaces;
 using UnityEngine;
 using Utilities;
@@ -135,7 +136,7 @@ namespace Cars
         
         private void CollisionFinish(AutoBehaviour ab) {
             foreach (Car car in MainScript.Cars) {
-                car.CarObject.NetworkView.RPC ("notifyHasFinished", RPCMode.All, ab.CarNumber);
+                car.CarObject.NetworkView.RPC ("notifyHasFinished", RPCMode.All, ab.CarNumber, (float) TimeController.GetInstance().GetTime());
             }
             ab.Speed = 0;
             ab.Acceleration = 0;

@@ -1,4 +1,5 @@
-﻿using Cars;
+﻿using System.Linq;
+using Cars;
 using Controllers;
 using Interfaces;
 using UnityEngine;
@@ -73,9 +74,11 @@ namespace NetworkManager
             GUIController = (GraphicalUIController)GameObject.FindGameObjectWithTag("GUI").GetComponent(typeof(GraphicalUIController));
             CountdownController = (CountdownController)GameObject.FindGameObjectWithTag("CountdownController").GetComponent(typeof(CountdownController));
         }
-        
-        public void UpdateHostList() {
-            if (!NetworkController.connected) {
+
+        public void UpdateHostList()
+        {
+            if (!NetworkController.connected)
+            {
                 NetworkController.RefreshHostList();
             }
         }
@@ -94,6 +97,16 @@ namespace NetworkManager
             {
                 SelfCar.SendToOther();
             }
+        }
+
+        public static bool AllFinished()
+        {
+            return Cars.All(car => car.CarObject.Finished);
+        }
+
+        public static Car OtherCar()
+        {
+            return Cars.FirstOrDefault(car => car != SelfCar);
         }
 
         public Server GetServer()
