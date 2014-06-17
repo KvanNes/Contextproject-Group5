@@ -95,6 +95,11 @@ namespace Cars
 
         }
 
+        public void HandleTrigger(AutoBehaviour ab, Collider2D collider)
+        {
+
+        }
+
         public void PositionUpdated(AutoBehaviour ab, bool isSelf)
         {
             if (!isSelf)

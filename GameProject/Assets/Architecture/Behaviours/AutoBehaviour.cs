@@ -122,12 +122,21 @@ namespace Behaviours
             }
         }
 
-        // Occurs when bumping into something (another car, or a track border).
+        // Occurs when hitting something or bumping into something (e.g. another car, mud,
+        // or a track border).
         public void OnCollisionEnter2D(Collision2D collision)
-           {
+        {
             if (MainScript.SelfType == MainScript.PlayerType.Client)
             {
                 MainScript.SelfPlayer.Role.HandleCollision(this, collision);
+            }
+        }
+
+        public void OnTriggerEnter2D(Collider2D collider)
+        {
+            if (MainScript.SelfType == MainScript.PlayerType.Client)
+            {
+                MainScript.SelfPlayer.Role.HandleTrigger(this, collider);
             }
         }
 

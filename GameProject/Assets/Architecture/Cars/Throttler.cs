@@ -142,7 +142,7 @@ namespace Cars
         }
 
         private void CollisionMud(AutoBehaviour ab) {
-            if (ab.Speed > GameData.MAX_SPEED * 0.25f)
+            if (ab.Speed > GameData.MAX_SPEED * 0.5f)
             {
                 ab.Speed = 0;
             }
@@ -154,6 +154,9 @@ namespace Cars
             float b = ab.transform.rotation.eulerAngles.z % 360;
             a = (a + 360) % 180;
             b = (b + 360) % 180;
+            if (ab.Speed < 0) {
+                b = 180 - b;  // Backward angle is the opposite.
+            }
             float d = Math.Abs(a - b);
             const float angle = 60f;  // This angle is approximately when sliding happens.
             if (90 - angle <= d && d <= 90 + angle) {
@@ -178,13 +181,17 @@ namespace Cars
             {
                 CollisionFinish(ab);
             }
-            else if (collision.gameObject.tag == "Mud")
-            {
-                CollisionMud(ab);
-            }
             else
             {
                 CollisionEdge(ab, collision);
+            }
+        }
+
+        public void HandleTrigger(AutoBehaviour ab, Collider2D collider)
+        {
+            if (collider.tag == "Mud")
+            {
+                CollisionMud(ab);
             }
         }
 
