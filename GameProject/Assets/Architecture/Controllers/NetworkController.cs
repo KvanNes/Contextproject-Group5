@@ -59,8 +59,7 @@ namespace Controllers
         public void ToggleOverview()
         {
             if (!(MainScript.SelfPlayer.Role is Throttler)) return;
-            MainScript.FixedCamera = !MainScript.FixedCamera;
-            Camera.main.transform.rotation = Quaternion.Euler(0, MainScript.FixedCamera ? 180 : 0, 0);
+            Camera.main.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
     }

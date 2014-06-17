@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace Controllers {
-    // Subclass MonoBehaviour so as to be able to use InvokeRepeating/CancelInvoke.
+
     public class CountdownController : MonoBehaviour {
         
         public int CountDownValue;

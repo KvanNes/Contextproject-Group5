@@ -73,9 +73,6 @@ namespace ControllersTests
             // Initialize first if-statement
             MainScript.SelfPlayer = new Player { Role = new Throttler() };
 
-            // Initialize second if-statement
-            MainScript.FixedCamera = false;
-
             // Trigger the method
             _networkController.ToggleOverview();
 
@@ -91,9 +88,6 @@ namespace ControllersTests
 
             // Initialize first if-statement
             MainScript.SelfPlayer = new Player { Role = new Throttler() };
-
-            // Initialize second if-statement
-            MainScript.FixedCamera = true;
 
             // Trigger the method
             _networkController.ToggleOverview();

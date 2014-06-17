@@ -41,7 +41,8 @@ namespace Behaviours
         }
 
 		[RPC]
-		public void notifyHasFinished(int CarNumber) {
+		// Notify every player that some player has finished
+		public void notifySomeCarHasFinished(int CarNumber) {
 			if (CarNumber == this.CarNumber) {
 				state = FinishedState.won;
 			} else
@@ -111,15 +112,7 @@ namespace Behaviours
             // Make sure speed is in constrained interval.
             Speed = MathUtils.ForceInInterval(Speed, GameData.MIN_SPEED, GameData.MAX_SPEED);
 
-            if (MainScript.IsDebug)
-            {
-                new Driver().HandlePlayerAction(this);
-                new Throttler().HandlePlayerAction(this);
-            }
-            else
-            {
-                MainScript.SelfPlayer.Role.HandlePlayerAction(this);
-            }
+            MainScript.SelfPlayer.Role.HandlePlayerAction(this);
         }
 
         // Occurs when hitting something or bumping into something (e.g. another car, mud,
@@ -175,7 +168,7 @@ namespace Behaviours
                 return;
             }
             bool isSelf = MainScript.SelfCar.CarObject == this;
-            MainScript.SelfPlayer.Role.PositionUpdated(this, isSelf);
+			MainScript.SelfPlayer.Role.MoveCameraWhenPositionUpdated(this, isSelf);
         }
 
         public void RotationUpdated()
@@ -185,7 +178,7 @@ namespace Behaviours
                 return;
             }
             bool isSelf = MainScript.SelfCar.CarObject == this;
-            MainScript.SelfPlayer.Role.RotationUpdated(this, isSelf);
+			MainScript.SelfPlayer.Role.MoveCameraWhenRotationUpdated(this, isSelf);
         }
 
         public void AddToQueues(int count)
@@ -219,7 +212,7 @@ namespace Behaviours
 
         public GameObject GetSphere()
         {
-            // Gebaseerd op: http://answers.unity3d.com/questions/183649/how-to-find-a-child-gameobject-by-name.html
+			// Based on: http://answers.unity3d.com/questions/183649/how-to-find-a-child-gameobject-by-name.html
             Component[] components = transform.GetComponentsInChildren<Component>();
             foreach (Component component in components)
             {

@@ -43,7 +43,6 @@ namespace GraphicalUI
             Vector2 point = GetCenter(new Vector2(p.x, p.y));
             Texture2D texture = null;
 
-            // Using Utils.getDictionaryValue yields null for some reason.
             foreach (KeyValuePair<Vector2, Texture2D> k in Textures)
             {
                 if (k.Key == point)

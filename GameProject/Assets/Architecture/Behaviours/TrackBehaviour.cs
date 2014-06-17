@@ -14,14 +14,14 @@ namespace Behaviours
         // right.
         public static Vector2[] Normalize(Vector2[] input)
         {
-            Vector2[] res = new Vector2[input.Length];
+            Vector2[] normalizationResult = new Vector2[input.Length];
             for (int i = 0; i < input.Length; i++)
             {
-                res[i] = input[i];
-                res[i] -= new Vector2(0.5f, 0.5f); // Make (0.5, 0.5) the center.
-                res[i].x *= 10f; // Take scale ratio into account.
+                normalizationResult[i] = input[i];
+                normalizationResult[i] -= new Vector2(0.5f, 0.5f);
+                normalizationResult[i].x *= 10f;
             }
-            return res;
+            return normalizationResult;
         }
 
         private void AddEdgeCollider(Vector2[] points) {

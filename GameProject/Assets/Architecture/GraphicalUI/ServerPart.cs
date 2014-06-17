@@ -26,7 +26,7 @@ namespace GraphicalUI
         {
             if (MainScript.Server.Game != null)
             {
-                // Gebaseerd op: http://answers.unity3d.com/questions/296204/gui-font-size.html
+				// Based on: http://answers.unity3d.com/questions/296204/gui-font-size.html
                 GUI.skin.label.fontSize = 20;
 
                 GUI.Label(new Rect(10, 10, 200, 50), new GUIContent("Server started"));

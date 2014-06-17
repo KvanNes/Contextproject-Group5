@@ -38,7 +38,7 @@ namespace GraphicalUI
                 MainScript.SelfType = MainScript.PlayerType.Client;
                 MainScript.SelfCar = new Car(carNumber);
 
-                // Gebaseerd op: http://stackoverflow.com/a/755
+				// Based on: http://stackoverflow.com/a/755
                 MainScript.SelfPlayer = new Player(MainScript.SelfCar, (IPlayerRole)Activator.CreateInstance(type));
                 MainScript.SelfPlayer.Role.Initialize();
 
@@ -83,7 +83,7 @@ namespace GraphicalUI
                 return;
             }
 
-            // Gebaseerd op: http://answers.unity3d.com/questions/296204/gui-font-size.html
+			// Based on: http://answers.unity3d.com/questions/296204/gui-font-size.html
             GUI.skin.label.fontSize = GUI.skin.button.fontSize = 20;
 
             if (!Network.isServer)
