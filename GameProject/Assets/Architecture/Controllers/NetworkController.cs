@@ -27,10 +27,10 @@ namespace Controllers
 		[RPC]
 		public void RestartGame() {
             MainScript.CountdownController.StartCountdown();
-            TimeController.getInstance().Reset();
+            TimeController.GetInstance().Reset();
      	}
 
-        public static void refreshHostList()
+        public static void RefreshHostList()
         {
             MasterServer.RequestHostList(GameData.GAME_NAME);
         }

@@ -8,6 +8,7 @@ namespace Interfaces
         NetworkConnectionError InitializeServer(int maxConnection, int portnumber, bool natPunchthrough);
         void RemoveRPCs(NetworkPlayer networkPlayer);
         void DestroyPlayerObjects(NetworkPlayer networkPlayer);
+        double GetTime();
         void Disconnect();
         bool IsServer();
     }

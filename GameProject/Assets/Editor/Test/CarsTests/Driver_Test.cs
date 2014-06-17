@@ -1,5 +1,6 @@
 ﻿using Behaviours;
 using Cars;
+using Controllers;
 using Interfaces;
 using NetworkManager;
 using UnityEngine;
@@ -27,6 +28,9 @@ namespace CarsTests
 
         private GameObject _gameObjectOther;
         private AutoBehaviour _autoBehaviourOther;
+
+        private GameObject _gameObjectCountDownController;
+        private CountdownController _countdownController;
 
         private Car _carDriver;
         private Car _carOther;
@@ -58,6 +62,9 @@ namespace CarsTests
             _player = new Player(_carDriver, _driver);
             _carOther = new Car(_autoBehaviourOther);
 
+            _gameObjectCountDownController = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            _countdownController = _gameObjectCountDownController.AddComponent<CountdownController>();
+
             MainScript.SelfPlayer = new Player { Role = new Driver() };
         }
 
@@ -66,6 +73,7 @@ namespace CarsTests
         {
             Utils.DestroyObject(_gameObject);
             Utils.DestroyObject(_gameObjectOther);
+            Utils.DestroyObject(_gameObjectCountDownController);
             InputWrapper.Clear();
         }
 
@@ -83,6 +91,17 @@ namespace CarsTests
         }
 
         [Test]
+        public void Test_GetPlayerAction_NotAllowedToDrive()
+        {
+            _countdownController.CountDownValue = 10;
+            MainScript.CountdownController = _countdownController;
+
+            PlayerAction action = _driver.GetPlayerAction();
+
+            Assert.AreEqual(PlayerAction.None, action);
+        }
+
+        [Test]
         public void Test_GetPlayerAction_None()
         {
             PlayerAction action = _driver.GetPlayerAction();
@@ -92,6 +111,9 @@ namespace CarsTests
         [Test]
         public void Test_GetPlayerAction_LeftArrow()
         {
+            _countdownController.CountDownValue = -1;
+            MainScript.CountdownController = _countdownController;
+
             InputWrapper.SetKey(KeyCode.LeftArrow, true);
             PlayerAction paNew = _driver.GetPlayerAction();
 
@@ -101,6 +123,9 @@ namespace CarsTests
         [Test]
         public void Test_GetPlayerAction_RightArrow()
         {
+            _countdownController.CountDownValue = -1;
+            MainScript.CountdownController = _countdownController;
+
             InputWrapper.SetKey(KeyCode.RightArrow, true);
             PlayerAction paNew = _driver.GetPlayerAction();
 
@@ -110,6 +135,9 @@ namespace CarsTests
         [Test]
         public void Test_GetPlayerAction_TouchLeft()
         {
+            _countdownController.CountDownValue = -1;
+            MainScript.CountdownController = _countdownController;
+
             PlayerAction paPrev = _driver.GetPlayerAction();
             InputWrapper.SetTouchCount(1);
             InputWrapper.SetTouch(0, new Vector2(_midScreenWidth - 10.0f, 1.0f));
@@ -122,6 +150,9 @@ namespace CarsTests
         [Test]
         public void Test_GetPlayerAction_TouchRight()
         {
+            _countdownController.CountDownValue = -1;
+            MainScript.CountdownController = _countdownController;
+
             PlayerAction paPrev = _driver.GetPlayerAction();
             InputWrapper.SetTouchCount(1);
             InputWrapper.SetTouch(0, new Vector2(_midScreenWidth + 10.0f, 1.0f));
@@ -134,6 +165,9 @@ namespace CarsTests
         [Test]
         public void Test_HandlePlayerAction_Left()
         {
+            _countdownController.CountDownValue = -1;
+            MainScript.CountdownController = _countdownController;
+
             InputWrapper.SetKey(KeyCode.LeftArrow, true);
 
             _autoBehaviour.Speed = 1.0f;
@@ -147,6 +181,9 @@ namespace CarsTests
         [Test]
         public void Test_HandlePlayerAction_Right()
         {
+            _countdownController.CountDownValue = -1;
+            MainScript.CountdownController = _countdownController;
+
             InputWrapper.SetKey(KeyCode.RightArrow, true);
 
             _autoBehaviour.Speed = 1.0f;

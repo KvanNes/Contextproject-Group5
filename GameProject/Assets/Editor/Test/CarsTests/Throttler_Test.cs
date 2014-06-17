@@ -1,5 +1,6 @@
 ﻿using Behaviours;
 using Cars;
+using Controllers;
 using Interfaces;
 using NetworkManager;
 using UnityEngine;
@@ -30,8 +31,11 @@ namespace CarsTests
         private AutoBehaviour _autoBehaviourOther;
         private Car _carOther;
 
+        private GameObject _gameObjectCountDownController;
+        private CountdownController _countdownController;
+
         private float _midScreenWidth;
-        private float _delta = 0.001f;
+        private const float Delta = 0.001f;
 
         [SetUp]
         public void SetUp()
@@ -57,6 +61,9 @@ namespace CarsTests
             _gameObjectOther.GetComponent<AutoBehaviour>().NetworkView = NetworkViewOther.Object;
             _carOther = new Car(_autoBehaviourOther) { CarObject = { NetworkView = NetworkViewOther.Object } };
 
+            _gameObjectCountDownController = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            _countdownController = _gameObjectCountDownController.AddComponent<CountdownController>();
+
             MainScript.SelfPlayer = new Player { Role = new Driver() };
         }
 
@@ -65,6 +72,7 @@ namespace CarsTests
         {
             Utils.DestroyObject(_gameObject);
             Utils.DestroyObject(_gameObjectOther);
+            Utils.DestroyObject(_gameObjectCountDownController);
             InputWrapper.Clear();
         }
 
@@ -84,6 +92,17 @@ namespace CarsTests
         }
 
         [Test]
+        public void Test_GetPlayerAction_NotAllowedToDrive()
+        {
+            _countdownController.CountDownValue = 10;
+            MainScript.CountdownController = _countdownController;
+
+            PlayerAction action = _throttler.GetPlayerAction();
+
+            Assert.AreEqual(PlayerAction.None, action);
+        }
+
+        [Test]
         public void Test_GetPlayerAction_None()
         {
             var action = _throttler.GetPlayerAction();
@@ -93,6 +112,9 @@ namespace CarsTests
         [Test]
         public void Test_GetPlayerAction_UpArrow()
         {
+            _countdownController.CountDownValue = -1;
+            MainScript.CountdownController = _countdownController;
+
             InputWrapper.SetKey(KeyCode.UpArrow, true);
             var paNew = _throttler.GetPlayerAction();
 
@@ -102,6 +124,9 @@ namespace CarsTests
         [Test]
         public void Test_GetPlayerAction_DownArrow()
         {
+            _countdownController.CountDownValue = -1;
+            MainScript.CountdownController = _countdownController;
+
             InputWrapper.SetKey(KeyCode.DownArrow, true);
             var paNew = _throttler.GetPlayerAction();
 
@@ -111,6 +136,9 @@ namespace CarsTests
         [Test]
         public void Test_GetPlayerAction_TouchRight()
         {
+            _countdownController.CountDownValue = -1;
+            MainScript.CountdownController = _countdownController;
+
             var paPrev = _throttler.GetPlayerAction();
             InputWrapper.SetTouchCount(1);
             InputWrapper.SetTouch(0, new Vector2(_midScreenWidth + 10.0f, y: 1.0f));
@@ -123,6 +151,9 @@ namespace CarsTests
         [Test]
         public void Test_GetPlayerAction_TouchLeft()
         {
+            _countdownController.CountDownValue = -1;
+            MainScript.CountdownController = _countdownController;
+
             var paPrev = _throttler.GetPlayerAction();
             InputWrapper.SetTouchCount(1);
             InputWrapper.SetTouch(0, new Vector2(_midScreenWidth - 10.0f, 1.0f));
@@ -151,6 +182,9 @@ namespace CarsTests
         [Test]
         public void Test_HandlePlayerAction_applySpeedDown()
         {
+            _countdownController.CountDownValue = -1;
+            MainScript.CountdownController = _countdownController;
+
             // Variables used
             const float speed = 0.01f;
             const int forwardAccelarationFactor = 20;
@@ -161,7 +195,7 @@ namespace CarsTests
             _throttler.HandlePlayerAction(_autoBehaviour);
             var newSpeed = speed + forwardAccelarationFactor * _autoBehaviour.Acceleration * Time.deltaTime;
 
-            Assert.AreEqual(newSpeed, _autoBehaviour.Speed);
+            Assert.AreEqual(newSpeed, _autoBehaviour.Speed, Delta);
         }
 
         [Test]
@@ -177,7 +211,7 @@ namespace CarsTests
             _throttler.HandlePlayerAction(_autoBehaviour);
 
             // Assertions
-            Assert.AreEqual(speed, _autoBehaviour.Speed, _delta);
+            Assert.AreEqual(speed, _autoBehaviour.Speed, Delta);
         }
 
         [Test]
@@ -193,7 +227,7 @@ namespace CarsTests
             _throttler.HandlePlayerAction(_autoBehaviour);
 
             // Assertions
-            Assert.AreEqual(speed, _autoBehaviour.Speed, _delta);
+            Assert.AreEqual(speed, _autoBehaviour.Speed, Delta);
         }
 
         [Test]

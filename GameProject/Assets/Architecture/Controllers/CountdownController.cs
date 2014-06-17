@@ -1,12 +1,10 @@
 using UnityEngine;
-using System;
-using NetworkManager;
 
 namespace Controllers {
     // Subclass MonoBehaviour so as to be able to use InvokeRepeating/CancelInvoke.
     public class CountdownController : MonoBehaviour {
         
-        public int countDownValue;
+        public int CountDownValue;
 
         public void Start() {
             StopCountdown();
@@ -14,24 +12,24 @@ namespace Controllers {
 
         public void StartCountdown() {
             StopCountdown();
-            countDownValue = 3;
+            CountDownValue = 3;
             InvokeRepeating("DecrementCounter", 1f, 1f);
         }
 
         private void StopCountdown() {
-            countDownValue = -100;  // Make sure not to show countdown.
+            CountDownValue = -100;  // Make sure not to show countdown.
             CancelInvoke("DecrementCounter");
         }
         
-        private void DecrementCounter() {
-            countDownValue--;
-            if (countDownValue == -3) {
+        public void DecrementCounter() {
+            CountDownValue--;
+            if (CountDownValue == -3) {
                 StopCountdown();
             }
         }
 
-        public bool allowedToDrive() {
-            return countDownValue <= 0;
+        public bool AllowedToDrive() {
+            return CountDownValue <= 0;
         }
     }
 }

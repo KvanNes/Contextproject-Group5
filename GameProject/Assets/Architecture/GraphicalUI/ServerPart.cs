@@ -10,7 +10,7 @@ namespace GraphicalUI
         {
             if (GUI.Button(new Rect(0, 50, 300, 50), new GUIContent("Toggle light")))
             {
-                MainScript.NetworkController.networkView.RPC("ToggleLight", RPCMode.Others);
+                MainScript.NetworkController.NetworkView.RPC("ToggleLight", RPCMode.Others);
             }
         }
 
@@ -18,7 +18,7 @@ namespace GraphicalUI
         {
             if (GUI.Button(new Rect(0, 100, 300, 50), new GUIContent("Toggle overview")))
             {
-                MainScript.NetworkController.networkView.RPC("ToggleOverview", RPCMode.Others);
+                MainScript.NetworkController.NetworkView.RPC("ToggleOverview", RPCMode.Others);
             }
         }
 
