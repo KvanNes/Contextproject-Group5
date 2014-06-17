@@ -94,7 +94,11 @@ The software architecture of the system consists of three different subsystems: 
 The hardware used is very various in terms of the player-held device. That device must have Android running and must contain a \emph{gyroscope} and \emph{accelerometer}. The only other piece of hardware that will be required is a central computer that will serve as a central server. \\
 The software that is being used on the described hardware is the same. Depending on the functionality, so either being a steering player, throttler, or server, the interface will be different. The server has a simplistic interface which will make it possible to start or end the server.
 The mapping of the hardware and software can easily be concretised in a small diagram, which is shown on the next page:
-\includegraphics[width=\textwidth]{ClientServer.png}
+\begin{figure}
+	\includegraphics[width=\textwidth]{ClientServer.png}
+	\caption{Hardware/Software mapping}
+\end{figure}
+
 
 
 \subsection{Persistent Data Management}
@@ -116,18 +120,18 @@ At first a class diagram was created to be able to get a quick view of the archi
 Instead of a class diagram, we have chosen to dedicate a section to the setup of classes and the interaction between them. In that way it is possible to discuss the hierarchy of the classes and their interactions.
 
 \subsection{Classes}
-Within the whole project we count 41 classes, excluding test classes. Every class has been split up in such a way that it has its own functionality. There where it was needed or useful Design Patterns have been used. In this project we have only made use of the Strategy Pattern. Furthermore, a client-server architecture has been used since this was ideal to maintain and control the new joined players.
+Within the whole project we count 41 classes, excluding test classes. Every class has been split up in such a way that it has its own functionality. Where necessary or useful Design Patterns have been applied. In this project we have made use of the Strategy Pattern and Singleton Pattern. The Strategy Pattern can be seen in how the Player and Role classes are set up. The Singleton Pattern is used in the TimeController class. Furthermore, a client-server architecture has been used since this was ideal to distribute different tasks over the server and clients. What is meant by this is that the server handles most back-end tasks, so that the smartphones/tablets, the clients, are less burdened.
 
 \subsection{Packages}
-The classes have been managed to be split into different packages, every package has its own responsibility. In the upcoming descriptions every package and their responsibility have been explained. Furthermore, if a Design Pattern has been used within a package, it has been described with it.
+The classes have been split into different packages. Every package has its own responsibility. In the upcoming descriptions every package and its responsibilities will been explained. Furthermore, if a Design Pattern has been used within a package, it has been described with it.
 
 \begin{description}
 \item[Behaviours] \hfill \\
-    In this package the Scripts have been bundled that belong to certain GameObjects which control behaviours. Such as a Car, has the AutoBehaviour-script attached to it. This script manages how the Car should behave during the game. Furthermore, there are other Behaviour-classes which are ment for the track.
+    In this package all classes that belong to GameObjects controlling behaviours have been added. An example of such a class is the Car class, which has the CarBehaviour-script attached to it. This script manages how the Car should behave during the game. The other Behaviour-classes are meant to manage the racing Track.
 \item[Cars] \hfill \\
-    The Cars-package contains classes which create the Car and the players attached to it. Here we used a Strategy Pattern, this was recommended to us and in practice also seems much better than using simple Inheritance. See figure 1 for the classes in the Strategy Pattern form.
+    The Cars package contains classes which create the cars and the players attached to them. We used the Strategy Pattern to set up these classes. This was recommended to us and in practice also turned out to be much better than simply using inheritance.
 \item[Main] \hfill \\
-    In the Main-package we have four classes: ControlButtonsGUI, DuoDriveGUI, Game and Tutorial. The package contains the main elements for the game which are the GUI for every player and/or the server, the controll buttons which are shown to the player, the actual Game-class which handles the overall game and a Tutorial-class which will show a simple tutorial based on the player role.
+    In the Main package we have four classes: ControlButtonsGUI, DuoDriveGUI, Game and Tutorial. The package contains the main elements for the game which are the GUI for every player and/or the server, the controll buttons which are shown to the player, the actual Game-class which handles the overall game and a Tutorial-class which will show a simple tutorial based on the player role.
 \item[NetworkManager] \hfill \\
     Within the NetworkManager-package, three classes can be found: MainScript, Server and Client. The Server-class handles all the operations and commands that should go to and/or through the server. The Client-class handles the job that should be assigned to the newly connected player, which is in fact a new client. Moreover, the MainScript-class is intended to do the first steps which are required. The first steps are initializing the Server, Client -and Tutorial GameObjects and initializing the cars.
 \item[Utilities] \hfill \\
