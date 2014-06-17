@@ -76,7 +76,7 @@ namespace NetworkManager
         
         public void UpdateHostList() {
             if (!NetworkController.connected) {
-                NetworkController.refreshHostList();
+                NetworkController.RefreshHostList();
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using Cars;
+using Controllers;
 using GraphicalUI;
 using Interfaces;
 using NetworkManager;
@@ -17,6 +18,7 @@ namespace MainTests
         private GameObject _gObjNetwork;
         private GameObject _gObjTutorial;
         private GameObject _gObjGui;
+        private GameObject _gObjCountDownController;
 
         private Mock<ICar> _selfCar;
 
@@ -35,6 +37,10 @@ namespace MainTests
             _gObjGui.AddComponent<GraphicalUIController>();
             _gObjGui.tag = "GUI";
 
+            _gObjCountDownController = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            _gObjCountDownController.AddComponent<CountdownController>();
+            _gObjCountDownController.tag = "CountdownController";
+
             _mainScript = _gameObject.AddComponent<MainScript>();
             _selfCar = new Mock<ICar>();
         }
@@ -44,6 +50,8 @@ namespace MainTests
         {
             Utils.DestroyObject(_gameObject);
             Utils.DestroyObject(_gObjNetwork);
+            Utils.DestroyObject(_gObjGui);
+            Utils.DestroyObject(_gObjCountDownController);
         }
 
         // TESTS FOR THE METHOD INITIALIZE

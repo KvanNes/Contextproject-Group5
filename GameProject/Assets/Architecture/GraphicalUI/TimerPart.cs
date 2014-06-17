@@ -8,11 +8,11 @@ namespace GraphicalUI {
         private TimeController timeController;
 
         public override void Initialize() {
-            timeController = TimeController.getInstance();
+            timeController = TimeController.GetInstance();
         }
 		
 		public override void DrawGraphicalUI() {
-			double diff = timeController.getTime();
+			double diff = timeController.GetTime();
 			int minutes = (int)Math.Floor(diff / 60);
 			int seconds = (int)Math.Floor(diff % 60);
 			GUI.Label(

@@ -26,6 +26,11 @@ namespace Wrappers
             Network.DestroyPlayerObjects(networkPlayer);
         }
 
+        public double GetTime()
+        {
+            return Network.time;
+        }
+
         public void Disconnect()
         {
             Network.Disconnect();

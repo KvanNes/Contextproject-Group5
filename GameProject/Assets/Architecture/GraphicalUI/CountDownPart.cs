@@ -7,7 +7,7 @@ namespace GraphicalUI {
 	public class CountDownPart : GraphicalUIPart {
 		
 		public override void DrawGraphicalUI() {
-            int countdownValue = MainScript.CountdownController.countDownValue;
+            int countdownValue = MainScript.CountdownController.CountDownValue;
 
             string text = null;
             if (countdownValue > 0) {

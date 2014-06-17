@@ -3,6 +3,8 @@ using Controllers;
 using NetworkManager;
 using NUnit.Framework;
 using UnityEngine;
+using Utilities;
+using Wrappers;
 
 namespace ControllersTests
 {
@@ -23,26 +25,16 @@ namespace ControllersTests
         [TearDown]
         public void Clear()
         {
-
+            Utils.DestroyObject(_gameObject);
         }
 
         [Test]
-        public void Test_Start_Null()
+        public void Test_Start()
         {
-            MainScript.NetworkController = null;
-
             _networkController.Start();
 
-            Assert.AreEqual(_networkController, MainScript.NetworkController);
-        }
-
-        [Test]
-        [ExpectedException(typeof(Utilities.UnityException))]
-        public void Test_Start_NotNull()
-        {
-            MainScript.NetworkController = _networkController;
-
-            _networkController.Start();
+            Assert.IsNotNull(_networkController.NetworkView);
+            Assert.AreEqual(typeof(NetworkViewWrapper), _networkController.NetworkView.GetType());
         }
 
         [Test]

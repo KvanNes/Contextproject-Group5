@@ -1,6 +1,7 @@
 ﻿using GraphicalUI;
 using NUnit.Framework;
 using UnityEngine;
+using Utilities;
 
 namespace GraphicalUITests
 {
@@ -26,6 +27,7 @@ namespace GraphicalUITests
         public void Clear()
         {
             _graphicalUiController.Clear();
+            Utils.DestroyObject(_gameObject);
         }
 
         [Test]
