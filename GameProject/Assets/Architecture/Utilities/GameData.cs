@@ -21,6 +21,8 @@ namespace Utilities
         public static readonly float ACCELERATION_INCREASE = 0.3f;
         public static readonly float FRICTION_AMOUNT = 0.07f;
         public static readonly float COLLISION_FACTOR = 0.8f;
+        public static readonly float SLIDE_SLOWDOWN = 0.08f;
+        public static readonly float BOUNCE_AMOUNT = 0.05f;
 
         // Game name used for networking.
         public static readonly string GAME_NAME = "CGCookie_DuoDrive";
