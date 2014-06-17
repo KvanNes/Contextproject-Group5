@@ -38,7 +38,14 @@ namespace Utilities
 				res[i] = Rotate(vectors[i], new Vector2(0.5f, 0.5f), Mathf.Deg2Rad * 90 * count);
 			}
 			return res;
-		}
+        }
+        
+        public static Vector2 PointOnCircle(Vector2 midpoint, float radius, float angle) {
+            return new Vector2(
+                Mathf.Cos(angle),
+                Mathf.Sin(angle)
+            ) * radius + midpoint;
+        }
 
 		// Copies (clones) a Quaternion.
 		public static Quaternion Copy(Quaternion v)

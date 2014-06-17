@@ -20,20 +20,13 @@ namespace Behaviours
         // The outer curve.
         private Vector2[] pointsBelow;
 
-        private Vector2 PointOnCircle(Vector2 midpoint, float radius, float angle) {
-            return new Vector2(
-                Mathf.Cos(angle),
-                Mathf.Sin(angle)
-            ) * radius + midpoint;
-        }
-
         public override void Start()
         {
             int POINTS_AMOUNT = 12;
             Vector2[] pointsBelow = new Vector2[POINTS_AMOUNT];
             for(int i = 0; i < POINTS_AMOUNT; i++) {
                 float angle = -((float)(i) / (float)(POINTS_AMOUNT - 1) * 90) * Mathf.Deg2Rad;
-                pointsBelow[i] = PointOnCircle(new Vector2(0, 1), 1 - Margin, angle);
+                pointsBelow[i] = MathUtils.PointOnCircle(new Vector2(0, 1), 1 - Margin, angle);
             }
 
             AddEdges(

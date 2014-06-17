@@ -12,10 +12,10 @@ namespace GraphicalUI
     public class MainPart : GraphicalUIPart
     {
 
-        private static int buttonX = 10;
-        private static int buttonY = 75;
-        private static int buttonW = 150;
-        private static int buttonH = 50;
+        private static readonly int buttonX = 10;
+        private static readonly int buttonY = 75;
+        private static readonly int buttonW = 150;
+        private static readonly int buttonH = 50;
 
         private void CreateServerButton()
         {
@@ -53,7 +53,7 @@ namespace GraphicalUI
             for (int j = 0; j < GameData.CARS_AMOUNT; j++)
             {
                 int y = startY + j * buttonH;
-                IEnumerable<Type> roleTypes = Utils.TypesImplementingInterface(typeof(IPlayerRole));
+                Type[] roleTypes = { typeof(Driver), typeof(Throttler) };
                 int roleCounter = 0;
                 foreach (Type role in roleTypes)
                 {
