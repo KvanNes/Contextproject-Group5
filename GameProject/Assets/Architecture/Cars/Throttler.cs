@@ -155,14 +155,19 @@ namespace Cars
             a = (a + 360) % 180;
             b = (b + 360) % 180;
             float d = Math.Abs(a - b);
-            const float angle = 25f;
+            const float angle = 60f;  // This angle is approximately when sliding happens.
             if (90 - angle <= d && d <= 90 + angle) {
                 // Slide, handled by Unity
+                if(ab.Speed < 0) {
+                    ab.Speed = Mathf.Min(0, ab.Speed + GameData.SLIDE_SLOWDOWN);
+                } else {
+                    ab.Speed = Mathf.Max(0, ab.Speed - GameData.SLIDE_SLOWDOWN);
+                }
             } else {
                 // Go back a little.
                 ab.RestoreConfiguration();
+                ab.gameObject.transform.Translate(Mathf.Sign(ab.Speed) * -GameData.BOUNCE_AMOUNT, 0f, 0f);
                 ab.Speed = -ab.Speed * GameData.COLLISION_FACTOR;
-                ab.gameObject.transform.Translate(-0.05f, 0f, 0f);
                 ab.PositionUpdated();
             }
         }
