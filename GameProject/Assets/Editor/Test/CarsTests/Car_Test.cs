@@ -1,4 +1,4 @@
-﻿using Behaviours;
+using Behaviours;
 using Cars;
 using Interfaces;
 using NetworkManager;
@@ -20,7 +20,7 @@ namespace CarsTests
         private Car _car;
         private Car _carCarNumber;
         private Car _carAutoBehaviour;
-        private AutoBehaviour _autoBehaviour;
+        private CarBehaviour _autoBehaviour;
 
         private Player _driver;
         private Player _throttler;
@@ -35,7 +35,7 @@ namespace CarsTests
         {
             _car = new Car();
             _gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            _autoBehaviour = _gameObject.AddComponent<AutoBehaviour>();
+            _autoBehaviour = _gameObject.AddComponent<CarBehaviour>();
 
             _carAutoBehaviour = new Car(_autoBehaviour);
 
@@ -51,16 +51,7 @@ namespace CarsTests
             _throttler.Role = _throttlerRole;
         }
 
-        [TearDown]
-        public void Cleanup()
-        {
-            Utils.DestroyObject(_gameObject);
-            _car.Clear();
-            _carCarNumber.Clear();
-            _carAutoBehaviour.Clear();
-        }
-
-        //              CONSTRUCTORS:
+		//              CONSTRUCTORS:
         // Constructor with carNumber
         [Test]
         public void Test_ConstructorCarNumber()
@@ -114,18 +105,6 @@ namespace CarsTests
             _carAutoBehaviour.SendToOther();
 
             PlayerRoleMock.Verify(role => role.SendToOther(It.IsAny<Car>()));
-        }
-
-        [Test]
-        public void TestClearCar()
-        {
-            _car.Clear();
-
-            Assert.IsNull(_car.Driver);
-            Assert.IsNull(_car.Throttler);
-            Assert.IsNull(_car.CarObject);
-            Assert.AreEqual(Zero, _car.GetAmountPlayers());
-            Assert.AreEqual(Zero, _car.CarNumber);
         }
     }
 }

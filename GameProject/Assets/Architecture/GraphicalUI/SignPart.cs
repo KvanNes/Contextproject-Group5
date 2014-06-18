@@ -16,20 +16,20 @@ namespace GraphicalUI
         private static Vector2 GetCenter(Vector2 point)
         {
             const float half = 1f / 2f;
-            Vector2 p = point + new Vector2(half, half);
-            bool xWasNegative = p.x < 0;
-            bool yWasNegative = p.y < 0;
-            p.x -= p.x % 1f;
+            Vector2 centerPoint = point + new Vector2(half, half);
+			bool xWasNegative = centerPoint.x < 0;
+			bool yWasNegative = centerPoint.y < 0;
+			centerPoint.x -= centerPoint.x % 1f;
             if (xWasNegative)
             {
-                p.x -= 1f;
+				centerPoint.x -= 1f;
             }
-            p.y -= p.y % 1f;
+			centerPoint.y -= centerPoint.y % 1f;
             if (yWasNegative)
             {
-                p.y -= 1f;
+				centerPoint.y -= 1f;
             }
-            return p;
+			return centerPoint;
         }
 
         public override void DrawGraphicalUI()
@@ -39,11 +39,10 @@ namespace GraphicalUI
                 return;
             }
 
-            Vector3 p = MainScript.SelfCar.CarObject.transform.position;
-            Vector2 point = GetCenter(new Vector2(p.x, p.y));
+            Vector3 carPos = MainScript.SelfCar.CarObject.transform.position;
+            Vector2 point = GetCenter(new Vector2(carPos.x, carPos.y));
             Texture2D texture = null;
 
-            // Using Utils.getDictionaryValue yields null for some reason.
             foreach (KeyValuePair<Vector2, Texture2D> k in Textures)
             {
                 if (k.Key == point)

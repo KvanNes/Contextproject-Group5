@@ -1,4 +1,4 @@
-﻿using Behaviours;
+using Behaviours;
 using Cars;
 using GraphicalUI;
 using Interfaces;
@@ -14,7 +14,7 @@ namespace GraphicalUITests
         private RestartButtonPart _restartButtonPart;
 
         private GameObject _gameObject;
-        private AutoBehaviour _autoBehaviour;
+        private CarBehaviour _autoBehaviour;
         private Car _car;
 
         private Mock<INetworkView> _networkViewMock;
@@ -28,7 +28,7 @@ namespace GraphicalUITests
             _networkViewMock = new Mock<INetworkView>();
 
             if (_gameObject == null) return;
-            _autoBehaviour = _gameObject.AddComponent<AutoBehaviour>();
+            _autoBehaviour = _gameObject.AddComponent<CarBehaviour>();
             _car = new Car(_autoBehaviour) { CarObject = { NetworkView = _networkViewMock.Object } };
         }
 

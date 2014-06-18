@@ -51,12 +51,12 @@ namespace NetworkManager
             MainScript.GUIController.Remove();
         }
 
-        private AutoBehaviour GetCarObjectByNumber(int carNumber)
+        private CarBehaviour GetCarObjectByNumber(int carNumber)
         {
             GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Player");
             foreach (GameObject gObj in gameObjects)
             {
-                AutoBehaviour ab = (AutoBehaviour)gObj.GetComponent(typeof(AutoBehaviour));
+                CarBehaviour ab = (CarBehaviour)gObj.GetComponent(typeof(CarBehaviour));
                 if (ab.CarNumber == carNumber)
                 {
                     return ab;

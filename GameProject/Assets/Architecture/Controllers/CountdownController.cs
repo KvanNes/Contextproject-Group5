@@ -1,8 +1,8 @@
 using UnityEngine;
 
 namespace Controllers {
-    // Subclass MonoBehaviour so as to be able to use InvokeRepeating/CancelInvoke.
-    public class CountdownController : MonoBehaviour {
+
+	public class CountdownController : MonoBehaviour {
         
         public int CountDownValue;
 
@@ -17,7 +17,7 @@ namespace Controllers {
         }
 
         private void StopCountdown() {
-            CountDownValue = -100;  // Make sure not to show countdown.
+            CountDownValue = -100;  // Make sure not to show countdown after it has reached 0.
             CancelInvoke("DecrementCounter");
         }
         

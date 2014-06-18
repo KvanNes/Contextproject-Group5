@@ -1,4 +1,4 @@
-﻿using Behaviours;
+using Behaviours;
 using Cars;
 using Interfaces;
 using NetworkManager;
@@ -17,7 +17,7 @@ namespace NetworkManagerTests
         private GameObject _gameObject;
         private GameObject _networkManagerGameObject;
         private GameObject _playerPrefabGameObject;
-        private AutoBehaviour _carObject;
+        private CarBehaviour _carObject;
         private NetworkPlayer _networkPlayer;
 
         public Mock<INetwork> Network;
@@ -39,7 +39,7 @@ namespace NetworkManagerTests
             _networkPlayer = new NetworkPlayer();
             _gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             _testServer = _gameObject.AddComponent<Server>();
-            _carObject = _gameObject.AddComponent<AutoBehaviour>();
+            _carObject = _gameObject.AddComponent<CarBehaviour>();
             Network = new Mock<INetwork>();
             NetworkView = new Mock<INetworkView>();
             _testServer.Game = new Game();
@@ -94,14 +94,14 @@ namespace NetworkManagerTests
         [Test]
         public void Test_noJobAvailable_NegativeCarNum()
         {
-            var res = _testServer.checkJobAvailableAndMaybeAdd(TypeStringEmpty, CarNumberNegative, _networkPlayer);
+            var res = _testServer.checkJobAvailable(TypeStringEmpty, CarNumberNegative, _networkPlayer);
             Assert.IsFalse(res);
         }
 
         [Test]
         public void Test_checkJobAvailable_OverloadCarNum()
         {
-            var res = _testServer.checkJobAvailableAndMaybeAdd(TypeStringEmpty, CarNumberTen, _networkPlayer);
+            var res = _testServer.checkJobAvailable(TypeStringEmpty, CarNumberTen, _networkPlayer);
             Assert.IsFalse(res);
         }
 
@@ -115,7 +115,7 @@ namespace NetworkManagerTests
             _testServer.Game.AddCar(c2);
             _testServer.Game.Cars[0] = null;
 
-            var res = _testServer.checkJobAvailableAndMaybeAdd(TypeStringEmpty, 0, _networkPlayer);
+            var res = _testServer.checkJobAvailable(TypeStringEmpty, 0, _networkPlayer);
             Assert.IsFalse(res);
         }
 
@@ -130,7 +130,7 @@ namespace NetworkManagerTests
 
             _testServer.Game.AddCar(c1);
 
-            var res = _testServer.checkJobAvailableAndMaybeAdd(TypeStringThrottler, CarNumberInit, _networkPlayer);
+            var res = _testServer.checkJobAvailable(TypeStringThrottler, CarNumberInit, _networkPlayer);
             Assert.IsFalse(res);
         }
 
@@ -145,7 +145,7 @@ namespace NetworkManagerTests
 
             _testServer.Game.AddCar(c1);
 
-            var res = _testServer.checkJobAvailableAndMaybeAdd(TypeStringDriver, CarNumberInit, _networkPlayer);
+            var res = _testServer.checkJobAvailable(TypeStringDriver, CarNumberInit, _networkPlayer);
             Assert.IsFalse(res);
         }
 
@@ -155,7 +155,7 @@ namespace NetworkManagerTests
             var c1 = new Car(CarNumberInit) { CarObject = _carObject, Throttler = new Player() };
 
             _testServer.Game.AddCar(c1);
-            _testServer.checkJobAvailableAndMaybeAdd(TypeStringThrottler, CarNumberInit, _networkPlayer);
+            _testServer.checkJobAvailable(TypeStringThrottler, CarNumberInit, _networkPlayer);
 
             Assert.AreEqual(_networkPlayer, _testServer.Game.Cars[CarNumberInit].Throttler.NetworkPlayer);
         }
@@ -166,7 +166,7 @@ namespace NetworkManagerTests
             var c1 = new Car(CarNumberInit) { CarObject = _carObject, Driver = new Player() };
 
             _testServer.Game.AddCar(c1);
-            _testServer.checkJobAvailableAndMaybeAdd(TypeStringDriver, CarNumberInit, _networkPlayer);
+            _testServer.checkJobAvailable(TypeStringDriver, CarNumberInit, _networkPlayer);
 
             Assert.AreEqual(_networkPlayer, _testServer.Game.Cars[CarNumberInit].Driver.NetworkPlayer);
         }
@@ -178,7 +178,7 @@ namespace NetworkManagerTests
 
             _testServer.Game.AddCar(c1);
 
-            var res = _testServer.checkJobAvailableAndMaybeAdd(TypeStringEmpty, CarNumberInit, _networkPlayer);
+            var res = _testServer.checkJobAvailable(TypeStringEmpty, CarNumberInit, _networkPlayer);
             Assert.IsTrue(res);
         }
 

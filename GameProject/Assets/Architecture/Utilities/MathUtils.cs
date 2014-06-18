@@ -23,10 +23,10 @@ namespace Utilities
 		
 		public static Vector2 Rotate(Vector2 point, Vector2 midpoint, float angle)
 		{
-			// Formules komen van: https://www.siggraph.org/education/materials/HyperGraph/modeling/mod_tran/2drota.htm
-			Vector2 p = point - midpoint;
-			float xNew = p.x * Mathf.Cos(angle) - p.y * Mathf.Sin(angle);
-			float yNew = p.y * Mathf.Cos(angle) + p.x * Mathf.Sin(angle);
+			//Formulas found on: https://www.siggraph.org/education/materials/HyperGraph/modeling/mod_tran/2drota.htm
+			Vector2 rotatePoint = point - midpoint;
+			float xNew = rotatePoint.x * Mathf.Cos(angle) - rotatePoint.y * Mathf.Sin(angle);
+			float yNew = rotatePoint.y * Mathf.Cos(angle) + rotatePoint.x * Mathf.Sin(angle);
 			return new Vector2(xNew, yNew) + midpoint;
 		}
 		

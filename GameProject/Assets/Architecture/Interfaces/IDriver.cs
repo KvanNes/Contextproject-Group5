@@ -1,4 +1,4 @@
-﻿using Behaviours;
+using Behaviours;
 using Cars;
 
 namespace Interfaces
@@ -6,6 +6,6 @@ namespace Interfaces
     public interface IDriver
     {
         PlayerAction GetPlayerAction();
-        void HandlePlayerAction(AutoBehaviour ab);
+        void HandlePlayerAction(CarBehaviour ab);
     }
 }
