@@ -1,4 +1,4 @@
-﻿using Behaviours;
+using Behaviours;
 using Cars;
 using Interfaces;
 using NetworkManager;
@@ -18,7 +18,7 @@ namespace BehavioursTests
         public Mock<INetworkView> NetworkView;
 
         // Objects
-        private AutoBehaviour _autoBehaviour;
+        private CarBehaviour _autoBehaviour;
         private GameObject _gameObject;
 
         /*
@@ -33,8 +33,8 @@ namespace BehavioursTests
                 Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarRed.prefab", typeof(GameObject))) as GameObject;
             if (_gameObject != null)
             {
-                _autoBehaviour = _gameObject.AddComponent<AutoBehaviour>();
-                _gameObject.GetComponent<AutoBehaviour>().NetworkView = NetworkView.Object;
+                _autoBehaviour = _gameObject.AddComponent<CarBehaviour>();
+                _gameObject.GetComponent<CarBehaviour>().NetworkView = NetworkView.Object;
             }
 
             var cars = new List<Car>();
@@ -80,48 +80,6 @@ namespace BehavioursTests
                     net =>
                         net.RPC(It.IsAny<string>(), It.IsAny<NetworkPlayer>(), It.IsAny<Quaternion>(), It.IsAny<int>()));
             }
-        }
-
-        [Test]
-        public void Test_storeConfiguration1()
-        {
-            _autoBehaviour.AddToQueues(3);
-            _autoBehaviour.StoreConfiguration();
-
-            Assert.AreEqual(3, _autoBehaviour.GetLastRotations().Count);
-            Assert.AreEqual(3, _autoBehaviour.GetLastPositions().Count);
-        }
-
-        [Test]
-        public void Test_storeConfiguration2()
-        {
-            _autoBehaviour.AddToQueues(1);
-            _autoBehaviour.StoreConfiguration();
-
-            Assert.AreEqual(2, _autoBehaviour.GetLastRotations().Count);
-            Assert.AreEqual(2, _autoBehaviour.GetLastPositions().Count);
-        }
-
-        [Test]
-        public void Test_RestoreConfiguration_Rotation()
-        {
-            _autoBehaviour.AddToQueues(3);
-            var lastRotation = MathUtils.Copy(_autoBehaviour.GetLastRotations().Peek());
-
-            _autoBehaviour.RestoreConfiguration();
-
-            Assert.AreEqual(_autoBehaviour.transform.rotation, lastRotation);
-        }
-
-        [Test]
-        public void Test_RestoreConfiguration_Position()
-        {
-            _autoBehaviour.AddToQueues(3);
-            var lastPosition = MathUtils.Copy(_autoBehaviour.GetLastPositions().Peek());
-
-            _autoBehaviour.RestoreConfiguration();
-
-            Assert.AreEqual(_autoBehaviour.transform.position, lastPosition);
         }
 
         [Test]

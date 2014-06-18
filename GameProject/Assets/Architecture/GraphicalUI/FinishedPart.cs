@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using NetworkManager;
 using Cars;
@@ -10,9 +10,9 @@ namespace GraphicalUI {
 		public override void DrawGraphicalUI() {
 			if (MainScript.SelfCar.CarObject != null) {
                 string text = null;
-				if (MainScript.SelfCar.CarObject.state == Behaviours.AutoBehaviour.FinishedState.won) {
+				if (MainScript.SelfCar.CarObject.state == Behaviours.CarBehaviour.FinishedState.won) {
                     text = "YOU WON";
-				} else if (MainScript.SelfCar.CarObject.state == Behaviours.AutoBehaviour.FinishedState.lost) {
+				} else if (MainScript.SelfCar.CarObject.state == Behaviours.CarBehaviour.FinishedState.lost) {
                     text = "YOU LOSE";
 				}
 

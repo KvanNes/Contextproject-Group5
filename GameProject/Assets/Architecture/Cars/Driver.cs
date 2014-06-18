@@ -10,6 +10,7 @@ namespace Cars
 {
     public class Driver : IPlayerRole
     {
+		private Quaternion _lastSentRotation;
 
         public void Initialize()
         {
@@ -17,9 +18,7 @@ namespace Cars
             MainScript.GUIController.Add(GraphicalUIController.DriverConfiguration);
         }
 
-        private Quaternion _lastSentRotation;
-
-        public Quaternion GetLastSentRotation()
+		public Quaternion GetLastSentRotation()
         {
             return _lastSentRotation;
         }
@@ -34,87 +33,92 @@ namespace Cars
             }
         }
 
+		// When touching with one finger: check whether on left/right half.
+		private PlayerAction GetTouchAction()
+		{
+			if (InputWrapper.GetTouchCount() >= 1)
+			{
+				Vector2 pos = InputWrapper.GetTouchPosition(0);
+				if (pos.x <= GameData.SCREEN_MIDDLE_COLUMN)
+				{
+					return PlayerAction.SteerLeft;
+				}
+				return PlayerAction.SteerRight;
+			}
+			return PlayerAction.None;
+		}
+
+		private PlayerAction GetKeyboardAction()
+		{
+			if (InputWrapper.GetKey(KeyCode.LeftArrow))
+			{
+				return PlayerAction.SteerLeft;
+			}
+			
+			if (InputWrapper.GetKey(KeyCode.RightArrow))
+			{
+				return PlayerAction.SteerRight;
+			}
+			return PlayerAction.None;
+		}
+
         public PlayerAction GetPlayerAction()
         {
-            int separatingColumn = Screen.width / 2;
-
-
 			if(!MainScript.CountdownController.AllowedToDrive()) {
 				return PlayerAction.None;
 			}
-            // When touching with one finger: check whether on left/right half.
-            if (InputWrapper.GetTouchCount() >= 1)
-            {
-                Vector2 pos = InputWrapper.GetTouchPosition(0); // Input.GetTouch(0).position;
-                if (pos.x <= separatingColumn)
-                {
-                    return PlayerAction.SteerLeft;
-                }
-                return PlayerAction.SteerRight;
-            }
 
-            // When left key pressed: steer left.
-            if (InputWrapper.GetKey(KeyCode.LeftArrow))
-            {
-                return PlayerAction.SteerLeft;
-            }
-
-            // When right key pressed: steer right.
-            if (InputWrapper.GetKey(KeyCode.RightArrow))
-            {
-                return PlayerAction.SteerRight;
-            }
-
-            // If none of the above applies, do nothing with respect to steering.
-            return PlayerAction.None;
+			return (GetTouchAction() != PlayerAction.None) ? GetTouchAction() : GetKeyboardAction();
         }
 
-        // Rotate (steer) this car.
-        private void rotate(AutoBehaviour ab, float factor)
+        private void rotateCar(CarBehaviour carObj, float rotateFactor)
         {
-            float angle = factor * MathUtils.ForceInInterval(ab.Speed * 3f, -3, 3);
-            ab.transform.Rotate(new Vector3(0, 0, angle));
-            ab.RotationUpdated();
+            float angle = rotateFactor * MathUtils.ForceInInterval(carObj.Speed * 3f, -3, 3);
+            carObj.transform.Rotate(new Vector3(0, 0, angle));
+            carObj.RotationUpdated();
         }
 
-        public void HandlePlayerAction(AutoBehaviour ab)
+        public void HandlePlayerAction(CarBehaviour carObj)
         {
             PlayerAction action = GetPlayerAction();
             if (action == PlayerAction.SteerLeft)
             {
-                rotate(ab, Time.deltaTime * 125f);
+				rotateCar(carObj, Time.deltaTime * GameData.ROTATION_SPEED_FACTOR);
             }
             else if (action == PlayerAction.SteerRight)
             {
-                rotate(ab, Time.deltaTime * -125f);
+                rotateCar(carObj, Time.deltaTime * GameData.ROTATION_SPEED_FACTOR);
             }
         }
 
-        public void HandleCollision(AutoBehaviour ab, Collision2D collision)
+        public void HandleCollision(CarBehaviour carObj, Collision2D collision)
         {
 
         }
 
-        public void HandleTrigger(AutoBehaviour ab, Collider2D collider)
+        public void HandleTrigger(CarBehaviour carObj, Collider2D collider)
         {
 
         }
 
-        public void PositionUpdated(AutoBehaviour ab, bool isSelf)
+		public void MoveCameraWithCar(CarBehaviour carObj) 
+		{
+			Camera.main.transform.position = carObj.transform.position;
+			Camera.main.transform.Translate(new Vector3(0f, 0f, -1f));
+		}
+
+        public void PositionUpdated(CarBehaviour carObj, bool isSelf)
         {
             if (!isSelf)
             {
                 return;
             }
-
-            // Move camera along with car.
-            Camera.main.transform.position = ab.transform.position;
-            Camera.main.transform.Translate(new Vector3(0f, 0f, -1f));
+			MoveCameraWithCar(carObj);
         }
-
-        public void RotationUpdated(AutoBehaviour ab, bool isSelf)
+		
+		public void RotationUpdated(CarBehaviour carObj, bool isSelf)
         {
-
+		
         }
     }
 }

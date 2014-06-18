@@ -46,7 +46,7 @@ namespace NetworkManager
         }
 
         [RPC]
-        public bool checkJobAvailableAndMaybeAdd(string typeString, int carNumber, NetworkPlayer networkPlayer)
+        public bool checkJobAvailable(string typeString, int carNumber, NetworkPlayer networkPlayer)
         {
             if (carNumber < 0 || carNumber >= Game.Cars.Count)
             {
@@ -79,8 +79,8 @@ namespace NetworkManager
         [RPC]
         public void chooseJob(string typeString, int carNumber, NetworkMessageInfo info)
         {
-            bool ok = checkJobAvailableAndMaybeAdd(typeString, carNumber, info.sender);
-            if (ok)
+            bool jobAvailable = checkJobAvailable(typeString, carNumber, info.sender);
+			if (jobAvailable)
             {
                 NetworkView.RPC("chooseJobAvailable", info.sender);
             }
@@ -102,7 +102,7 @@ namespace NetworkManager
             _prefabGameObject = carNumber == 1 ? FirstCarPrefab : SecondCarPrefab;
 
             Object obj = Network.Instantiate(_prefabGameObject, pos, Quaternion.identity, 0);
-            AutoBehaviour ab = (AutoBehaviour)((GameObject)obj).GetComponent(typeof(AutoBehaviour));
+            CarBehaviour ab = (CarBehaviour)((GameObject)obj).GetComponent(typeof(CarBehaviour));
             Car car = new Car(ab);
             car.Throttler = new Player(car, new Throttler());
             car.Driver = new Player(car, new Driver());

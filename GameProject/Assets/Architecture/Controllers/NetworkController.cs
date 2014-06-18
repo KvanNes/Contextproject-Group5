@@ -1,4 +1,4 @@
-﻿// Gebaseerd op: http://cgcookie.com/unity/2011/12/20/introduction-to-networking-in-unity/
+﻿//Based on: http://cgcookie.com/unity/2011/12/20/introduction-to-networking-in-unity/
 
 using Cars;
 using Interfaces;
@@ -10,7 +10,7 @@ using Wrappers;
 
 namespace Controllers
 {
-    // This class takes care of sending and receiving data.
+    // This class takes care of sending and receiving data over a network.
     public class NetworkController : MonoBehaviour
     {
 

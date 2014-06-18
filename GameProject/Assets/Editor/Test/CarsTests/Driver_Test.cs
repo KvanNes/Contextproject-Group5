@@ -1,4 +1,4 @@
-﻿using Behaviours;
+using Behaviours;
 using Cars;
 using Controllers;
 using Interfaces;
@@ -24,10 +24,10 @@ namespace CarsTests
         private Driver _driver;
 
         private GameObject _gameObject;
-        private AutoBehaviour _autoBehaviour;
+        private CarBehaviour _autoBehaviour;
 
         private GameObject _gameObjectOther;
-        private AutoBehaviour _autoBehaviourOther;
+        private CarBehaviour _autoBehaviourOther;
 
         private GameObject _gameObjectCountDownController;
         private CountdownController _countdownController;
@@ -49,13 +49,13 @@ namespace CarsTests
             _gameObject =
                 Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarRed.prefab", typeof(GameObject))) as GameObject;
             if (_gameObject == null) return;
-            _autoBehaviour = _gameObject.AddComponent<AutoBehaviour>();
+            _autoBehaviour = _gameObject.AddComponent<CarBehaviour>();
             _autoBehaviour.NetworkView = NetworkView.Object;
 
             _gameObjectOther =
                 Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarBlue.prefab", typeof(GameObject))) as GameObject;
             if (_gameObjectOther == null) return;
-            _autoBehaviourOther = _gameObjectOther.AddComponent<AutoBehaviour>();
+            _autoBehaviourOther = _gameObjectOther.AddComponent<CarBehaviour>();
             _autoBehaviourOther.NetworkView = NetworkViewOther.Object;
 
             _carDriver = new Car(_autoBehaviour);

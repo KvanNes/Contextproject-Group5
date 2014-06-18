@@ -30,11 +30,8 @@ namespace NetworkManager
         public static GraphicalUIController GUIController;
         public static CountdownController CountdownController;
 
-        // FIXME: Remove the following variables in release.
-        public static bool IsDebug = false;
         public static bool FixedCamera = false;
 
-        // Use this for initialization
         public void Start()
         {
             if (Application.platform == RuntimePlatform.WindowsEditor
@@ -80,15 +77,18 @@ namespace NetworkManager
             }
         }
 
+		private void CheckLANConnected() {
+			if (Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork)
+			{
+				Network.Disconnect();
+				Application.Quit();
+			}
+			return;
+		}
+
         public void SendToOther()
         {
-            if (Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork)
-            {
-                // Make sure to only send/receive data on local network.
-                Network.Disconnect();
-                Application.Quit();
-                return;
-            }
+			CheckLANConnected();
 
             if (SelfCar != null)
             {
@@ -119,13 +119,6 @@ namespace NetworkManager
         public ICar GetSelfCar()
         {
             return SelfCar;
-        }
-
-        public void Clear()
-        {
-            Server = null;
-            Client = null;
-            Cars.Clear();
         }
     }
 }

@@ -14,8 +14,8 @@ namespace GraphicalUI
 
         private static readonly int buttonX = 10;
         private static readonly int buttonY = 75;
-        private static readonly int buttonW = 150;
-        private static readonly int buttonH = 50;
+        private static readonly int buttonWidth = 150;
+        private static readonly int buttonHeight = 50;
 
         private void CreateServerButton()
         {
@@ -33,12 +33,12 @@ namespace GraphicalUI
         private void CreateClientButton(Type type, HostData hostData, int carNumber, int x, int y)
         {
             string teamColorText = carNumber == 0 ? "Team Red\n" : "Team Blue\n";
-            if (GUI.Button(new Rect(x, y, buttonW, buttonH), teamColorText + type.Name))
+            if (GUI.Button(new Rect(x, y, buttonWidth, buttonHeight), teamColorText + type.Name))
             {
                 MainScript.SelfType = MainScript.PlayerType.Client;
                 MainScript.SelfCar = new Car(carNumber);
 
-                // Gebaseerd op: http://stackoverflow.com/a/755
+                //Based on: http://stackoverflow.com/a/755
                 MainScript.SelfPlayer = new Player(MainScript.SelfCar, (IPlayerRole)Activator.CreateInstance(type));
                 MainScript.SelfPlayer.Role.Initialize();
 
@@ -52,13 +52,13 @@ namespace GraphicalUI
         {
             for (int j = 0; j < GameData.CARS_AMOUNT; j++)
             {
-                int y = startY + j * buttonH;
+                int y = startY + j * buttonHeight;
                 Type[] roleTypes = { typeof(Driver), typeof(Throttler) };
                 int roleCounter = 0;
                 foreach (Type role in roleTypes)
                 {
                     CreateClientButton(role, hostData, j, startX + roleCounter, y);
-                    roleCounter += buttonW;
+                    roleCounter += buttonWidth;
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace GraphicalUI
                 return;
             }
 
-            // Gebaseerd op: http://answers.unity3d.com/questions/296204/gui-font-size.html
+            //Based on: http://answers.unity3d.com/questions/296204/gui-font-size.html
             GUI.skin.label.fontSize = GUI.skin.button.fontSize = 20;
 
             if (!Network.isServer)
@@ -99,7 +99,7 @@ namespace GraphicalUI
                 for (int i = 0; i < NetworkController.hostData.Length; i++)
                 {
                     CreateClientButtons(buttonX, buttonY_, NetworkController.hostData[i]);
-                    buttonY_ += buttonH * GameData.CARS_AMOUNT + 30;
+                    buttonY_ += buttonHeight * GameData.CARS_AMOUNT + 30;
                 }
             }
         }
