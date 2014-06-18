@@ -30,6 +30,7 @@ namespace CarsTests
 
         public Mock<IPlayerRole> PlayerRoleMock;
 
+
         [SetUp]
         public void SetUp()
         {
