@@ -77,18 +77,23 @@ namespace NetworkManager
             }
         }
 
-		private void CheckLANConnected() {
+		private bool CheckLANConnected() {
 			if (Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork)
 			{
 				Network.Disconnect();
 				Application.Quit();
+                return false;
 			}
-			return;
+
+            return true;
 		}
 
         public void SendToOther()
         {
-			CheckLANConnected();
+			if (!CheckLANConnected())
+            {
+                return;
+            }
 
             if (SelfCar != null)
             {

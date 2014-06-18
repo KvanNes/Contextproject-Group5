@@ -28,7 +28,7 @@ namespace NetworkManager
             Network.InitializeServer(32, GameData.PORT, !UnityEngine.Network.HavePublicAddress());
             Connected = true;
             if (!Network.IsServer()) return;
-            MasterServer.RegisterHost(GameData.GAME_NAME, "2P1C");
+            MasterServer.RegisterHost(GameData.GAME_NAME, "DuoDrive_Game");
         }
 
         public void DisconnectServer()

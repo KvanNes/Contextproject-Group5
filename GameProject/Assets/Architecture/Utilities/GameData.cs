@@ -7,13 +7,6 @@ namespace Utilities
 {
     public class GameData
     {
-        // Final values
-        public static readonly float TOLERANCE = 0.0001f;
-        public static readonly int PORT = 25001;
-        public static readonly int CARS_AMOUNT = 2;
-        public static readonly float UPDATE_TIME_DELTA = 0.05f;
-		public static readonly int SCREEN_MIDDLE_COLUMN = Screen.width / 2;
-
 
         // Constants used for physics.
 		public static readonly int COLLISION_POINTS_AMOUNT = 12;
@@ -33,6 +26,17 @@ namespace Utilities
 
         // Game name used for networking.
         public static readonly string GAME_NAME = "DuoDrive";
+
+        // Component strings.
+        public static readonly string TAG_FINISH = "Finish";
+        public static readonly string TAG_MUD = "Mud";
+        public static readonly string NAME_SPHERE = "Sphere";
+
+        // Miscellaneous.
+        public static readonly int PORT = 25001;
+        public static readonly int CARS_AMOUNT = 2;
+        public static readonly float UPDATE_TIME_DELTA = 0.05f;
+        public static readonly int SCREEN_MIDDLE_COLUMN = Screen.width / 2;
     }
 }
 

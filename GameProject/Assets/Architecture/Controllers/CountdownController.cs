@@ -17,7 +17,7 @@ namespace Controllers {
         }
 
         private void StopCountdown() {
-            CountDownValue = -100;  // Make sure not to show countdown after it has reached 0.
+            CountDownValue = -100;  // Make sure not to show countdown when stopped.
             CancelInvoke("DecrementCounter");
         }
         

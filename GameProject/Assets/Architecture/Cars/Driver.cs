@@ -87,7 +87,7 @@ namespace Cars
             }
             else if (action == PlayerAction.SteerRight)
             {
-                rotateCar(carObj, Time.deltaTime * GameData.ROTATION_SPEED_FACTOR);
+                rotateCar(carObj, Time.deltaTime * -GameData.ROTATION_SPEED_FACTOR);
             }
         }
 

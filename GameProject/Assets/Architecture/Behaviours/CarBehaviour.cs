@@ -121,6 +121,14 @@ namespace Behaviours
             }
         }
 
+        public void OnTriggerEnter2D(Collider2D collider)
+        {
+            if (MainScript.SelfType == MainScript.PlayerType.Client)
+            {
+                MainScript.SelfPlayer.Role.HandleTrigger(this, collider);
+            }
+        }
+
         public int Initialized = 0;
         public static readonly int PositionInitialized = 1 << 0;
         public static readonly int RotationInitialized = 1 << 1;
@@ -195,7 +203,7 @@ namespace Behaviours
             Component[] components = transform.GetComponentsInChildren<Component>();
             foreach (Component component in components)
             {
-                if (component.name == "Sphere")
+                if (component.name == GameData.NAME_SPHERE)
                 {
                     return component.gameObject;
                 }

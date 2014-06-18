@@ -11,8 +11,6 @@ namespace Cars
 {
     public class Throttler : IPlayerRole
     {
-		private string Child = "Sphere";
-
 		private Vector3 _lastSentPosition;
 
         public void Initialize()
@@ -89,11 +87,11 @@ namespace Cars
 
         private void ApplyFriction(CarBehaviour carObj, float delta)
         {
-            float signBefore = Mathf.Sign(carObj.Speed);
+            int signBefore = (int) Mathf.Sign(carObj.Speed);
             carObj.Speed += Time.deltaTime * delta;
-            float signAfter = Mathf.Sign(carObj.Speed);
+            int signAfter = (int) Mathf.Sign(carObj.Speed);
 
-            if (Math.Abs(signAfter - signBefore) > GameData.TOLERANCE)
+            if (signAfter != signBefore)
             {
                 // Friction can only slow down the car, not moving it in
                 // the other direction.
@@ -214,11 +212,11 @@ namespace Cars
 
 		public void HandleTrigger(CarBehaviour carObj, Collider2D collider)
         {
-            if (collider.tag == "Mud")
+            if (collider.tag == GameData.TAG_MUD)
             {
 				CollisionMud(carObj);
             }
-            else if (collider.tag == "Finish")
+            else if (collider.tag == GameData.TAG_FINISH)
             {
 				CollisionFinish(carObj);
             }
@@ -226,7 +224,7 @@ namespace Cars
 
 		private void NormalizeChild(CarBehaviour carObj)
         {
-			GameObject child = carObj.GetChild(Child);
+			GameObject child = carObj.GetChild(GameData.NAME_SPHERE);
 			Transform carTransform = carObj.transform;
             float angle = Mathf.Deg2Rad * carTransform.rotation.eulerAngles.z;
             Vector3 normalizedVec = MathUtils.Vector2To3(MathUtils.Rotate(new Vector2(25f / 0.3f, 0f), Vector2.zero, -angle));
