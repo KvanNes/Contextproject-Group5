@@ -32,8 +32,12 @@ namespace Utilities
         public static readonly string TAG_MUD = "Mud";
         public static readonly string NAME_SPHERE = "Sphere";
 
-        // Miscellaneous.
+        // Connection options.
+        public static readonly bool USE_HARDCODED_IP = true;
+        public static readonly string IP = "127.0.0.1";
         public static readonly int PORT = 25001;
+
+        // Miscellaneous.
         public static readonly int CARS_AMOUNT = 2;
         public static readonly float UPDATE_TIME_DELTA = 0.05f;
         public static readonly int SCREEN_MIDDLE_COLUMN = Screen.width / 2;

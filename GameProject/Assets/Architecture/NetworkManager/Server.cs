@@ -1,10 +1,11 @@
 using Behaviours;
 using Cars;
+using Controllers;
+using GraphicalUI;
 using Interfaces;
 using UnityEngine;
 using Utilities;
 using Wrappers;
-using GraphicalUI;
 
 namespace NetworkManager
 {
@@ -27,10 +28,14 @@ namespace NetworkManager
             NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
             Network.InitializeServer(32, GameData.PORT, false);//!UnityEngine.Network.HavePublicAddress());
             Connected = true;
-            if (!Network.IsServer()) return;
-//            MasterServer.ipAddress = "127.0.0.1";
-//            MasterServer.port = 23466;
-            MasterServer.RegisterHost(GameData.GAME_NAME, "DuoDrive_Game");
+            if (!Network.IsServer())
+            {
+                return;
+            }
+            if (!GameData.USE_HARDCODED_IP)
+            {
+                MasterServer.RegisterHost(GameData.GAME_NAME, "DuoDrive_Game");
+            }
         }
 
         public void DisconnectServer()

@@ -18,15 +18,12 @@ namespace GraphicalUI
 
         private void CreateServerButton()
         {
-            //if (!ServerAvailable())
-            //{
             if (GUI.Button(new Rect(Screen.width / 2 - 75, Screen.height / 2 - 75, 150, 150), "Start server!"))
             {
                 MainScript.SelfType = MainScript.PlayerType.Server;
                 MainScript.Server.StartServer();
                 NetworkController.Connected = true;
             }
-            //}
         }
 
         private void CreateClientButton(Type type, HostData hostData, int carNumber, int x, int y)
@@ -42,7 +39,11 @@ namespace GraphicalUI
                 MainScript.SelfPlayer.Role.Initialize();
 
                 MainScript.Client.ChooseJobWhenConnected(type.Name, carNumber);
-                Network.Connect(hostData);
+                if(hostData == null) {
+                    Network.Connect(GameData.IP, GameData.PORT);
+                } else {
+                    Network.Connect(hostData);
+                }
                 NetworkController.Connected = true;
             }
         }
@@ -66,13 +67,13 @@ namespace GraphicalUI
         {
             if (GUI.Button(new Rect(10, 10, 100, 50), new GUIContent("Tutorial")))
             {
-                MainScript.GUIController.Add(GraphicalUIController.TutorialConfiguration); //Tutorial.Show();
+                MainScript.GUIController.Add(GraphicalUIController.TutorialConfiguration);
             }
         }
 
-        private bool ServerAvailable()
+        private bool IsAndroid()
         {
-            return NetworkController.HostData != null && NetworkController.HostData.Length > 0;
+            return Application.platform == RuntimePlatform.Android;
         }
 
         public override void DrawGraphicalUI()
@@ -85,7 +86,7 @@ namespace GraphicalUI
             //Based on: http://answers.unity3d.com/questions/296204/gui-font-size.html
             GUI.skin.label.fontSize = GUI.skin.button.fontSize = 20;
 
-            if (!Network.isServer)
+            if (!IsAndroid())
             {
                 CreateServerButton();
             }
@@ -93,12 +94,16 @@ namespace GraphicalUI
             CreateTutorialButton();
 
             int buttonY_ = buttonY;
-            if (ServerAvailable() && !Network.isServer && !Network.isClient)
+            if (NetworkController.ServerAvailable() && !Network.isServer && !Network.isClient)
             {
-                for (int i = 0; i < NetworkController.HostData.Length; i++)
-                {
-                    CreateClientButtons(buttonX, buttonY_, NetworkController.HostData[i]);
-                    buttonY_ += buttonHeight * GameData.CARS_AMOUNT + 30;
+                if(GameData.USE_HARDCODED_IP) {
+                    CreateClientButtons(buttonX, buttonY_, null);
+                } else {
+                    for (int i = 0; i < NetworkController.HostData.Length; i++)
+                    {
+                        CreateClientButtons(buttonX, buttonY_, NetworkController.HostData[i]);
+                        buttonY_ += buttonHeight * GameData.CARS_AMOUNT + 30;
+                    }
                 }
             }
         }

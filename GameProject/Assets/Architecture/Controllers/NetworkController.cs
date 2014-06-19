@@ -14,16 +14,19 @@ namespace Controllers
     public class NetworkController : MonoBehaviour
     {
 
-        public static HostData[] HostData;
+        public static HostData[] HostData = new HostData[] { new HostData() };
         public static Boolean Connected = false;
         public INetworkView NetworkView;
 
         public void Start()
         {
-//            MasterServer.ipAddress = "127.0.0.1";
-//            MasterServer.port = 23466;
             NetworkView = new NetworkViewWrapper();
             NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
+        }
+        
+        public static bool ServerAvailable()
+        {
+            return GameData.USE_HARDCODED_IP || (HostData != null && HostData.Length > 0);
         }
 
         [RPC]
@@ -40,7 +43,8 @@ namespace Controllers
 
         public void Update()
         {
-            if (Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork)
+            if (!GameData.USE_HARDCODED_IP
+                && Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork)
             {
                 if (MasterServer.PollHostList().Length > 0)
                 {
