@@ -4,7 +4,6 @@ using Interfaces;
 using NetworkManager;
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 using Utilities;
 
 namespace GraphicalUI
@@ -19,15 +18,15 @@ namespace GraphicalUI
 
         private void CreateServerButton()
         {
-            if (!ServerAvailable())
+            //if (!ServerAvailable())
+            //{
+            if (GUI.Button(new Rect(Screen.width / 2 - 75, Screen.height / 2 - 75, 150, 150), "Start server!"))
             {
-                if (GUI.Button(new Rect(Screen.width / 2 - 75, Screen.height / 2 - 75, 150, 150), "Start server!"))
-                {
-                    MainScript.SelfType = MainScript.PlayerType.Server;
-                    MainScript.Server.StartServer();
-                    NetworkController.connected = true;
-                }
+                MainScript.SelfType = MainScript.PlayerType.Server;
+                MainScript.Server.StartServer();
+                NetworkController.Connected = true;
             }
+            //}
         }
 
         private void CreateClientButton(Type type, HostData hostData, int carNumber, int x, int y)
@@ -44,7 +43,7 @@ namespace GraphicalUI
 
                 MainScript.Client.ChooseJobWhenConnected(type.Name, carNumber);
                 Network.Connect(hostData);
-                NetworkController.connected = true;
+                NetworkController.Connected = true;
             }
         }
 
@@ -73,7 +72,7 @@ namespace GraphicalUI
 
         private bool ServerAvailable()
         {
-            return NetworkController.hostData != null && NetworkController.hostData.Length > 0;
+            return NetworkController.HostData != null && NetworkController.HostData.Length > 0;
         }
 
         public override void DrawGraphicalUI()
@@ -96,9 +95,9 @@ namespace GraphicalUI
             int buttonY_ = buttonY;
             if (ServerAvailable() && !Network.isServer && !Network.isClient)
             {
-                for (int i = 0; i < NetworkController.hostData.Length; i++)
+                for (int i = 0; i < NetworkController.HostData.Length; i++)
                 {
-                    CreateClientButtons(buttonX, buttonY_, NetworkController.hostData[i]);
+                    CreateClientButtons(buttonX, buttonY_, NetworkController.HostData[i]);
                     buttonY_ += buttonHeight * GameData.CARS_AMOUNT + 30;
                 }
             }

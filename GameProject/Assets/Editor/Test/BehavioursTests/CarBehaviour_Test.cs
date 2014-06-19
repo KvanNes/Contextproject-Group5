@@ -12,7 +12,7 @@ using Object = UnityEngine.Object;
 namespace BehavioursTests
 {
     [TestFixture]
-    public class AutoBehaviourTest
+    public class CarBehaviourTest
     {
         // Mock Objects
         public Mock<INetworkView> NetworkView;

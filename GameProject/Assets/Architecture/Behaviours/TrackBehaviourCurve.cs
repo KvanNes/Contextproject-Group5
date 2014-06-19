@@ -6,8 +6,6 @@ namespace Behaviours
     public class TrackBehaviourCurve : TrackBehaviour
     {
 
-        private const float CurveFactor = 0.7f;
-
         // Set in Unity Inspector to rotate the collision edges appropriately.
         public int RotateTimes = 0;
 
@@ -19,14 +17,15 @@ namespace Behaviours
         };
 
         // The outer curve.
-        private Vector2[] pointsBelow;
+        private Vector2[] _pointsBelow;
 
         public override void Start()
         {
             Vector2[] pointsBelow = new Vector2[GameData.COLLISION_POINTS_AMOUNT];
-			for(int i = 0; i < GameData.COLLISION_POINTS_AMOUNT; i++) {
-				float angleBetweenPoints = -((float)(i) / (float)(GameData.COLLISION_POINTS_AMOUNT - 1) * 90) * Mathf.Deg2Rad;
-				pointsBelow[i] = MathUtils.PointOnCircle(new Vector2(0, 1), 1 - BorderMargin, angleBetweenPoints);
+            for (int i = 0; i < GameData.COLLISION_POINTS_AMOUNT; i++)
+            {
+                float angleBetweenPoints = -((i) / (float)(GameData.COLLISION_POINTS_AMOUNT - 1) * 90) * Mathf.Deg2Rad;
+                pointsBelow[i] = MathUtils.PointOnCircle(new Vector2(0, 1), 1 - BorderMargin, angleBetweenPoints);
             }
 
             AddEdges(

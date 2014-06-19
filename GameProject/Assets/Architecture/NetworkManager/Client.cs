@@ -42,7 +42,7 @@ namespace NetworkManager
             {
                 DestroyImmediate(go);
             }
-            NetworkController.connected = false;
+            NetworkController.Connected = false;
             MainScript.SelfCar = null;
             MainScript.SelfPlayer = null;
             MainScript.SelfType = MainScript.PlayerType.None;

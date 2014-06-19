@@ -17,19 +17,19 @@ namespace GraphicalUI
         {
             const float half = 1f / 2f;
             Vector2 centerPoint = point + new Vector2(half, half);
-			bool xWasNegative = centerPoint.x < 0;
-			bool yWasNegative = centerPoint.y < 0;
-			centerPoint.x -= centerPoint.x % 1f;
+            bool xWasNegative = centerPoint.x < 0;
+            bool yWasNegative = centerPoint.y < 0;
+            centerPoint.x -= centerPoint.x % 1f;
             if (xWasNegative)
             {
-				centerPoint.x -= 1f;
+                centerPoint.x -= 1f;
             }
-			centerPoint.y -= centerPoint.y % 1f;
+            centerPoint.y -= centerPoint.y % 1f;
             if (yWasNegative)
             {
-				centerPoint.y -= 1f;
+                centerPoint.y -= 1f;
             }
-			return centerPoint;
+            return centerPoint;
         }
 
         public override void DrawGraphicalUI()

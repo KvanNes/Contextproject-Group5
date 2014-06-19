@@ -10,17 +10,18 @@ using Wrappers;
 namespace Behaviours
 {
 
-	//TODO PIM
+    //TODO PIM
     public class CarBehaviour : MonoBehaviour
     {
 
         public int CarNumber = -1;
-		public enum FinishedState { won, lost, inprogress }
-		public FinishedState state = FinishedState.inprogress;
 
         // The current speed and acceleration of this car.
         public float Speed = 0f;
         public float Acceleration = 0.02f;
+
+        public float FinishedTime;
+        public bool Finished = false;
 
         public INetworkView NetworkView;
 
@@ -30,7 +31,7 @@ namespace Behaviours
             CarNumber = number;
             MainScript.Cars[number].CarObject = this;
         }
-		
+
         [RPC]
         public void requestInitialPositions(NetworkMessageInfo info)
         {
@@ -42,13 +43,13 @@ namespace Behaviours
             }
         }
 
-		[RPC]
-		public void notifyHasFinished(int CarNumber) {
-			if (CarNumber == this.CarNumber) {
-				state = FinishedState.won;
-			} else
-				state = FinishedState.lost;
-		}
+        [RPC]
+        public void notifyHasFinished(int carNumber, float finishedTime)
+        {
+            if (CarNumber != carNumber) return;
+            FinishedTime = finishedTime;
+            Finished = true;
+        }
 
 
         // These are used to recover to the last position/rotation when a
@@ -109,8 +110,8 @@ namespace Behaviours
 
             // Make sure speed is in constrained interval.
             Speed = MathUtils.ForceInInterval(Speed, GameData.MIN_SPEED, GameData.MAX_SPEED);
-            
-			MainScript.SelfPlayer.Role.HandlePlayerAction(this);
+
+            MainScript.SelfPlayer.Role.HandlePlayerAction(this);
         }
 
         public void OnCollisionEnter2D(Collision2D collision)
@@ -134,8 +135,9 @@ namespace Behaviours
         public static readonly int RotationInitialized = 1 << 1;
 
         [RPC]
-        public void ResetCar() {
-			state = FinishedState.inprogress;
+        public void ResetCar()
+        {
+            
         }
 
         [RPC]

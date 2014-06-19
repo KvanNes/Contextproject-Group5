@@ -1,13 +1,11 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Object = UnityEngine.Object;
 
 namespace Utilities
 {
     public class Utils
-	{
+    {
         public static T GetDictionaryValue<TS, T>(Dictionary<TS, T> dictionary, TS key)
         {
             T result;
@@ -33,6 +31,13 @@ namespace Utilities
             {
                 DestroyObject(o);
             }
+        }
+
+        public static string TimeToString(double time)
+        {
+            int minutes = (int)Math.Floor(time / 60);
+            int seconds = (int)Math.Floor(time % 60);
+            return minutes.ToString("D2") + ":" + seconds.ToString("D2");
         }
     }
 }

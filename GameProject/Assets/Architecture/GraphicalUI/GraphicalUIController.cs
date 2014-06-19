@@ -1,8 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace GraphicalUI {
-    public class GraphicalUIController : MonoBehaviour {
+namespace GraphicalUI
+{
+    public class GraphicalUIController : MonoBehaviour
+    {
         public static readonly PartsConfiguration ServerConfiguration = new PartsConfiguration(new ServerPart(), new RestartButtonPart(), new TimerPart());
         public static readonly PartsConfiguration DriverConfiguration = new PartsConfiguration(new DriverPart(), new RestartButtonPart(), new SignPartDriver(), new FinishedPart(), new TimerPart(), new CountDownPart());
         public static readonly PartsConfiguration ThrottlerConfiguration = new PartsConfiguration(new ThrottlerPart(), new RestartButtonPart(), new SignPartThrottler(), new FinishedPart(), new TimerPart(), new CountDownPart());

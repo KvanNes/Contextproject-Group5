@@ -64,7 +64,8 @@ namespace NetworkManagerTests
             _testServer.Game.Cars.Clear();
             _testServer.DisconnectServer();
             Utils.DestroyObject(_testServer);
-            Utils.DestroyObjects(GameObject.FindGameObjectsWithTag("Player"));
+            Object[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
+            Utils.DestroyObjects(playerObjects);
         }
 
         /**

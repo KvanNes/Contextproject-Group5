@@ -1,24 +1,31 @@
-using System;
+using NetworkManager;
 using UnityEngine;
 using Controllers;
+using Utilities;
 
-namespace GraphicalUI {
-	public class TimerPart : GraphicalUIPart {
-		
-        private TimeController timeController;
+namespace GraphicalUI
+{
+    public class TimerPart : GraphicalUIPart
+    {
+        private double _timeRunning;
+        private TimeController _timeController;
 
-        public override void Initialize() {
-            timeController = TimeController.GetInstance();
+        public override void Initialize()
+        {
+            _timeController = TimeController.GetInstance();
         }
-		
-		public override void DrawGraphicalUI() {
-			double diff = timeController.GetTime();
-			int minutes = (int)Math.Floor(diff / 60);
-			int seconds = (int)Math.Floor(diff % 60);
-			GUI.Label(
-				new Rect(Screen.width - 50, 0, 50, 30),
-				new GUIContent(minutes.ToString("D2") + ":" + seconds.ToString("D2"))
-			);
-		}
-	}
+
+        public override void DrawGraphicalUI()
+        {
+            if (!MainScript.AllFinished())
+            {
+                _timeRunning = _timeController.GetTime();
+            }
+            GUI.Label(
+                new Rect(Screen.width - 50, 0, 50, 30),
+                new GUIContent(Utils.TimeToString(_timeRunning)
+                )
+            );
+        }
+    }
 }

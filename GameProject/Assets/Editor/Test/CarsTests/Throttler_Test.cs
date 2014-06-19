@@ -246,31 +246,31 @@ namespace CarsTests
             Assert.AreEqual(speed, _autoBehaviour.Speed);
         }
 
-//        [Test]
-//        public void Test_HandleCollision_NotMud()
-//        {
-//            const float speed = 0.1f;
-//
-//            var newSpeed = -(speed + Mathf.Sign(speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
-//            var rot = _autoBehaviour.transform.rotation;
-//            var pos = _autoBehaviour.transform.position;
-//
-//            var gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-//            Utils.DestroyObject(gameObject.GetComponent<BoxCollider>());
-//            var colliderGameObject = gameObject.AddComponent<BoxCollider2D>();
-//            colliderGameObject.gameObject.tag = "Untagged";
-//
-//            _autoBehaviour.Speed = speed;
-//
-//            _throttler.HandleCollision(_autoBehaviour, colliderGameObject);
-//
-//            Assert.AreEqual(newSpeed, _autoBehaviour.Speed);
-//            Assert.AreEqual(rot, _autoBehaviour.transform.rotation);
-//            Assert.AreEqual(pos, _autoBehaviour.transform.position);
-//
-//            Utils.DestroyObject(gameObject);
-//        }
-		/*
+        //        [Test]
+        //        public void Test_HandleCollision_NotMud()
+        //        {
+        //            const float speed = 0.1f;
+        //
+        //            var newSpeed = -(speed + Mathf.Sign(speed) * GameData.COLLISION_CONSTANT) * GameData.COLLISION_FACTOR;
+        //            var rot = _autoBehaviour.transform.rotation;
+        //            var pos = _autoBehaviour.transform.position;
+        //
+        //            var gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //            Utils.DestroyObject(gameObject.GetComponent<BoxCollider>());
+        //            var colliderGameObject = gameObject.AddComponent<BoxCollider2D>();
+        //            colliderGameObject.gameObject.tag = "Untagged";
+        //
+        //            _autoBehaviour.Speed = speed;
+        //
+        //            _throttler.HandleCollision(_autoBehaviour, colliderGameObject);
+        //
+        //            Assert.AreEqual(newSpeed, _autoBehaviour.Speed);
+        //            Assert.AreEqual(rot, _autoBehaviour.transform.rotation);
+        //            Assert.AreEqual(pos, _autoBehaviour.transform.position);
+        //
+        //            Utils.DestroyObject(gameObject);
+        //        }
+        /*
         [Test]
         public void Test_HandleCollision_Mud()
         {

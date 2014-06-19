@@ -25,9 +25,11 @@ namespace NetworkManager
         {
             NetworkView = new NetworkViewWrapper();
             NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
-            Network.InitializeServer(32, GameData.PORT, !UnityEngine.Network.HavePublicAddress());
+            Network.InitializeServer(32, GameData.PORT, false);//!UnityEngine.Network.HavePublicAddress());
             Connected = true;
             if (!Network.IsServer()) return;
+//            MasterServer.ipAddress = "127.0.0.1";
+//            MasterServer.port = 23466;
             MasterServer.RegisterHost(GameData.GAME_NAME, "DuoDrive_Game");
         }
 
@@ -80,7 +82,7 @@ namespace NetworkManager
         public void chooseJob(string typeString, int carNumber, NetworkMessageInfo info)
         {
             bool jobAvailable = checkJobAvailable(typeString, carNumber, info.sender);
-			if (jobAvailable)
+            if (jobAvailable)
             {
                 NetworkView.RPC("chooseJobAvailable", info.sender);
             }
@@ -119,11 +121,6 @@ namespace NetworkManager
                 SpawnPlayer(i);
             }
             MainScript.GUIController.Add(GraphicalUIController.ServerConfiguration);
-        }
-
-        private void OnPlayerConnected(NetworkPlayer player)
-        {
-
         }
 
         public void OnPlayerDisconnected(NetworkPlayer player)

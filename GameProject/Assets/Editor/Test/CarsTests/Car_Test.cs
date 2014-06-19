@@ -52,7 +52,16 @@ namespace CarsTests
             _throttler.Role = _throttlerRole;
         }
 
-		//              CONSTRUCTORS:
+        [TearDown]
+        public void Clear()
+        {
+            Utils.DestroyObject(_gameObject);
+            _car.Reset();
+            _carAutoBehaviour.Reset();
+            _carCarNumber.Reset();
+        }
+
+        //              CONSTRUCTORS:
         // Constructor with carNumber
         [Test]
         public void Test_ConstructorCarNumber()
@@ -95,13 +104,13 @@ namespace CarsTests
         [Test]
         public void Test_SendToOther()
         {
-            const int initialized = 3; 
+            const int initialized = 3;
 
             MainScript.SelfCar = _carAutoBehaviour;
             _carAutoBehaviour.CarObject.Initialized = initialized;
 
             PlayerRoleMock = new Mock<IPlayerRole>();
-            MainScript.SelfPlayer = new Player {Role = PlayerRoleMock.Object};
+            MainScript.SelfPlayer = new Player { Role = PlayerRoleMock.Object };
 
             _carAutoBehaviour.SendToOther();
 

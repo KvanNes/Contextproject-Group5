@@ -1,4 +1,5 @@
-﻿using Cars;
+﻿using System.Linq;
+using Cars;
 using Controllers;
 using Interfaces;
 using UnityEngine;
@@ -70,27 +71,30 @@ namespace NetworkManager
             GUIController = (GraphicalUIController)GameObject.FindGameObjectWithTag("GUI").GetComponent(typeof(GraphicalUIController));
             CountdownController = (CountdownController)GameObject.FindGameObjectWithTag("CountdownController").GetComponent(typeof(CountdownController));
         }
-        
-        public void UpdateHostList() {
-            if (!NetworkController.connected) {
+
+        public void UpdateHostList()
+        {
+            if (!NetworkController.Connected)
+            {
                 NetworkController.RefreshHostList();
             }
         }
 
-		private bool CheckLANConnected() {
-			if (Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork)
-			{
-				Network.Disconnect();
-				Application.Quit();
+        private bool CheckLANConnected()
+        {
+            if (Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork)
+            {
+                Network.Disconnect();
+                Application.Quit();
                 return false;
-			}
+            }
 
             return true;
-		}
+        }
 
         public void SendToOther()
         {
-			if (!CheckLANConnected())
+            if (!CheckLANConnected())
             {
                 return;
             }
@@ -99,6 +103,22 @@ namespace NetworkManager
             {
                 SelfCar.SendToOther();
             }
+        }
+
+        public static bool AllFinished()
+        {
+            return Cars.Where(car => car != null && car.CarObject != null).All(car => car.CarObject.Finished);
+        }
+
+        public static double TimeAtPlace(bool first)
+        {
+            List<double> finishingTimes = new List<double>(GameData.CARS_AMOUNT);
+            foreach (Car car in Cars)
+            {
+                finishingTimes.Add(car.CarObject.FinishedTime);
+            }
+            finishingTimes.Sort();
+            return first ? finishingTimes[0] : finishingTimes[1];
         }
 
         public Server GetServer()
