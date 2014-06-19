@@ -48,7 +48,11 @@ namespace NetworkManager
             }
 
             InvokeRepeating("SendToOther", GameData.UPDATE_TIME_DELTA, GameData.UPDATE_TIME_DELTA);
-            InvokeRepeating("UpdateHostList", 0f, 5f);
+
+            if (!GameData.USE_HARDCODED_IP)
+            {
+                InvokeRepeating("UpdateHostList", 0f, 5f);
+            }
 
             Initialize();
         }

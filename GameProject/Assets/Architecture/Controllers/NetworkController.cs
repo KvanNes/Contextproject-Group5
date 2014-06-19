@@ -14,7 +14,7 @@ namespace Controllers
     public class NetworkController : MonoBehaviour
     {
 
-        public static HostData[] HostData = new HostData[] { new HostData() };
+        public static HostData[] HostData;
         public static Boolean Connected = false;
         public INetworkView NetworkView;
 
@@ -34,6 +34,10 @@ namespace Controllers
         {
             MainScript.CountdownController.StartCountdown();
             TimeController.GetInstance().Reset();
+            foreach (Car car in MainScript.Cars)
+            {
+                car.CarObject.Finished = false;
+            }
         }
 
         public static void RefreshHostList()
