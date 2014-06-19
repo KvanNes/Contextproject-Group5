@@ -1,4 +1,5 @@
 using System;
+using NetworkManager;
 using UnityEngine;
 using Controllers;
 using Utilities;
@@ -7,21 +8,24 @@ namespace GraphicalUI
 {
     public class TimerPart : GraphicalUIPart
     {
-
-        private TimeController timeController;
+        private double _timeRunning;
+        private TimeController _timeController;
 
         public override void Initialize()
         {
-            timeController = TimeController.GetInstance();
+            _timeController = TimeController.GetInstance();
         }
 
         public override void DrawGraphicalUI()
         {
-            double diff = timeController.GetTime();
+            if (!MainScript.AllFinished())
+            {
+                _timeRunning = _timeController.GetTime();
+            }
             GUI.Label(
                 new Rect(Screen.width - 50, 0, 50, 30),
-                new GUIContent(Utils.TimeToString(diff)
-                    )
+                new GUIContent(Utils.TimeToString(_timeRunning)
+                )
             );
         }
     }

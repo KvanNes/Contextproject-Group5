@@ -101,12 +101,18 @@ namespace NetworkManager
 
         public static bool AllFinished()
         {
-            return Cars.All(car => car.CarObject.Finished);
+            return Cars.Where(car => car != null && car.CarObject != null).All(car => car.CarObject.Finished);
         }
 
-        public static Car OtherCar()
+        public static double TimeAtPlace(bool first)
         {
-            return Cars.FirstOrDefault(car => car != SelfCar);
+            List<double> finishingTimes = new List<double>(GameData.CARS_AMOUNT);
+            foreach (Car car in Cars)
+            {
+                finishingTimes.Add(car.CarObject.FinishedTime);
+            }
+            finishingTimes.Sort();
+            return first ? finishingTimes[0] : finishingTimes[1];
         }
 
         public Server GetServer()

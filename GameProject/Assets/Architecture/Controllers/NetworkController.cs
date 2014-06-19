@@ -20,6 +20,8 @@ namespace Controllers
 
         public void Start()
         {
+//            MasterServer.ipAddress = "127.0.0.1";//"83.86.139.137";
+//            MasterServer.port = 23466;
             NetworkView = new NetworkViewWrapper();
             NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
         }

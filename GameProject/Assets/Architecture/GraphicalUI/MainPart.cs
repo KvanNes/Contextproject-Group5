@@ -19,15 +19,15 @@ namespace GraphicalUI
 
         private void CreateServerButton()
         {
-            if (!ServerAvailable())
-            {
+            //if (!ServerAvailable())
+            //{
                 if (GUI.Button(new Rect(Screen.width / 2 - 75, Screen.height / 2 - 75, 150, 150), "Start server!"))
                 {
                     MainScript.SelfType = MainScript.PlayerType.Server;
                     MainScript.Server.StartServer();
                     NetworkController.connected = true;
                 }
-            }
+            //}
         }
 
         private void CreateClientButton(Type type, HostData hostData, int carNumber, int x, int y)
