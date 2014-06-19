@@ -14,23 +14,24 @@ namespace Controllers
     public class NetworkController : MonoBehaviour
     {
 
-        public static HostData[] hostData;
-        public static Boolean connected = false;
+        public static HostData[] HostData;
+        public static Boolean Connected = false;
         public INetworkView NetworkView;
 
         public void Start()
         {
-            MasterServer.ipAddress = "127.0.0.1";
-            MasterServer.port = 23466;
+//            MasterServer.ipAddress = "127.0.0.1";
+//            MasterServer.port = 23466;
             NetworkView = new NetworkViewWrapper();
             NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
         }
 
-		[RPC]
-		public void RestartGame() {
+        [RPC]
+        public void RestartGame()
+        {
             MainScript.CountdownController.StartCountdown();
             TimeController.GetInstance().Reset();
-     	}
+        }
 
         public static void RefreshHostList()
         {
@@ -43,7 +44,7 @@ namespace Controllers
             {
                 if (MasterServer.PollHostList().Length > 0)
                 {
-                    hostData = MasterServer.PollHostList();
+                    HostData = MasterServer.PollHostList();
                 }
             }
         }

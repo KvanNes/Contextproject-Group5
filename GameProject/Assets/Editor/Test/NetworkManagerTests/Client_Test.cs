@@ -78,7 +78,7 @@ namespace MainTests
             _client.OnDisconnectedFromServer();
 
             Assert.IsEmpty(GameObject.FindGameObjectsWithTag("Player"));
-            Assert.IsFalse(NetworkController.connected);
+            Assert.IsFalse(NetworkController.Connected);
             Assert.IsNull(MainScript.SelfCar);
             Assert.IsNull(MainScript.SelfPlayer);
             Assert.IsFalse(MainScript.SelectionIsFinal);

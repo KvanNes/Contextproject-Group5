@@ -69,7 +69,7 @@ namespace ControllersTests
         {
             // Expected value
             Quaternion expectedQuaternion = Quaternion.Euler(0, 180, 0);
-            
+
             // Initialize first if-statement
             MainScript.SelfPlayer = new Player { Role = new Throttler() };
 

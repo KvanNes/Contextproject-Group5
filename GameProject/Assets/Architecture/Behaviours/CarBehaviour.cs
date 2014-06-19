@@ -10,13 +10,11 @@ using Wrappers;
 namespace Behaviours
 {
 
-	//TODO PIM
+    //TODO PIM
     public class CarBehaviour : MonoBehaviour
     {
 
         public int CarNumber = -1;
-        public enum FinishedState { won, lost, inprogress }
-        public FinishedState state = FinishedState.inprogress;
 
         // The current speed and acceleration of this car.
         public float Speed = 0f;
@@ -33,7 +31,7 @@ namespace Behaviours
             CarNumber = number;
             MainScript.Cars[number].CarObject = this;
         }
-		
+
         [RPC]
         public void requestInitialPositions(NetworkMessageInfo info)
         {
@@ -112,8 +110,8 @@ namespace Behaviours
 
             // Make sure speed is in constrained interval.
             Speed = MathUtils.ForceInInterval(Speed, GameData.MIN_SPEED, GameData.MAX_SPEED);
-            
-			MainScript.SelfPlayer.Role.HandlePlayerAction(this);
+
+            MainScript.SelfPlayer.Role.HandlePlayerAction(this);
         }
 
         public void OnCollisionEnter2D(Collision2D collision)
@@ -139,7 +137,7 @@ namespace Behaviours
         [RPC]
         public void ResetCar()
         {
-            state = FinishedState.inprogress;
+            
         }
 
         [RPC]

@@ -19,7 +19,7 @@ namespace Cars
         {
             CarNumber = carNumber;
         }
-		
+
         public Car()
         {
             CarNumber = ++_carNumberGenerator;
@@ -30,7 +30,7 @@ namespace Cars
             CarObject = gameObject;
         }
 
-		//Checks whether a player is connected to a LAN.
+        //Checks whether a player is connected to a LAN.
         private bool ShouldSend()
         {
             return CarObject != null
@@ -45,6 +45,12 @@ namespace Cars
             {
                 MainScript.SelfPlayer.Role.SendToOther(this);
             }
+        }
+
+        // Method needed for the test, so that the static carNumberGenerator does not keep incrementing.
+        public void Reset()
+        {
+            _carNumberGenerator = 0;
         }
     }
 }

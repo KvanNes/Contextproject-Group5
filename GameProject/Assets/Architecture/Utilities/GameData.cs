@@ -9,7 +9,7 @@ namespace Utilities
     {
 
         // Constants used for physics.
-		public static readonly int COLLISION_POINTS_AMOUNT = 12;
+        public static readonly int COLLISION_POINTS_AMOUNT = 12;
         public static readonly float MIN_SPEED = -0.15f;
         public static readonly float MAX_SPEED = 0.3f;
         public static readonly float MIN_ACCELERATION = -0.005f;
@@ -20,9 +20,9 @@ namespace Utilities
         public static readonly float COLLISION_FACTOR = 0.8f;
         public static readonly float SLIDE_SLOWDOWN = 0.08f;
         public static readonly float BOUNCE_AMOUNT = 0.05f;
-		public static readonly float ROTATION_SPEED_FACTOR = 125f;
-		public static readonly float MUD_SLOWDOWN_FACTOR = 0.5f;
-		public static readonly float MINIMUM_SLIDE_ANGLE = 60f;
+        public static readonly float ROTATION_SPEED_FACTOR = 125f;
+        public static readonly float MUD_SLOWDOWN_FACTOR = 0.5f;
+        public static readonly float MINIMUM_SLIDE_ANGLE = 60f;
 
         // Game name used for networking.
         public static readonly string GAME_NAME = "DuoDrive";

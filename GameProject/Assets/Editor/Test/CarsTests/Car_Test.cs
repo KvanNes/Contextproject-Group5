@@ -40,7 +40,7 @@ namespace CarsTests
 
             _carAutoBehaviour = new Car(_autoBehaviour);
 
-            _carCarNumber = new Car(One);
+            _carCarNumber = new Car(Zero);
 
             _driverRole = new Driver();
             _throttlerRole = new Throttler();
@@ -56,9 +56,12 @@ namespace CarsTests
         public void Clear()
         {
             Utils.DestroyObject(_gameObject);
+            _car.Reset();
+            _carAutoBehaviour.Reset();
+            _carCarNumber.Reset();
         }
 
-		//              CONSTRUCTORS:
+        //              CONSTRUCTORS:
         // Constructor with carNumber
         [Test]
         public void Test_ConstructorCarNumber()
@@ -82,7 +85,7 @@ namespace CarsTests
         [Test]
         public void Test_CarNumberUp()
         {
-            Assert.AreEqual(One, _carCarNumber.CarNumber);
+            Assert.AreEqual(One, _car.CarNumber);
         }
 
         // Constructor with AutoBehaviour
@@ -101,13 +104,13 @@ namespace CarsTests
         [Test]
         public void Test_SendToOther()
         {
-            const int initialized = 3; 
+            const int initialized = 3;
 
             MainScript.SelfCar = _carAutoBehaviour;
             _carAutoBehaviour.CarObject.Initialized = initialized;
 
             PlayerRoleMock = new Mock<IPlayerRole>();
-            MainScript.SelfPlayer = new Player {Role = PlayerRoleMock.Object};
+            MainScript.SelfPlayer = new Player { Role = PlayerRoleMock.Object };
 
             _carAutoBehaviour.SendToOther();
 

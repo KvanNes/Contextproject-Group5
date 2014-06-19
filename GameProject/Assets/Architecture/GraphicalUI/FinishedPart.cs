@@ -13,6 +13,8 @@ namespace GraphicalUI
         {
             if (MainScript.SelfCar.CarObject != null)
             {
+                float screenWidth = (float)Screen.width / 2;
+                float screenHeight = (float)Screen.height / 2;
 
                 if (MainScript.AllFinished())
                 {
@@ -21,8 +23,9 @@ namespace GraphicalUI
                     timeRankings += "Second place: " + Utils.TimeToString(MainScript.TimeAtPlace(false)) + "\n";
                     timeRankings += "</size></b>";
 
+
                     GUI.Label(
-                    new Rect((Screen.width / 2) - 125, (Screen.height / 2) - 50, (Screen.width / 2), (Screen.height / 2)),
+                    new Rect((Screen.width / 2) - 125, (Screen.height / 2) - 50, screenWidth, screenHeight),
                         timeRankings
                     );
                 }
@@ -31,7 +34,7 @@ namespace GraphicalUI
                 {
                     string personalTimeText = "Your time: " + Utils.TimeToString(MainScript.SelfCar.CarObject.FinishedTime) + "\n";
                     GUI.Label(
-                    new Rect((Screen.width / 2) - 100, 50, (Screen.width / 2), (Screen.height / 2)),
+                    new Rect((Screen.width / 2) - 100, 50, screenWidth, screenHeight),
                         personalTimeText
                     );
                 }

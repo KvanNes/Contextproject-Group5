@@ -25,7 +25,7 @@ namespace Wrappers
 
         public void RPC(string name, NetworkPlayer target, params object[] args)
         {
-            _nativeNetworkView.RPC(name,target,args);
+            _nativeNetworkView.RPC(name, target, args);
         }
 
         public void RPC(string name, RPCMode mode, params object[] args)
@@ -33,5 +33,5 @@ namespace Wrappers
             _nativeNetworkView.RPC(name, mode, args);
         }
     }
-         
+
 }

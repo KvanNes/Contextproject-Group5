@@ -10,7 +10,7 @@ namespace Cars
 {
     public class Driver : IPlayerRole
     {
-		private Quaternion _lastSentRotation;
+        private Quaternion _lastSentRotation;
 
         public void Initialize()
         {
@@ -18,7 +18,7 @@ namespace Cars
             MainScript.GUIController.Add(GraphicalUIController.DriverConfiguration);
         }
 
-		public Quaternion GetLastSentRotation()
+        public Quaternion GetLastSentRotation()
         {
             return _lastSentRotation;
         }
@@ -33,42 +33,43 @@ namespace Cars
             }
         }
 
-		// When touching with one finger: check whether on left/right half.
-		private PlayerAction GetTouchAction()
-		{
-			if (InputWrapper.GetTouchCount() >= 1)
-			{
-				Vector2 pos = InputWrapper.GetTouchPosition(0);
-				if (pos.x <= GameData.SCREEN_MIDDLE_COLUMN)
-				{
-					return PlayerAction.SteerLeft;
-				}
-				return PlayerAction.SteerRight;
-			}
-			return PlayerAction.None;
-		}
+        // When touching with one finger: check whether on left/right half.
+        private PlayerAction GetTouchAction()
+        {
+            if (InputWrapper.GetTouchCount() >= 1)
+            {
+                Vector2 pos = InputWrapper.GetTouchPosition(0);
+                if (pos.x <= GameData.SCREEN_MIDDLE_COLUMN)
+                {
+                    return PlayerAction.SteerLeft;
+                }
+                return PlayerAction.SteerRight;
+            }
+            return PlayerAction.None;
+        }
 
-		private PlayerAction GetKeyboardAction()
-		{
-			if (InputWrapper.GetKey(KeyCode.LeftArrow))
-			{
-				return PlayerAction.SteerLeft;
-			}
-			
-			if (InputWrapper.GetKey(KeyCode.RightArrow))
-			{
-				return PlayerAction.SteerRight;
-			}
-			return PlayerAction.None;
-		}
+        private PlayerAction GetKeyboardAction()
+        {
+            if (InputWrapper.GetKey(KeyCode.LeftArrow))
+            {
+                return PlayerAction.SteerLeft;
+            }
+
+            if (InputWrapper.GetKey(KeyCode.RightArrow))
+            {
+                return PlayerAction.SteerRight;
+            }
+            return PlayerAction.None;
+        }
 
         public PlayerAction GetPlayerAction()
         {
-			if(!MainScript.CountdownController.AllowedToDrive()) {
-				return PlayerAction.None;
-			}
+            if (!MainScript.CountdownController.AllowedToDrive())
+            {
+                return PlayerAction.None;
+            }
 
-			return (GetTouchAction() != PlayerAction.None) ? GetTouchAction() : GetKeyboardAction();
+            return (GetTouchAction() != PlayerAction.None) ? GetTouchAction() : GetKeyboardAction();
         }
 
         private void rotateCar(CarBehaviour carObj, float rotateFactor)
@@ -83,7 +84,7 @@ namespace Cars
             PlayerAction action = GetPlayerAction();
             if (action == PlayerAction.SteerLeft)
             {
-				rotateCar(carObj, Time.deltaTime * GameData.ROTATION_SPEED_FACTOR);
+                rotateCar(carObj, Time.deltaTime * GameData.ROTATION_SPEED_FACTOR);
             }
             else if (action == PlayerAction.SteerRight)
             {
@@ -101,11 +102,11 @@ namespace Cars
 
         }
 
-		public void MoveCameraWithCar(CarBehaviour carObj) 
-		{
-			Camera.main.transform.position = carObj.transform.position;
-			Camera.main.transform.Translate(new Vector3(0f, 0f, -1f));
-		}
+        public void MoveCameraWithCar(CarBehaviour carObj)
+        {
+            Camera.main.transform.position = carObj.transform.position;
+            Camera.main.transform.Translate(new Vector3(0f, 0f, -1f));
+        }
 
         public void PositionUpdated(CarBehaviour carObj, bool isSelf)
         {
@@ -113,12 +114,12 @@ namespace Cars
             {
                 return;
             }
-			MoveCameraWithCar(carObj);
+            MoveCameraWithCar(carObj);
         }
-		
-		public void RotationUpdated(CarBehaviour carObj, bool isSelf)
+
+        public void RotationUpdated(CarBehaviour carObj, bool isSelf)
         {
-		
+
         }
     }
 }

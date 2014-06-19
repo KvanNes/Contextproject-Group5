@@ -74,26 +74,27 @@ namespace NetworkManager
 
         public void UpdateHostList()
         {
-            if (!NetworkController.connected)
+            if (!NetworkController.Connected)
             {
                 NetworkController.RefreshHostList();
             }
         }
 
-		private bool CheckLANConnected() {
-			if (Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork)
-			{
-				Network.Disconnect();
-				Application.Quit();
+        private bool CheckLANConnected()
+        {
+            if (Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork)
+            {
+                Network.Disconnect();
+                Application.Quit();
                 return false;
-			}
+            }
 
             return true;
-		}
+        }
 
         public void SendToOther()
         {
-			if (!CheckLANConnected())
+            if (!CheckLANConnected())
             {
                 return;
             }

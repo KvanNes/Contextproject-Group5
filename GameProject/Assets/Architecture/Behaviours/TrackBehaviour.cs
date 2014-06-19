@@ -22,7 +22,8 @@ namespace Behaviours
             return normalizedVec;
         }
 
-        private void AddEdgeCollider(Vector2[] points) {
+        private void AddEdgeCollider(Vector2[] points)
+        {
             EdgeCollider2D edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
             edgeCollider.isTrigger = false;
             edgeCollider.points = Normalize(points);
@@ -38,9 +39,9 @@ namespace Behaviours
             AddEdgeCollider(pointsBelow);
         }
 
-		public virtual void Start()	
-		{
+        public virtual void Start()
+        {
 
-		}
+        }
     }
 }

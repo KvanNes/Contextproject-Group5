@@ -1,13 +1,11 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Object = UnityEngine.Object;
 
 namespace Utilities
 {
     public class Utils
-	{
+    {
         public static T GetDictionaryValue<TS, T>(Dictionary<TS, T> dictionary, TS key)
         {
             T result;
