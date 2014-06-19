@@ -14,8 +14,7 @@ namespace Cars
 
     public class Player
     {
-
-        public Player()
+		public Player()
         {
             Role = null;
             Car = null;

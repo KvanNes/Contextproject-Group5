@@ -33,7 +33,7 @@
 \begin{center}
 TI2805 Contextproject, 2013/2014, TU Delft\\
 Group 5, Computer Games\\
-Version 1 (draft)
+Version 3 (draft)
 \end{center}
 \clearpage
 
@@ -93,30 +93,45 @@ The software architecture of the system consists of three different subsystems: 
 \subsection{Hardware/Software Mapping}
 The hardware used is very various in terms of the player-held device. That device must have Android running and must contain a \emph{gyroscope} and \emph{accelerometer}. The only other piece of hardware that will be required is a central computer that will serve as a central server. \\
 The software that is being used on the described hardware is the same. Depending on the functionality, so either being a steering player, throttler, or server, the interface will be different. The server has a simplistic interface which will make it possible to start or end the server.
+The mapping of the hardware and software can easily be concretised in a small diagram, which is shown on the next page:
+\begin{figure}
+	\includegraphics[width=\textwidth]{ClientServer.png}
+	\caption{Hardware/Software mapping}
+\end{figure}
+
 
 
 \subsection{Persistent Data Management}
 Persistent data management is not needed in our product. There is no data that needs to be saved persistently.
 
+\subsection{Concurrency}
+Concurrency is an important aspect to take into account when dealing with a multiplayer game. Especially if this multiplayer game is one where people interact with each other in real-time.\\
+Concurrency is handled in one specific way in our game, which is by using \emph{Remote Procedure Calls} (RPC).\\
+Using RPC has some advantages, but it also has some drawbacks.\\
+The main advantages are that RPC is easily used within Unity and that RPC allows us not to have to deal with coding the remote interactions.\\
+However, the drawbacks are that RPC waits for a server to process the call before allowing the client to continue. This means that we had to be sparse in using RPC throughout our code, for if we did not do this, the server might get congested with calls and this would influence the output of the game.\\
+
+
 \newpage
 
 \section{Architecture}
 \subsection{Introduction}
-In first instance a class diagram was created to maintain a fast view of the architecture. However, during the development of the project, we came to the conclusion that it is not possible. In Unity there is use of GameObjects which have Scripts attached to them as components. And depending on the variables of the GameObjects how the attached Scripts interact with other GameObjects or simple classes. This made it very hard for us to maintain a class diagram for a clear overview. 
-Instead of a class diagram, there has been chosen to have a section dedicated to the setup and interactions between classes. In that way it is possible to discuss the hierarchy of the classes and their inbetween interactions. Throughout the project a changelog, in Appendix A, will be kept up-to-date with new classes, interactions or even deletion of parts.
+At first a class diagram was created to be able to get a quick view of the architecture. However, during the development of the project, we came to the conclusion that our class diagram would quickly become too messy. In Unity \emph{GameObjects} are used, which have scripts attached to them as components. The interaction of these scripts with other scripts, classes and GameObjects depends on different variables of the GameObjects. This made it very hard for us to create and maintain a class diagram for a clear overview, even at a high level.
+Instead of a class diagram, we have chosen to dedicate a section to the setup of classes and the interaction between them. In that way it is possible to discuss the hierarchy of the classes and their interactions.
 
 \subsection{Classes}
-Within the whole project we count X classes. Every class has been split up in such a way that it has its own functionality. There where it was needed or usefull Design Patterns have been used. In this project we have only made use of the Strategy Pattern. Furthermore, a client-server architecture has been used since this was ideal to maintain and control the new joined players.
+Within the whole project we count 41 classes, excluding test classes. Every class has been split up in such a way that it has its own functionality. Where necessary or useful Design Patterns have been applied. In this project we have made use of the Strategy Pattern and Singleton Pattern. The Strategy Pattern can be seen in how the Player and Role classes are set up. The Singleton Pattern is used in the TimeController class. Furthermore, a client-server architecture has been used since this was ideal to distribute different tasks over the server and clients. What is meant by this is that the server handles most back-end tasks, so that the smartphones/tablets, the clients, are less burdened.
 
 \subsection{Packages}
-The classes have been managed to be split into different packages, every package has its own responsibility. In the upcoming descriptions every package and their responsibility have been explained. Furthermore, if a Design Pattern has been used within a package, it has been described with it.
+The classes have been split into different packages. Every package has its own responsibility. In the upcoming descriptions every package and its responsibilities will been explained. Furthermore, if a Design Pattern has been used within a package, it has been described with it.
+
 \begin{description}
 \item[Behaviours] \hfill \\
-    In this package the Scripts have been bundled that belong to certain GameObjects which control behaviours. Such as a Car, has the AutoBehaviour-script attached to it. This script manages how the Car should behave during the game. Furthermore, there are other Behaviour-classes which are ment for the track.
+    In this package all classes that belong to GameObjects controlling behaviours have been added. An example of such a class is the Car class, which has the CarBehaviour-script attached to it. This script manages how the Car should behave during the game. The other Behaviour-classes are meant to manage the racing Track.
 \item[Cars] \hfill \\
-    The Cars-package contains classes which create the Car and the players attached to it. Here we used a Strategy Pattern, this was recommended to us and in practice also seems much better than using simple Inheritance. See figure 1 for the classes in the Strategy Pattern form.
+    The Cars package contains classes which create the cars and the players attached to them. We used the Strategy Pattern to set up these classes. This was recommended to us and in practice also turned out to be much better than simply using inheritance.
 \item[Main] \hfill \\
-    In the Main-package we have four classes: ControlButtonsGUI, DuoDriveGUI, Game and Tutorial. The package contains the main elements for the game which are the GUI for every player and/or the server, the controll buttons which are shown to the player, the actual Game-class which handles the overall game and a Tutorial-class which will show a simple tutorial based on the player role.
+    In the Main package we have four classes: ControlButtonsGUI, DuoDriveGUI, Game and Tutorial. The package contains the main elements for the game which are the GUI for every player and/or the server, the controll buttons which are shown to the player, the actual Game-class which handles the overall game and a Tutorial-class which will show a simple tutorial based on the player role.
 \item[NetworkManager] \hfill \\
     Within the NetworkManager-package, three classes can be found: MainScript, Server and Client. The Server-class handles all the operations and commands that should go to and/or through the server. The Client-class handles the job that should be assigned to the newly connected player, which is in fact a new client. Moreover, the MainScript-class is intended to do the first steps which are required. The first steps are initializing the Server, Client -and Tutorial GameObjects and initializing the cars.
 \item[Utilities] \hfill \\
@@ -128,32 +143,30 @@ The classes have been managed to be split into different packages, every package
     
 \end{description}
 
-As mentioned above, a changelog will be held and kept up-to-date in this document in Appendix A. With this changelog the changes that are made on the architecture will be clear much faster. This will be done so that there is no need to search for changes within this section. 
-
 \newpage
 
 
 \section{Glossary}
 \begin{description}
-\item[Accelerometer] (Oxford dictionary (British \& World English)) \hfill \\
-An instrument for measuring the acceleration of a moving or vibrating body.
 \item[Continuous Integration] (Wikipedia, 2014) \hfill \\
 Continuous integration is the practice, in software engineering, of merging all developer working copies with a shared mainline several times a day. This type of integration is used to make sure a working copy is always available at any moment during a software engineering project.
-\item[Gyroscope] (The American Heritage® Dictionary of the English Language, Fourth Edition)\hfill \\
-A device consisting of a wheel or disc mounted so that it can spin rapidly about an axis which is itself free to alter in direction. The orientation of the axis is not affected by tilting of the mounting, so gyroscopes can be used to provide stability or maintain a reference direction in navigation systems, automatic pilots and stabilizers.
+\item[GameObject] (Unity Scripting API, 2014) \hfill \\
+A GameObject is the base class for all entities in Unity.
 \item[Latency Issues] \hfill \\
 In a network, latency is the amount of time a packet needs to get from one point to another, i.e. from a server to a client. Latency issues arise when a packet takes too long to arrive at the endpoint, the fluency of the program may be compromised, because packets may take too long or be dropped completely. 
+\item[Remote Procedure Call(s)] (TechTarget) \hfill \\
+Remote Procedure Call (RPC) is a protocol that one program can use to request a service from a program located in another computer in a network without having to understand network details.\\
 \end{description}
 
 
 \clearpage
 
 \section*{References}
-Accelerometer. (n.d.) Oxford dictionary (British \& World English). Retrieved May 15, 2014, from \url{http://www.oxforddictionaries.com/definition/english/accelerometer}
-\newline \newline
 Continuous integration. (n.d.). In \textit{Wikipedia}. Retrieved May 15, 2014, from \url{http://en.wikipedia.org/wiki/Continuous_integration}
 \newline \newline
-Gyroscope. (n.d.) The American Heritage® Dictionary of the English Language, Fourth Edition. (2003). Retrieved May 15, 2014, from \url{http://www.thefreedictionary.com/gyroscope}
+GameObject. (n.d.). In \textit{Unity3D}. Retrieved June 17, 2014, from \url{http://docs.unity3d.com/ScriptReference/GameObject.html}
+\newline \newline
+Remote Procedure Call (RPC). 2009. In \textit{TechTarget}. Retrieved June 17, 2014, from \url{http://searchsoa.techtarget.com/definition/Remote-Procedure-Call}
 
 
 \end{document}

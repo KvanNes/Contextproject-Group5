@@ -108,18 +108,5 @@ namespace MainTests
             _mainScript.SetSelfCar(_selfCar.Object);
             Assert.IsNotNull(_mainScript.GetSelfCar());
         }
-
-        [Test]
-        public void Test_Clear()
-        {
-            _mainScript.Initialize();
-
-            _mainScript.Clear();
-
-            Assert.IsNull(_mainScript.GetServer());
-            Assert.IsNull(_mainScript.GetClient());
-            Assert.IsEmpty(_mainScript.GetCars());
-        }
-
     }
 }

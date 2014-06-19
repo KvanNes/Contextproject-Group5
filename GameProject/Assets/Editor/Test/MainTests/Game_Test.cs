@@ -1,4 +1,4 @@
-﻿using Behaviours;
+using Behaviours;
 using Cars;
 using NetworkManager;
 using UnityEngine;
@@ -16,7 +16,7 @@ namespace MainTests
 
         private Car _car;
         private GameObject _gameObject;
-        private AutoBehaviour _autoBehaviour;
+        private CarBehaviour _autoBehaviour;
 
         private Car _carOther;
         private GameObject _gameObjectOther;
@@ -29,14 +29,14 @@ namespace MainTests
             _gameObject =
                 Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarRed.prefab", typeof(GameObject))) as GameObject;
             if (_gameObject == null) return;
-            _autoBehaviour = _gameObject.AddComponent<AutoBehaviour>();
+            _autoBehaviour = _gameObject.AddComponent<CarBehaviour>();
             _car = new Car(_autoBehaviour);
 
             _gameObjectOther =
                 Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarBlue.prefab", typeof(GameObject))) as GameObject;
             if (_gameObjectOther == null) return;
-            _gameObjectOther.AddComponent<AutoBehaviour>();
-            _carOther = new Car(_gameObjectOther.GetComponent<AutoBehaviour>());
+            _gameObjectOther.AddComponent<CarBehaviour>();
+            _carOther = new Car(_gameObjectOther.GetComponent<CarBehaviour>());
 
             List<Car> cars = new List<Car>();
             for (int i = 0; i < GameData.CARS_AMOUNT; i++)

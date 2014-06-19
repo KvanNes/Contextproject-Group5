@@ -1,22 +1,19 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Behaviours
 {
     public class TrackBehaviourStraight : TrackBehaviour
     {
-
-        // From left to right.
         private Vector2[] pointsAbove = 
         {
-            new Vector2(0, Margin),
-            new Vector2(1, Margin)
+            new Vector2(0, BorderMargin),
+            new Vector2(1, BorderMargin)
         };
 
-        // From left to right.
         private Vector2[] pointsBelow = 
         {
-            new Vector2(0, 1 - Margin),
-            new Vector2(1, 1 - Margin)
+            new Vector2(0, 1 - BorderMargin),
+            new Vector2(1, 1 - BorderMargin)
         };
 
         public override void Start()

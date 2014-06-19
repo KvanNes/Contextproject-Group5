@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Utilities;
 
 namespace Behaviours
@@ -7,33 +7,26 @@ namespace Behaviours
     {
 
         private const float CurveFactor = 0.7f;
-        // Set in Editor to rotate the collision edges appropriately.
+
+        // Set in Unity Inspector to rotate the collision edges appropriately.
         public int RotateTimes = 0;
 
         // The inner curve.
         private Vector2[] pointsAbove =
         {
-            new Vector2(0, 1 - Margin),
-            new Vector2(Margin, 1)
+            new Vector2(0, 1 - BorderMargin),
+            new Vector2(BorderMargin, 1)
         };
 
         // The outer curve.
         private Vector2[] pointsBelow;
 
-        private Vector2 PointOnCircle(Vector2 midpoint, float radius, float angle) {
-            return new Vector2(
-                Mathf.Cos(angle),
-                Mathf.Sin(angle)
-            ) * radius + midpoint;
-        }
-
         public override void Start()
         {
-            int POINTS_AMOUNT = 12;
-            Vector2[] pointsBelow = new Vector2[POINTS_AMOUNT];
-            for(int i = 0; i < POINTS_AMOUNT; i++) {
-                float angle = -((float)(i) / (float)(POINTS_AMOUNT - 1) * 90) * Mathf.Deg2Rad;
-                pointsBelow[i] = PointOnCircle(new Vector2(0, 1), 1 - Margin, angle);
+            Vector2[] pointsBelow = new Vector2[GameData.COLLISION_POINTS_AMOUNT];
+			for(int i = 0; i < GameData.COLLISION_POINTS_AMOUNT; i++) {
+				float angleBetweenPoints = -((float)(i) / (float)(GameData.COLLISION_POINTS_AMOUNT - 1) * 90) * Mathf.Deg2Rad;
+				pointsBelow[i] = MathUtils.PointOnCircle(new Vector2(0, 1), 1 - BorderMargin, angleBetweenPoints);
             }
 
             AddEdges(

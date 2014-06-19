@@ -1,4 +1,4 @@
-﻿using Behaviours;
+using Behaviours;
 using Cars;
 using Controllers;
 using Interfaces;
@@ -24,11 +24,11 @@ namespace CarsTests
         private Throttler _throttler;
 
         private GameObject _gameObject;
-        private AutoBehaviour _autoBehaviour;
+        private CarBehaviour _autoBehaviour;
         private Car _carDriver;
 
         private GameObject _gameObjectOther;
-        private AutoBehaviour _autoBehaviourOther;
+        private CarBehaviour _autoBehaviourOther;
         private Car _carOther;
 
         private GameObject _gameObjectCountDownController;
@@ -49,16 +49,16 @@ namespace CarsTests
             _gameObject =
                 Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarRed.prefab", typeof(GameObject))) as GameObject;
             if (_gameObject == null) return;
-            _autoBehaviour = _gameObject.AddComponent<AutoBehaviour>();
-            _gameObject.GetComponent<AutoBehaviour>().NetworkView = NetworkView.Object;
+            _autoBehaviour = _gameObject.AddComponent<CarBehaviour>();
+            _gameObject.GetComponent<CarBehaviour>().NetworkView = NetworkView.Object;
             _carDriver = new Car(_autoBehaviour) { CarObject = { NetworkView = NetworkView.Object } };
             _player = new Player(_carDriver, _throttler);
 
             _gameObjectOther =
                 Object.Instantiate(Resources.LoadAssetAtPath("Assets/CarBlue.prefab", typeof(GameObject))) as GameObject;
             if (_gameObjectOther == null) return;
-            _autoBehaviourOther = _gameObjectOther.AddComponent<AutoBehaviour>();
-            _gameObjectOther.GetComponent<AutoBehaviour>().NetworkView = NetworkViewOther.Object;
+            _autoBehaviourOther = _gameObjectOther.AddComponent<CarBehaviour>();
+            _gameObjectOther.GetComponent<CarBehaviour>().NetworkView = NetworkViewOther.Object;
             _carOther = new Car(_autoBehaviourOther) { CarObject = { NetworkView = NetworkViewOther.Object } };
 
             _gameObjectCountDownController = GameObject.CreatePrimitive(PrimitiveType.Cube);

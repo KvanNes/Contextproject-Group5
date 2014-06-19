@@ -1,4 +1,4 @@
-﻿using Cars;
+using Cars;
 using Interfaces;
 using NetworkManager;
 using UnityEngine;
@@ -9,7 +9,9 @@ using Wrappers;
 
 namespace Behaviours
 {
-    public class AutoBehaviour : MonoBehaviour
+
+	//TODO PIM
+    public class CarBehaviour : MonoBehaviour
     {
 
         public int CarNumber = -1;
@@ -31,15 +33,15 @@ namespace Behaviours
             CarNumber = number;
             MainScript.Cars[number].CarObject = this;
         }
-
+		
         [RPC]
         public void requestInitialPositions(NetworkMessageInfo info)
         {
             foreach (Car car in MainScript.Cars)
             {
-                AutoBehaviour ab = car.CarObject;
-                ab.NetworkView.RPC("UpdatePosition", info.sender, ab.transform.position, ab.Speed, ab.CarNumber);
-                ab.NetworkView.RPC("UpdateRotation", info.sender, ab.transform.rotation, ab.CarNumber);
+                CarBehaviour carObj = car.CarObject;
+                carObj.NetworkView.RPC("UpdatePosition", info.sender, carObj.transform.position, carObj.Speed, carObj.CarNumber);
+                carObj.NetworkView.RPC("UpdateRotation", info.sender, carObj.transform.rotation, carObj.CarNumber);
             }
         }
 
@@ -58,8 +60,7 @@ namespace Behaviours
         private Queue<Quaternion> _lastRotations = new Queue<Quaternion>(QueueSize);
         private Queue<Vector3> _lastPositions = new Queue<Vector3>(QueueSize);
 
-        // Store current position and rotation.
-        public void StoreConfiguration()
+        public void StorePosRot()
         {
             if (_lastRotations.Count >= 3)
             {
@@ -73,8 +74,7 @@ namespace Behaviours
             _lastPositions.Enqueue(MathUtils.Copy(transform.position));
         }
 
-        // Restore last position and rotation.
-        public void RestoreConfiguration()
+        public void RestorePosRot()
         {
             try
             {
@@ -98,7 +98,6 @@ namespace Behaviours
         public void Start()
         {
             SetNetworkView();
-
             NetworkView.RPC("requestInitialPositions", RPCMode.Server);
         }
 
@@ -109,24 +108,14 @@ namespace Behaviours
                 return;
             }
 
-            StoreConfiguration();
+            StorePosRot();
 
             // Make sure speed is in constrained interval.
             Speed = MathUtils.ForceInInterval(Speed, GameData.MIN_SPEED, GameData.MAX_SPEED);
-
-            if (MainScript.IsDebug)
-            {
-                new Driver().HandlePlayerAction(this);
-                new Throttler().HandlePlayerAction(this);
-            }
-            else
-            {
-                MainScript.SelfPlayer.Role.HandlePlayerAction(this);
-            }
+            
+			MainScript.SelfPlayer.Role.HandlePlayerAction(this);
         }
 
-        // Occurs when hitting something or bumping into something (e.g. another car, mud,
-        // or a track border).
         public void OnCollisionEnter2D(Collision2D collision)
         {
             if (MainScript.SelfType == MainScript.PlayerType.Client)
@@ -192,15 +181,6 @@ namespace Behaviours
             MainScript.SelfPlayer.Role.RotationUpdated(this, isSelf);
         }
 
-        public void AddToQueues(int count)
-        {
-            for (var i = 0; i < count; i++)
-            {
-                _lastRotations.Enqueue(MathUtils.Copy(transform.rotation));
-                _lastPositions.Enqueue(MathUtils.Copy(transform.position));
-            }
-        }
-
         public Queue<Quaternion> GetLastRotations()
         {
             return _lastRotations;
@@ -221,13 +201,13 @@ namespace Behaviours
             _lastPositions.Clear();
         }
 
-        public GameObject GetSphere()
+        public GameObject GetChild(string child)
         {
-            // Gebaseerd op: http://answers.unity3d.com/questions/183649/how-to-find-a-child-gameobject-by-name.html
+            //Based on: http://answers.unity3d.com/questions/183649/how-to-find-a-child-gameobject-by-name.html
             Component[] components = transform.GetComponentsInChildren<Component>();
             foreach (Component component in components)
             {
-                if (component.name == "Sphere")
+                if (component.name == GameData.NAME_SPHERE)
                 {
                     return component.gameObject;
                 }

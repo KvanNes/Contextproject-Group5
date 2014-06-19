@@ -13,6 +13,7 @@ namespace GraphicalUI
         {
             if (MainScript.SelfCar.CarObject != null)
             {
+
                 if (MainScript.AllFinished())
                 {
                     string timeRankings = "<b><size=30>";
@@ -25,7 +26,7 @@ namespace GraphicalUI
                         timeRankings
                     );
                 }
-                
+
                 if (MainScript.SelfCar.CarObject.Finished)
                 {
                     string personalTimeText = "Your time: " + Utils.TimeToString(MainScript.SelfCar.CarObject.FinishedTime) + "\n";
