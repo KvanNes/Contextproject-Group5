@@ -77,13 +77,6 @@ namespace GraphicalUI
                     // CLOSE GROUP
                     GUI.EndGroup();
                 }
-
-
-
-
-
-
-
             }
         }
     }

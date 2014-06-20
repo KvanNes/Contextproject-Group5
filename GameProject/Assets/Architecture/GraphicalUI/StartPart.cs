@@ -16,8 +16,8 @@ namespace GraphicalUI
 
         public override void Initialize()
         {
-            _titleSkin = Resources.LoadAssetAtPath("Assets/GUISkins/startTitleSkin.guiskin", typeof(GUISkin)) as GUISkin;
-            _textSkin = Resources.LoadAssetAtPath("Assets/GUISkins/startTextSkin.guiskin", typeof(GUISkin)) as GUISkin;
+            _titleSkin = Resources.Load("startTitleSkin") as GUISkin;
+            _textSkin = Resources.Load("startTextSkin") as GUISkin;
         }
 
         public override void DrawGraphicalUI()
@@ -32,10 +32,11 @@ namespace GraphicalUI
             GUI.BeginGroup(finishRect);
 
             // Set the text for waiting for players
-            GUI.Label(
-                new Rect(LeftPadding, 100 + TopPadding, finishRect.width - LeftPadding, 100),
-                new GUIContent("<size=45>" + (GameData.PLAYERS_AMOUNT - MainScript.AmountPlayersConnected) + "</size>   players left"), _textSkin.GetStyle("Label")
-            );
+            if (_textSkin != null)
+                GUI.Label(
+                    new Rect(LeftPadding, TopMargin + TopPadding, finishRect.width - LeftPadding, Screen.height),
+                    new GUIContent("<size=45>" + (GameData.PLAYERS_AMOUNT - MainScript.AmountPlayersConnected) + "</size>   players left"), _textSkin.GetStyle("Label")
+                );
 
             // END GROUP
             GUI.EndGroup();
