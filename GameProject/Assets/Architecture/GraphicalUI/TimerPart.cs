@@ -24,6 +24,10 @@ namespace GraphicalUI
                 _gameStarted = true;
                 _timeRunning = _timeController.GetTime();
             }
+            else
+            {
+                _gameStarted = false;
+            }
             GUI.Label(
                 new Rect(Screen.width - 50, 0, 50, 30),
                 new GUIContent(_gameStarted ? Utils.TimeToString(_timeRunning) : "")

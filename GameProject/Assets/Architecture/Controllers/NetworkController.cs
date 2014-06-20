@@ -37,7 +37,10 @@ namespace Controllers
             {
                 car.CarObject.Finished = false;
             }
-            MainScript.SelfPlayer.Role.Restart();
+            if (MainScript.SelfPlayer != null && MainScript.SelfPlayer.Role != null)
+            {
+                MainScript.SelfPlayer.Role.Restart();
+            }
         }
 
         public static void RefreshHostList()

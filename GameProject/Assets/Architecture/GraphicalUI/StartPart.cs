@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Cars;
 using NetworkManager;
 using UnityEngine;
@@ -9,46 +10,40 @@ namespace GraphicalUI
 {
     public class StartPart : GraphicalUIPart
     {
+        private GUISkin _titleSkin;
+        private GUISkin _textSkin;
 
         public override void Initialize()
         {
-
-        }
-
-        public int AmountPlayers()
-        {
-            int amount = 0;
-            foreach (Car car in MainScript.Cars)
-            {
-                if (car.Driver != null)
-                {
-                    Debug.Log("driver not null");
-                    amount++;
-                }
-                if (car.Throttler != null)
-                {
-                    Debug.Log("throttler not null");
-                    amount++;
-                }
-            }
-            return amount;
+            _titleSkin = Resources.LoadAssetAtPath("Assets/GUISkins/startTitleSkin.guiskin", typeof(GUISkin)) as GUISkin;
+            _textSkin = Resources.LoadAssetAtPath("Assets/GUISkins/startTextSkin.guiskin", typeof(GUISkin)) as GUISkin;
         }
 
         public override void DrawGraphicalUI()
         {
-            if (MainScript.AmountPlayersConnected < GameData.PLAYERS_AMOUNT)
-            {
-                Rect waitingRect = new Rect(Screen.width / 2 - 150, Screen.height / 2 - 75, 300, 150);
-                GUI.Box(waitingRect, "");
+            const float leftPadding = 20;
+            const float topPadding = 35;
+            const float leftMargin = 50;
+            const float topMargin = 100;
 
-                var centeredStyle = GUI.skin.GetStyle("Label");
-                centeredStyle.alignment = TextAnchor.UpperCenter;
-                GUI.Label(
-                    new Rect(Screen.width / 2 - 150 + 20, Screen.height / 2 + -75 + 20, 250, 100),
-                    new GUIContent("Waiting for other players\nWaiting for " + (4 - MainScript.AmountPlayersConnected) + " players"),
-                    centeredStyle
-                );
-            }
+            Rect finishRect = new Rect(leftMargin, topMargin, Screen.width - (2 * leftMargin), Screen.height - (2 * topMargin));
+            Rect totalRect = new Rect(0, 0, Screen.width, Screen.height);
+
+            GUI.Box(totalRect, ""); // Make the background transparant
+            GUI.Box(finishRect, "Waiting for other players", _titleSkin.GetStyle("Label")); // Create the title
+
+            // BEGIN GROUP
+            GUI.BeginGroup(finishRect);
+
+            // Set the text for waiting for players
+            GUI.Label(
+                new Rect(leftPadding, 100 + topPadding, finishRect.width - leftPadding, 100),
+                new GUIContent("<size=45>" + (GameData.PLAYERS_AMOUNT - MainScript.AmountPlayersConnected) + "</size>   players left"), _textSkin.GetStyle("Label")
+            );
+
+            // END GROUP
+            GUI.EndGroup();
+
         }
     }
 }
