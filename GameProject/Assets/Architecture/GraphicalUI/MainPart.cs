@@ -12,13 +12,28 @@ namespace GraphicalUI
     {
 
         private static readonly int buttonX = 10;
-        private static readonly int buttonY = 75;
-        private static readonly int buttonWidth = 150;
-        private static readonly int buttonHeight = 50;
+        private static readonly int buttonY = 20 + 64 * 2 + 20;
+        private static readonly int buttonWidth = 172;
+        private static readonly int buttonHeight = 43;
+        private Texture2D TextureStartServer;
+        private Texture2D TextureDriverRed;
+        private Texture2D TextureThrottlerRed;
+        private Texture2D TextureDriverBlue;
+        private Texture2D TextureThrottlerBlue;
+        private Texture2D TextureTutorial;
+
+        public override void Initialize() {
+            TextureStartServer = TextureUtils.LoadTexture("button-start-server");
+            TextureDriverRed = TextureUtils.LoadTexture("button-driver-red");
+            TextureThrottlerRed = TextureUtils.LoadTexture("button-throttler-red");
+            TextureDriverBlue = TextureUtils.LoadTexture("button-driver-blue");
+            TextureThrottlerBlue = TextureUtils.LoadTexture("button-throttler-blue");
+            TextureTutorial = TextureUtils.LoadTexture("button-tutorial");
+        }
 
         private void CreateServerButton()
         {
-            if (GUI.Button(new Rect(Screen.width / 2 - 75, Screen.height / 2 - 75, 150, 150), "Start server!"))
+            if (DrawTextureButton(new Rect(Screen.width / 2 - 1341 / 2, 20, 1341, 64), TextureStartServer))
             {
                 MainScript.SelfType = MainScript.PlayerType.Server;
                 MainScript.Server.StartServer();
@@ -28,8 +43,14 @@ namespace GraphicalUI
 
         private void CreateClientButton(Type type, HostData hostData, int carNumber, int x, int y)
         {
-            string teamColorText = carNumber == 0 ? "Team Red\n" : "Team Blue\n";
-            if (GUI.Button(new Rect(x, y, buttonWidth, buttonHeight), teamColorText + type.Name))
+            Texture2D texture;
+            if (carNumber == 0) {
+                texture = type == typeof(Driver) ? TextureDriverRed : TextureThrottlerRed;
+            } else {
+                texture = type == typeof(Driver) ? TextureDriverBlue : TextureThrottlerBlue;
+            }
+
+            if (DrawTextureButton(new Rect(x, y, buttonWidth, buttonHeight), texture))
             {
                 MainScript.SelfType = MainScript.PlayerType.Client;
                 MainScript.SelfCar = new Car(carNumber);
@@ -52,20 +73,18 @@ namespace GraphicalUI
         {
             for (int j = 0; j < GameData.CARS_AMOUNT; j++)
             {
-                int y = startY + j * buttonHeight;
+                int y = startY + j * (buttonHeight + 10);
                 Type[] roleTypes = { typeof(Driver), typeof(Throttler) };
-                int roleCounter = 0;
                 foreach (Type role in roleTypes)
                 {
-                    CreateClientButton(role, hostData, j, startX + roleCounter, y);
-                    roleCounter += buttonWidth;
+                    CreateClientButton(role, hostData, j, role == typeof(Driver) ? 0 : Screen.width - buttonWidth, y);
                 }
             }
         }
 
         private void CreateTutorialButton()
         {
-            if (GUI.Button(new Rect(10, 10, 100, 50), new GUIContent("Tutorial")))
+            if (DrawTextureButton(new Rect(Screen.width / 2 - 1341 / 2, 20 + 64, 1341, 64), TextureTutorial))
             {
                 MainScript.GUIController.Add(GraphicalUIController.TutorialConfiguration);
             }
@@ -82,6 +101,8 @@ namespace GraphicalUI
             {
                 return;
             }
+
+            Camera.main.backgroundColor = Color.white;
 
             //Based on: http://answers.unity3d.com/questions/296204/gui-font-size.html
             GUI.skin.label.fontSize = GUI.skin.button.fontSize = 20;

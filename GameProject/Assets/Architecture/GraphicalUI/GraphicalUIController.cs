@@ -16,6 +16,10 @@ namespace GraphicalUI
         public void Add(PartsConfiguration configuration)
         {
             Configurations.Push(configuration);
+            foreach (GraphicalUIPart part in configuration.Parts)
+            {
+                part.OnPush();
+            }
         }
 
         public void Remove()

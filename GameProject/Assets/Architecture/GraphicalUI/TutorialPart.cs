@@ -46,6 +46,11 @@ namespace GraphicalUI
             GUIContent content = new GUIContent(_tutorialStrings[_currentStringIndex]);
             GUI.Label(rect, content);
         }
+        
+        public override void OnPush()
+        {
+            Camera.main.backgroundColor = Color.black;
+        }
 
         public override void DrawGraphicalUI()
         {
