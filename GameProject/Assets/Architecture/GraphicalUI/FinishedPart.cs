@@ -37,6 +37,7 @@ namespace GraphicalUI
                     new Rect((Screen.width / 2) - 100, 50, screenWidth, screenHeight),
                         personalTimeText
                     );
+                    MainScript.SelfPlayer.Role.Finished();
                 }
 
 

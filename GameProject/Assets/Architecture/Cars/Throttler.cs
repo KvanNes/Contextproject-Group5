@@ -21,6 +21,16 @@ namespace Cars
             Camera.main.orthographicSize = 4.5f;
             MainScript.GUIController.Add(GraphicalUIController.ThrottlerConfiguration);
         }
+        
+        public void Finished()
+        {
+            RenderSettings.ambientLight = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+        }
+        
+        public void Restart()
+        {
+            RenderSettings.ambientLight = Color.white;
+        }
 
         public void SendToOther(Car car)
         {
