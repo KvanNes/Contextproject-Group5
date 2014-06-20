@@ -13,15 +13,26 @@ namespace GraphicalUI
 
         public Stack<PartsConfiguration> Configurations = new Stack<PartsConfiguration>();
 
+        private void FireBecomeVisible()
+        {
+            foreach (GraphicalUIPart part in Configurations.Peek().Parts)
+            {
+                part.BecomeVisible();
+            }
+        }
+
         public void Add(PartsConfiguration configuration)
         {
             Configurations.Push(configuration);
+            FireBecomeVisible();
         }
 
         public void Remove()
         {
-            if (Configurations.Count > 0)
+            if (Configurations.Count > 0) {
                 Configurations.Pop();
+                FireBecomeVisible();
+            }
         }
 
         public void Clear()

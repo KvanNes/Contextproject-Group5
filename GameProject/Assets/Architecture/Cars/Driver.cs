@@ -17,6 +17,16 @@ namespace Cars
             Camera.main.orthographicSize = 0.3f;
             MainScript.GUIController.Add(GraphicalUIController.DriverConfiguration);
         }
+        
+        public void Finished()
+        {
+
+        }
+
+        public void Restart()
+        {
+
+        }
 
         public Quaternion GetLastSentRotation()
         {

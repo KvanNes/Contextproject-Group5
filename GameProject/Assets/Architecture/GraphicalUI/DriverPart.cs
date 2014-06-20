@@ -16,6 +16,11 @@ namespace GraphicalUI
             TextureRightNormal = TextureUtils.LoadTexture("stuur-rechts-normaal");
             TextureRightPressed = TextureUtils.LoadTexture("stuur-rechts-ingedrukt");
         }
+        
+        public override void BecomeVisible()
+        {
+            Camera.main.backgroundColor = Color.black;
+        }
 
         public override void DrawGraphicalUI()
         {

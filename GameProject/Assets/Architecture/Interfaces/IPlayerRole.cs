@@ -7,6 +7,8 @@ namespace Interfaces
     public interface IPlayerRole
     {
         void Initialize();
+        void Finished();
+        void Restart();
         void SendToOther(Car car);
         PlayerAction GetPlayerAction();
         void HandlePlayerAction(CarBehaviour ab);

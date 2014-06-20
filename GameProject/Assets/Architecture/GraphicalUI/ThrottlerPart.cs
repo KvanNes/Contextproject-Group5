@@ -14,6 +14,11 @@ namespace GraphicalUI
             TextureNormal = TextureUtils.LoadTexture("gaspedaal-normaal");
             TexturePressed = TextureUtils.LoadTexture("gaspedaal-ingedrukt");
         }
+        
+        public override void BecomeVisible()
+        {
+            Camera.main.backgroundColor = Color.black;
+        }
 
         public override void DrawGraphicalUI()
         {
