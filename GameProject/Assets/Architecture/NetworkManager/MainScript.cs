@@ -32,6 +32,7 @@ namespace NetworkManager
         public static CountdownController CountdownController;
 
         public static bool FixedCamera = false;
+        public static int AmountPlayersConnected;
 
         public void Start()
         {

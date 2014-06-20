@@ -39,6 +39,7 @@ namespace Utilities
 
         // Miscellaneous.
         public static readonly int CARS_AMOUNT = 2;
+        public static readonly int PLAYERS_AMOUNT = 4;
         public static readonly float UPDATE_TIME_DELTA = 0.05f;
         public static readonly int SCREEN_MIDDLE_COLUMN = Screen.width / 2;
     }

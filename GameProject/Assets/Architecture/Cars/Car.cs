@@ -52,5 +52,13 @@ namespace Cars
         {
             _carNumberGenerator = 0;
         }
+
+        public void ResetCar(Vector3 pos)
+        {
+            Quaternion rot = Quaternion.identity;
+            CarObject.Acceleration = 0f;
+            CarObject.NetworkView.RPC("UpdatePosition", RPCMode.All, pos, 0f, CarNumber - 1);
+            CarObject.NetworkView.RPC("UpdateRotation", RPCMode.All, rot, CarNumber - 1);
+        }
     }
 }
