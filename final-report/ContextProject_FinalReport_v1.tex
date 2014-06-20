@@ -1,0 +1,152 @@
+\documentclass[11pt,twoside,a4paper]{article}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+
+\usepackage[pdfstartview=FitH,pdfpagemode=UseNone]{hyperref}
+\usepackage[letterspace=40]{microtype}
+
+\usepackage{a4wide,times}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage[section]{placeins}
+
+\urlstyle{same}
+\linespread{1.1}
+
+\title{
+  Final Report\\
+  DuoDrive
+}
+
+\author{
+    Pim van den Bogaerdt, pvandenbogaerd, 4215516\\
+    Ramin Erfani, rsafarpourerfa, 4205502\\
+    Robert Luijendijk, rluijendijk, 4161467\\
+    Mourad el Maouchi, melmaouchi, 4204379\\
+    Kevin van Nes, kjmvannes, 4020871
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+TI2805 Contextproject, 2013/2014, TU Delft\\
+Group 5, Computer Games\\
+Version 1 (draft)
+\end{center}
+\clearpage
+
+%Section 1: Ramin
+\section{Introduction}
+We wanted a game that would force interaction, real communication between players which involved a lot of humor and entertainment. We therefore developed DuoDrive, a game that can be classified as a racegame which ensures a lot of communication and interaction. The main idea behind the game is to divide a classical car driver into two parts: a driver and a throttler. In real life these two parts are controlled by one person, by splitting these, a lot of cooperation needs to be done. Not only to reach the finish, but to make sure you're going to win. To ensure our game will entertain the end-user, the player. We had to create end-user requirements\\\\
+The end-user requirements contained that communication is mandatory, we heavily focused on the communication and thought of features like limited visibility. Another requirement was that the game would be playable on an Android device, we therefore have build an .apk file that can be installed and played on an Android device. Furthermore users had to be able to virtually cooperate, a network server was therefore needed. We implemented networking with the help of Unity. Last but not least, the graphics of the game had to be recognizable, users had to recognize tracks, cars, mud and grass. We created custom sprites to ensure that the player would recognize their environment. The requirements above are the ones we had high-priority's on. These features are not all the features our game provides, for more features please take a look at \ref{sec:overview}\\\\
+During the project, testing was a pre. There were literally hundreds of problems that could occur. We therefore used integration testing, to make sure most of the features still worked as expected once we added and/or modified pieces of code. Whenever a test failed the logs gave us information where and what went wrong, giving us the oppurtunity to quickly resolve problems. For more info on our testing please take a look at \ref{sec:evaluation}\\\\
+\section{Overview of the developed and implemented software product}
+\label{sec:overview}
+
+\newpage
+
+%Section 2: Pim
+\section{Overview of the Developed and Implemented Software Product}
+The product we have implemented is a top-down, 2D racing game for Android. In this game, pairs of people each control one car. Specifically, the game is designed for waiting rooms where two lines of two chairs are placed, placed back-to-back. One or two pairs of people team up and each pair chooses two chairs placed back-to-back. Each pair will control one of the cars – the one person controls the steering wheel (he/she is the “driver”) and the other controls the throttle (he/she is the “throttler”).
+\newline\newline
+This is what we described in our design document as well. During development, we have implemented this concretely. The throttler and driver do not see the same thing, instead, the driver sees the car with a small area of light in front of it. The rest of the space is dark. On the other hand, the throttler sees an overview of the whole track, but the car is shown as a dot only. Both players also see signs: the throttler is given signs on how the driver should control the steering wheel (through driver signs of e.g. a U-turn), and the driver occasionally sees signs when the throttler should slow down. Because a player does not see the screen of his teammate, physical communication is enforced in order to reach the finish.
+\newline\newline
+When two pairs are playing, the competitive aspect is apparent: the goal of the game then is to reach the finish at the end of the track first. It is also possible for only one pair to play the game. In that case, the collaborative aspect is apparent but not the competitive one. The goal is then just to reach the finish.
+
+\newpage
+
+%Section 3: Mourad
+\section{Description of the Developed Functionalities}
+The software product that has been developed, like stated in the previous section, has several functionalities. Every functionality contributes to the bigger part. Moreover, the functionalities have a certain purpose which makes the game more interesting and fun to play. \\
+
+As stated, there have been several functionalities developed in the game, which will be given below with a brief description. \\
+
+\begin{enumerate}
+\item \textbf{Tutorial:} \\
+When the game is being started, there is a possibility to get a tutorial. This will contain a short description of the tasks possible and the main goal of the game.
+\item \textbf{Steering:} \\
+The functionality of steering is a solo functionality. The player who will have the task to steer, will only be able to do that. The player will not have the ability to throttle.
+\item \textbf{Throttling:} \\
+The functionality of throttling is, like the steering functionality, a solo functionality. This player will only have the ability to throttle, but cannot steer. However, the player will have an overview of the whole track.
+\item \textbf{Limited visibility:} \\
+This functionality applies to the steering player. The player will not have a clear view of where he/she is at the moment or where to steer at. This is achieved by both creating a top-down view on the car and making the game dark with only headlights which cannot reach far.
+\item \textbf{Deceiving road marks:} \\
+During the game, the track has certain road marks which are deceiving for the steering player. It might look, for example, that the road will continue straight while in fact a turn is coming up.
+\item \textbf{Mud tiles:} \\
+On certain tiles, randomly spread over the track, mud has been placed. Depending on the speed of the car, the car will be slowed down. Thus, if the speed is very high, the car will be slowed down a lot immediately. While driving slowly on it will make you proceed over it with the same amount of speed.
+\item \textbf{Finish screen:} \\
+At the end of the game, a finishing screen appears. When the first car has reached the finish, the players will get a view of their finishing time. At the moment that the other car finishes, players of both teams will get a view containing each other’s finishing times.
+\end{enumerate}
+
+\newpage
+
+By means of all these functionalities, combined into a single game, several aspects are achieved. The aspects are communication, amusement and achievement.  
+The first functionality, has been made so that for those who are not familiar with the game or it does not feel intuitive, they will still have a tutorial to go through. \\
+
+By means of the 2nd until the 6th functionalities the communication and amusement are achieved. Since the jobs are split into two, a first way of communication is needed. Depending on the directions of the throttling player should steer and vice versa depending on instructions about gassing or driving backwards the steering player should react. Moreover, the limited visibility helps the communication because the steering player does not know where to steer to, it again depends on the throttle. The deceiving road marks forces the players to communicate since the steering player cannot rely on what he sees. The last functionality, the mud tiles, will make the steering player communicate fast towards the throttle to slow down when “SLOW DOWN” appears on his/her screen. \\
+
+With also those functionalities another aspect has been achieved: amusement. Especially because of the 5th and 6th functionality, a lot of things can go wrong. Because of the chaos and yelling at certain times because of crashes, both players (of a single car) will experience a time of amusement while playing. This has been concluded of the user tests that have been done throughout the development of the product. \\
+
+The final functionality, the seventh, creates the feeling of achievement. The winner, the first car to finish, will have an immediate notice of having won the game. However, the players of the other car will not know that. They will still attempt to finish in the fastest time possible, making the competition go on. When both cars have finished, they will see their times and compare them against each other. The feeling of achievement is gained by successfully complete a track with difficulties and by communication. \\ \\
+
+With the presented functionalities stated above, the crucial product attributes in the Design Document have been achieved. By having user tests throughout the product it has been assured that these functionalities are the most important ones which make the product achieve those crucial attributes.
+
+\newpage
+
+%Section 4: Robert
+\section{Human-Computer Interaction}
+In this section we discuss what kind of measures we took to keep in mind the Human Computer Interaction (HCI) principles.
+
+\section{Analysis}
+We knew that HCI is very important in a computergame. The controls and the implications in the game must be clear from the very beginning of the game for the player. When this is not the case it must be identified before the game is released. There are also features that cannot be clear from the get go. These features must be explained. All this taken in consideration we made a thorough analysis of our game.
+
+\section{User Testing}
+After we made our analysis, we also did user tests. These tests allowed us to get information about our game from persons who knew nothing about the game. Such an insight can have very interesting results. This was also by our tests, we did get some feedback about the cars that they did not turn fast enough.
+
+\newpage
+
+%Section 5: Kevin
+\section*{Evaluation of the Functional Modules and the Product in its Entirety}
+%TODO (Thank you Mourad!)
+%In deze sectie moet elk  van de componenten van het systeem geevalueerd worden en moet er worden gekeken of de componenten (dus groepen van klassen die samen een geheel vormen enzo) werken zoals gepland. Het moest volgens Bastiaan best een technisch verhaaltje worden. Hoeft niet lang te zijn, als er maar wat staat, dan breiden we het uit voor de final version.
+
+\section*{Failure Analysis}
+Analyzing possible failures of our system has been crucial throughout the whole duration of the project. From the moment we picked our game concept (and even before that), we had to do a lot of thorough research on whether Android devices would be able to offer a real-time online multiplayer experience in terms of their hardware capabilities.\newline
+We also decided to use Unity as a development tool, because we figured that Unity offered a lot of freedom and potential for creating a game in a rather short time span. As the first few weeks passed by we found out that Unity could at some points be rather limiting instead of simplifying. Two of the major limitations that were points that could, and still might, make our system fail will be discussed below.
+\newline
+\newline
+One of the first possible things that could fail is the fact that the server our game creates has to communicate with Unity's 'Master Server'. Our clients (the Android devices) also have to communicate with this Master Server. The problem with this is that we are dependent of the fact whether Unity has their Master Server running at all times or not. Something that happened not earlier than last week is that Unity's Master Server went offline for two days. This meant that we were unable to test or play our game in those two days. As a solution we changed the code in such a way that a server can now be run locally. However, because of the fact that this happened last week, we have not been able to properly test our solution to this problem yet. This means that the server might fail at some point, although we think the odds that this happens are not big enough to pose a problem.
+\newline
+\newline
+The second feature of Unity that is perceptible to failure is the use of Remote Procedure Calls (RPC). As explained in the Concurrency paragraph of our Emergent Architecture Design document, our first idea to implement network play was to use state synchronization. This is a feature in Unity that allows for unreliable state synchronization of Unity GameObjects. This posed a problem in combination with our main game idea (two players controlling one car) and so we were forced to come up with a different idea: using RPC. Sadly enough, RPC can cause congestion if too many calls are made at the same time. Congestion would cause latency issues and this would completely break the game experience at any time. We have tested our game pretty thoroughly with users and by playing it ourselves and we have noticed that while playing on certain networks RPC congestion actually poses a problem. We have noted this as a problem that we should try to fix or at least try to reduce in the future, for congestion might be the main reason for our system to fail.
+\newline
+\newline
+To conclude, our system is perceptible to failure in a few ways. These failures might be caused by Unity on one hand, but we have done our best to work around these problems as to reduce the chance of failure to a minimum.
+
+\newpage
+
+%Section 6: Robert
+\section{Outlook}
+In this section we will discus the future of our game.
+
+\section{Improvements}
+There are a few improvements our game should get. One of those improvements is that the network capabilities of the game can be improved. Also the game should have a random track generator. This was the people do not learn the track, thus the races become more interesting. The game should also have a better Graphical user interface. The game should also run without first starting the server on a different device.
+
+\section{Speculations}
+If our game where to release at the end of this project, we do not think it would gain much popularity. In the first place we do not think that people would play with strangers in a waiting room for example. In the second place because there are a lot of things to improve and there is much to add to the game, for example: leaderboards with competetive tracks. 
+
+\section{Achieving the improvements and additional features}
+There are a few options for this matter: We could work on it by our selfs after the project, give it to the TUDelft, let students from a gaming study work on it and last let a company work on it.
+\subsection{Keep working on it}
+This is a scenario that is not likely to happen, because we have our own jobs and we have also study. To keep working on it would be very time consuming.
+\subsection{TUDelft}
+This is a scenario that could work. We give it to the TUDelft and the say to a group of people that they must give it more additional features. This can be done for a course, or maybe even for a bachelor end project.
+\subsection{Other students}
+This is also a possible scenario. The TUDelft will give students who actually study a gaming related subject the game, under the supervision of the TUDelft. This will be a great learning process for them.
+\subsection{Company}
+This is also a scenario that is not likely to happen, because companies want to make their own game. It will be more like that they buy/get the concept of the game and then make it from scratch.
+\end{document}
