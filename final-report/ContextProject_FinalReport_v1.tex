@@ -15,11 +15,10 @@
 \urlstyle{same}
 \linespread{1.1}
 
-\title{
-  Final Report\\
-  DuoDrive
-}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
+\title{\HRule \\[0.0cm] \huge{DuoDrive}\\
+ \large{Final Report} \HRule \\[0.0cm]}
 \author{
     Pim van den Bogaerdt, pvandenbogaerd, 4215516\\
     Ramin Erfani, rsafarpourerfa, 4205502\\
@@ -27,6 +26,7 @@
     Mourad el Maouchi, melmaouchi, 4204379\\
     Kevin van Nes, kjmvannes, 4020871
 }
+\date{June 20, 2014}
 
 \begin{document}
 
@@ -43,14 +43,13 @@ Version 1 (draft)
 \section{Introduction}
 We wanted a game that would force interaction, real communication between players which involved a lot of humor and entertainment. We therefore developed DuoDrive, a game that can be classified as a racegame which ensures a lot of communication and interaction. The main idea behind the game is to divide a classical car driver into two parts: a driver and a throttler. In real life these two parts are controlled by one person, by splitting these, a lot of cooperation needs to be done. Not only to reach the finish, but to make sure you're going to win. To ensure our game will entertain the end-user, the player. We had to create end-user requirements\\\\
 The end-user requirements contained that communication is mandatory, we heavily focused on the communication and thought of features like limited visibility. Another requirement was that the game would be playable on an Android device, we therefore have build an .apk file that can be installed and played on an Android device. Furthermore users had to be able to virtually cooperate, a network server was therefore needed. We implemented networking with the help of Unity. Last but not least, the graphics of the game had to be recognizable, users had to recognize tracks, cars, mud and grass. We created custom sprites to ensure that the player would recognize their environment. The requirements above are the ones we had high-priority's on. These features are not all the features our game provides, for more features please take a look at \ref{sec:overview}\\\\
-During the project, testing was a pre. There were literally hundreds of problems that could occur. We therefore used integration testing, to make sure most of the features still worked as expected once we added and/or modified pieces of code. Whenever a test failed the logs gave us information where and what went wrong, giving us the oppurtunity to quickly resolve problems. For more info on our testing please take a look at \ref{sec:evaluation}\\\\
-\section{Overview of the developed and implemented software product}
-\label{sec:overview}
+During the project, testing was a pre. There were literally hundreds of problems that could occur. We therefore used integration testing, to make sure most of the features still worked as expected once we added and/or modified pieces of code. Whenever a test failed the logs gave us information where and what went wrong, giving us the oppurtunity to quickly resolve problems. For more info on our testing please take a look at \ref{sec:evaluation}
 
 \newpage
 
 %Section 2: Pim
 \section{Overview of the Developed and Implemented Software Product}
+\label{sec:Overview}
 The product we have implemented is a top-down, 2D racing game for Android. In this game, pairs of people each control one car. Specifically, the game is designed for waiting rooms where two lines of two chairs are placed, placed back-to-back. One or two pairs of people team up and each pair chooses two chairs placed back-to-back. Each pair will control one of the cars – the one person controls the steering wheel (he/she is the “driver”) and the other controls the throttle (he/she is the “throttler”).
 \newline\newline
 This is what we described in our design document as well. During development, we have implemented this concretely. The throttler and driver do not see the same thing, instead, the driver sees the car with a small area of light in front of it. The rest of the space is dark. On the other hand, the throttler sees an overview of the whole track, but the car is shown as a dot only. Both players also see signs: the throttler is given signs on how the driver should control the steering wheel (through driver signs of e.g. a U-turn), and the driver occasionally sees signs when the throttler should slow down. Because a player does not see the screen of his teammate, physical communication is enforced in order to reach the finish.
@@ -101,20 +100,51 @@ With the presented functionalities stated above, the crucial product attributes 
 \section{Human-Computer Interaction}
 In this section we discuss what kind of measures we took to keep in mind the Human Computer Interaction (HCI) principles.
 
-\section{Analysis}
-We knew that HCI is very important in a computergame. The controls and the implications in the game must be clear from the very beginning of the game for the player. When this is not the case it must be identified before the game is released. There are also features that cannot be clear from the get go. These features must be explained. All this taken in consideration we made a thorough analysis of our game.
+\subsection{Analysis}
+In a game there are many features that need attention when the subject is Human Computer Interaction (HCI). The startscreen at the very beginning of the game is a good example. All of the buttons on there must be clear for the student. Then there is the game itself, because it is a racegame the controls of the car must feel responsive. Because our game will be mostly played on touchscreen, players must know how to give gas or steer without explaining to them how to do that. These are just a few main issues with this game regarding HCI. 
 
-\section{User Testing}
-After we made our analysis, we also did user tests. These tests allowed us to get information about our game from persons who knew nothing about the game. Such an insight can have very interesting results. This was also by our tests, we did get some feedback about the cars that they did not turn fast enough.
+\subsubsection{Startscreen}
+We have made the buttons fairly large, and made them so that on each screen they adjust to the size of the screen. This way you will not have to touch tiny buttons when your screen has more pixels then the screen we tested on. We also made tutorial for people, this will help the game to be clearer.
+
+\subsubsection{Race game}
+In the game itself we have two cars with different colors, so that the players will know in which car they are. This avoids confusion. Because it is a racegame the separation between the track and the grass must be clear. The responsiveness of the car must feel good. If these features are not in there, the player will lose interest. 
+
+\subsubsection{Touchscreen}
+On the touchscreen itself there are also buttons, to drive or steer. These buttons must be visible and intuitive to the user. For the throttler there are arrows visible in the screen, these arrows must be obvious for what they are for and be clear. 
+
+\subsection{User Testing}
+To get to all of these HCI information we did have some thoughts of our own. But these are in most cases not enough, because we are the creators of game and know the game well. For us it is obvious, but for another person it may be really strange. This is why we also did user tests. When we did these user tests we let them play the game and afterwards we asked them questions, from a premade questionsheet. All of the answers of the user tests we have analysts and we have took them with us as useful feedback.
 
 \newpage
 
-%Section 5: Kevin
-\section*{Evaluation of the Functional Modules and the Product in its Entirety}
-%TODO (Thank you Mourad!)
-%In deze sectie moet elk  van de componenten van het systeem geevalueerd worden en moet er worden gekeken of de componenten (dus groepen van klassen die samen een geheel vormen enzo) werken zoals gepland. Het moest volgens Bastiaan best een technisch verhaaltje worden. Hoeft niet lang te zijn, als er maar wat staat, dan breiden we het uit voor de final version.
+%Section 5: Kevin & Mourad
+\section{Evaluation of the functional modules and the Product in its entirety}
 
-\section*{Failure Analysis}
+\subsection{Evalutaion of the functional modules}
+In the software system there are several components which are put together, or even apart, based on their responsibilities. These components have each a main responsibility, but still communicate with other components. In this section the components will be evaluated.
+
+\subsubsection{Behaviours}
+This component exists out of classes which handle the behaviour of the car and the track that is created. In the sense that a car should collide smoothly when colliding with the bounds of the track. The component is mainly responsible for the events of the car. The elements associated with the car, like position, rotation and the notification if a car has finished are all handled within this component. The component has also been named 'Behaviours' since it contains the classes and/or scripts which handle behaviour of GameObjects.
+
+\subsubsection{Car}
+The Car-component consists of classes associated with a Car-object. It contains a Car -and Player-class, where the Player-class can be split up into a Throttler and a Driver. A Car consists of a maximum of two Players. The Car has a behaviour attached to it, but does not handle the actions which should be done by the behaviour. The Driver -and Throttler-classes are focused on their functionalities and perform actions based on their Role in the game. In this component there has been carefully looked so that it does not violate the Single Responsibility Principle. 
+
+\subsubsection{Controllers}
+Like the name suggests, this component exists of the Controllers that have been made for the software product. To take off some functionalities from, for example the Network, this component has been made. In this way it was possible to have more control over what happens and have the classes withing the components focus on their responsibility.
+
+\subsubsection{GraphicalUI}
+This is the largest component of all, but has been created in such a way that it is possible to create additional GUI-elements in the future. The component's main focus is the Graphical User Interface. No actions or events are triggered within the component which have nothing to do with the GUI. By splitting up the GUI in smaller parts it has also given more control and maintainability. By use of the GUI-parts it has been simple to adjust, tweak and improve the elements within the component.
+
+\subsubsection{Main}
+This component has not a very active responsibility, but has an overcoupling view of the other components. The MainScript-class within the component contains a Game-object. By passing through the MainScript-class it is possible to gain information about the Game. Moreover, the other components have the ability to reach several attributes in the Main-component to get fast and accurate information.
+
+\subsubsection{NetworkManager}
+The NetworkManager-component manages everything with and around the Network. By means of the Network, it is meant that a Server and Client are split up. The server here controls which player should get what role. It also makes it possible to spawn the players and everything around it. The Client-class is being attached to a Player, since every Client is in fact a new Player. 
+
+\subsubsection{Utilites}
+This component contains classes with either constant data which does not change in the software or classes which contain methods that are used very often. By putting much used methods together in appropriate classes, it was much easier to gain access to them and reduce code duplication.
+
+\subsection{Failure Analysis}
 Analyzing possible failures of our system has been crucial throughout the whole duration of the project. From the moment we picked our game concept (and even before that), we had to do a lot of thorough research on whether Android devices would be able to offer a real-time online multiplayer experience in terms of their hardware capabilities.\newline
 We also decided to use Unity as a development tool, because we figured that Unity offered a lot of freedom and potential for creating a game in a rather short time span. As the first few weeks passed by we found out that Unity could at some points be rather limiting instead of simplifying. Two of the major limitations that were points that could, and still might, make our system fail will be discussed below.
 \newline
@@ -133,20 +163,20 @@ To conclude, our system is perceptible to failure in a few ways. These failures 
 \section{Outlook}
 In this section we will discus the future of our game.
 
-\section{Improvements}
+\subsection{Improvements}
 There are a few improvements our game should get. One of those improvements is that the network capabilities of the game can be improved. Also the game should have a random track generator. This was the people do not learn the track, thus the races become more interesting. The game should also have a better Graphical user interface. The game should also run without first starting the server on a different device.
 
-\section{Speculations}
+\subsection{Speculations}
 If our game where to release at the end of this project, we do not think it would gain much popularity. In the first place we do not think that people would play with strangers in a waiting room for example. In the second place because there are a lot of things to improve and there is much to add to the game, for example: leaderboards with competetive tracks. 
 
-\section{Achieving the improvements and additional features}
+\subsection{Achieving the improvements and additional features}
 There are a few options for this matter: We could work on it by our selfs after the project, give it to the TUDelft, let students from a gaming study work on it and last let a company work on it.
-\subsection{Keep working on it}
+\subsubsection{Keep working on it}
 This is a scenario that is not likely to happen, because we have our own jobs and we have also study. To keep working on it would be very time consuming.
-\subsection{TUDelft}
+\subsubsection{TUDelft}
 This is a scenario that could work. We give it to the TUDelft and the say to a group of people that they must give it more additional features. This can be done for a course, or maybe even for a bachelor end project.
-\subsection{Other students}
+\subsubsection{Other students}
 This is also a possible scenario. The TUDelft will give students who actually study a gaming related subject the game, under the supervision of the TUDelft. This will be a great learning process for them.
-\subsection{Company}
+\subsubsection{Company}
 This is also a scenario that is not likely to happen, because companies want to make their own game. It will be more like that they buy/get the concept of the game and then make it from scratch.
 \end{document}
