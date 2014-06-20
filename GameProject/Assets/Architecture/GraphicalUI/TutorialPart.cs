@@ -21,6 +21,7 @@ namespace GraphicalUI {
             if (GUI.Button(new Rect(Screen.width - BUTTON_WIDTH, 0, BUTTON_WIDTH, BUTTON_HEIGHT), new GUIContent("Next"))) {
                 if (CurrentStringIndex == TutorialStrings.Count - 1) {
                     MainScript.GUIController.Remove();
+					GameObject.FindGameObjectWithTag("BackgroundCamera").camera.enabled = true;
                     CurrentStringIndex = 0;
                 } else {
                     CurrentStringIndex++;

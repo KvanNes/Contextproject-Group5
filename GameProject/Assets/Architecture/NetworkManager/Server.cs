@@ -24,7 +24,7 @@ namespace NetworkManager
             NetworkView = new NetworkViewWrapper();
             NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
             Network.InitializeServer(32, GameData.PORT, !UnityEngine.Network.HavePublicAddress());
-            MasterServer.RegisterHost(GameData.GAME_NAME, "2P1C");
+            //MasterServer.RegisterHost(GameData.GAME_NAME, "2P1C");
             Connected = true;
         }
 
