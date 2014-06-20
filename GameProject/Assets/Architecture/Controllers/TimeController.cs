@@ -62,6 +62,7 @@ namespace Controllers
         {
             return _startTime;
         }
+
         public double GetStopTime()
         {
             return _stopTime;

@@ -1,7 +1,7 @@
 using Behaviours;
 using Cars;
 using Interfaces;
-using NetworkManager;
+using Main;
 using UnityEngine;
 using NUnit.Framework;
 using Utilities;
@@ -12,9 +12,6 @@ namespace CarsTests
     [TestFixture]
     public class CarTest
     {
-        private const int Zero = 0;
-        private const int One = 1;
-
         private GameObject _gameObject;
 
         private Car _car;
@@ -40,7 +37,7 @@ namespace CarsTests
 
             _carAutoBehaviour = new Car(_autoBehaviour);
 
-            _carCarNumber = new Car(Zero);
+            _carCarNumber = new Car(0);
 
             _driverRole = new Driver();
             _throttlerRole = new Throttler();
@@ -72,7 +69,7 @@ namespace CarsTests
         [Test]
         public void Test_CarNumberSet()
         {
-            Assert.AreEqual(Zero, _carCarNumber.CarNumber);
+            Assert.AreEqual(0, _carCarNumber.CarNumber);
         }
 
         // Constructor plain
@@ -85,7 +82,7 @@ namespace CarsTests
         [Test]
         public void Test_CarNumberUp()
         {
-            Assert.AreEqual(One, _car.CarNumber);
+            Assert.AreEqual(1, _car.CarNumber);
         }
 
         // Constructor with AutoBehaviour
@@ -104,10 +101,9 @@ namespace CarsTests
         [Test]
         public void Test_SendToOther()
         {
-            const int initialized = 3;
-
             MainScript.SelfCar = _carAutoBehaviour;
-            _carAutoBehaviour.CarObject.Initialized = initialized;
+			_carAutoBehaviour.CarObject.PositionInitialized = true;
+			_carAutoBehaviour.CarObject.RotationInitialized = true;
 
             PlayerRoleMock = new Mock<IPlayerRole>();
             MainScript.SelfPlayer = new Player { Role = PlayerRoleMock.Object };

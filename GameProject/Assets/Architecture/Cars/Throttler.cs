@@ -1,12 +1,12 @@
 using System;
 using Behaviours;
 using Controllers;
+using GraphicalUI;
 using Interfaces;
+using Main;
 using UnityEngine;
 using Utilities;
 using Wrappers;
-using NetworkManager;
-using GraphicalUI;
 
 namespace Cars
 {
@@ -80,7 +80,7 @@ namespace Cars
             return (GetTouchAction() != PlayerAction.None) ? GetTouchAction() : GetKeyboardAction();
         }
 
-        private void ApplySpeed(CarBehaviour carObj, float accelerationIncrease, float backAccelerationFactor, float forwardAccelerationFactor)
+        private void ApplySpeed(CarBehaviour carObj, float accelerationIncrease, float accelerationFactor)
         {
             // Calculate acceleration.
             carObj.Acceleration = carObj.Acceleration + accelerationIncrease * Time.deltaTime;
@@ -88,13 +88,9 @@ namespace Cars
                 GameData.MAX_ACCELERATION);
 
             // Calculate speed.
-            if (GameData.MIN_SPEED <= carObj.Speed && carObj.Speed < 0)
+            if (GameData.MIN_SPEED <= carObj.Speed && carObj.Speed <= GameData.MAX_SPEED)
             {
-                carObj.Speed = carObj.Speed + backAccelerationFactor * carObj.Acceleration * Time.deltaTime;
-            }
-            else if (0 <= carObj.Speed && carObj.Speed <= GameData.MAX_SPEED)
-            {
-                carObj.Speed = carObj.Speed + forwardAccelerationFactor * carObj.Acceleration
+                carObj.Speed = carObj.Speed + accelerationFactor * carObj.Acceleration
                     * Time.deltaTime;
             }
         }
@@ -135,11 +131,11 @@ namespace Cars
 
             if (action == PlayerAction.SpeedUp)
             {
-                ApplySpeed(carObj, GameData.ACCELERATION_INCREASE, 10, 5);
+                ApplySpeed(carObj, GameData.ACCELERATION_INCREASE, carObj.Speed < 0 ? 10 : 5);
             }
             else if (action == PlayerAction.SpeedDown)
             {
-                ApplySpeed(carObj, GameData.ACCELERATION_DECREASE, 10, 50);
+                ApplySpeed(carObj, GameData.ACCELERATION_DECREASE, carObj.Speed < 0 ? 10 : 50);
             }
             else
             {
@@ -241,6 +237,9 @@ namespace Cars
             }
         }
 
+        // Since the sphere child of a car rotates along, and the midpoint of rotation
+        // is not the midpoint of the sphere, the sphere has to be rotated back so that
+        // only the position is synchronized with the car.
         private void NormalizeChild(CarBehaviour carObj)
         {
             GameObject child = carObj.GetChild(GameData.NAME_SPHERE);

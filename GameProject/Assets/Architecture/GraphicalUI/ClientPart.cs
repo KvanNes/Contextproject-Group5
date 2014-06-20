@@ -17,7 +17,8 @@ namespace GraphicalUI
         protected void DrawControls(Texture2D leftTexture, Texture2D rightTexture)
         {
             DrawControl(leftTexture, 0, Screen.height - leftTexture.height * ButtonsFactor);
-            DrawControl(rightTexture, Screen.width - rightTexture.width * ButtonsFactor, Screen.height - rightTexture.height * ButtonsFactor);
+            DrawControl(rightTexture, Screen.width - rightTexture.width * ButtonsFactor,
+                        Screen.height - rightTexture.height * ButtonsFactor);
         }
     }
 }

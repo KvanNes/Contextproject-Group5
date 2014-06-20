@@ -31,7 +31,9 @@ namespace GraphicalUI
         {
             if (Configurations.Count > 0) {
                 Configurations.Pop();
-                FireBecomeVisible();
+                if(Configurations.Count > 0) {
+                    FireBecomeVisible();
+                }
             }
         }
 

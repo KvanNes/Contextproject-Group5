@@ -1,9 +1,5 @@
-﻿using System;
-using System.Linq;
-using Cars;
-using NetworkManager;
+﻿using Main;
 using UnityEngine;
-using Controllers;
 using Utilities;
 
 namespace GraphicalUI
@@ -13,6 +9,11 @@ namespace GraphicalUI
         private GUISkin _titleSkin;
         private GUISkin _textSkin;
 
+        private const float LeftPadding = 20;
+        private const float TopPadding = 35;
+        private const float LeftMargin = 50;
+        private const float TopMargin = 100;
+
         public override void Initialize()
         {
             _titleSkin = Resources.LoadAssetAtPath("Assets/GUISkins/startTitleSkin.guiskin", typeof(GUISkin)) as GUISkin;
@@ -21,12 +22,7 @@ namespace GraphicalUI
 
         public override void DrawGraphicalUI()
         {
-            const float leftPadding = 20;
-            const float topPadding = 35;
-            const float leftMargin = 50;
-            const float topMargin = 100;
-
-            Rect finishRect = new Rect(leftMargin, topMargin, Screen.width - (2 * leftMargin), Screen.height - (2 * topMargin));
+            Rect finishRect = new Rect(LeftMargin, TopMargin, Screen.width - (2 * LeftMargin), Screen.height - (2 * TopMargin));
             Rect totalRect = new Rect(0, 0, Screen.width, Screen.height);
 
             GUI.Box(totalRect, ""); // Make the background transparant
@@ -37,7 +33,7 @@ namespace GraphicalUI
 
             // Set the text for waiting for players
             GUI.Label(
-                new Rect(leftPadding, 100 + topPadding, finishRect.width - leftPadding, 100),
+                new Rect(LeftPadding, 100 + TopPadding, finishRect.width - LeftPadding, 100),
                 new GUIContent("<size=45>" + (GameData.PLAYERS_AMOUNT - MainScript.AmountPlayersConnected) + "</size>   players left"), _textSkin.GetStyle("Label")
             );
 

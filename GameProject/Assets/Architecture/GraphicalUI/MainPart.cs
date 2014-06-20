@@ -1,7 +1,7 @@
 using Cars;
 using Controllers;
 using Interfaces;
-using NetworkManager;
+using Main;
 using UnityEngine;
 using System;
 using Utilities;
@@ -82,6 +82,23 @@ namespace GraphicalUI
             }
         }
 
+        private void CreateClientButtonsForEachHost()
+        {
+            int buttonY_ = buttonY;
+            if (NetworkController.ServerAvailable() && !Network.isServer && !Network.isClient)
+            {
+                if(GameData.USE_HARDCODED_IP) {
+                    CreateClientButtons(buttonX, buttonY_, null);
+                } else {
+                    for (int i = 0; i < NetworkController.HostData.Length; i++)
+                    {
+                        CreateClientButtons(buttonX, buttonY_, NetworkController.HostData[i]);
+                        buttonY_ += buttonHeight * GameData.CARS_AMOUNT + 30;
+                    }
+                }
+            }
+        }
+
         private void CreateTutorialButton()
         {
             if (DrawTextureButton(new Rect(Screen.width / 2 - 1341 / 2, 20 + 64, 1341, 64), TextureTutorial))
@@ -107,7 +124,7 @@ namespace GraphicalUI
                 return;
             }
 
-            //Based on: http://answers.unity3d.com/questions/296204/gui-font-size.html
+            // Based on: http://answers.unity3d.com/questions/296204/gui-font-size.html
             GUI.skin.label.fontSize = GUI.skin.button.fontSize = 20;
 
             if (!IsAndroid())
@@ -117,19 +134,7 @@ namespace GraphicalUI
 
             CreateTutorialButton();
 
-            int buttonY_ = buttonY;
-            if (NetworkController.ServerAvailable() && !Network.isServer && !Network.isClient)
-            {
-                if(GameData.USE_HARDCODED_IP) {
-                    CreateClientButtons(buttonX, buttonY_, null);
-                } else {
-                    for (int i = 0; i < NetworkController.HostData.Length; i++)
-                    {
-                        CreateClientButtons(buttonX, buttonY_, NetworkController.HostData[i]);
-                        buttonY_ += buttonHeight * GameData.CARS_AMOUNT + 30;
-                    }
-                }
-            }
+            CreateClientButtonsForEachHost();
         }
     }
 }

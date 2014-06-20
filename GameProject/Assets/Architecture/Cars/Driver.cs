@@ -1,10 +1,10 @@
 using Behaviours;
+using GraphicalUI;
 using Interfaces;
+using Main;
 using UnityEngine;
 using Utilities;
 using Wrappers;
-using NetworkManager;
-using GraphicalUI;
 
 namespace Cars
 {

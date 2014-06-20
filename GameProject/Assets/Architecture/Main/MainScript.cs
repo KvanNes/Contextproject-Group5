@@ -1,14 +1,15 @@
 ﻿using System.Linq;
 using Cars;
 using Controllers;
+using GraphicalUI;
 using Interfaces;
+using NetworkManager;
 using UnityEngine;
 using System.Collections.Generic;
 using Utilities;
 using Wrappers;
-using GraphicalUI;
 
-namespace NetworkManager
+namespace Main
 {
     public class MainScript : MonoBehaviour
     {
@@ -32,7 +33,7 @@ namespace NetworkManager
         public static CountdownController CountdownController;
 
         public static bool FixedCamera = false;
-        public static int AmountPlayersConnected;
+        public static int AmountPlayersConnected = 0;
 
         public void Start()
         {

@@ -1,5 +1,6 @@
 using Behaviours;
 using Interfaces;
+using Main;
 using NetworkManager;
 using UnityEngine;
 
@@ -36,7 +37,8 @@ namespace Cars
             return CarObject != null
                    && MainScript.SelfCar == this
                    && Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork
-                   && CarObject.Initialized == (CarBehaviour.PositionInitialized | CarBehaviour.RotationInitialized);
+                   && CarObject.PositionInitialized
+                   && CarObject.RotationInitialized;
         }
 
         public void SendToOther()
