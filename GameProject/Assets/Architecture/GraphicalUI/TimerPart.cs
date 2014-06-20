@@ -1,4 +1,4 @@
-using NetworkManager;
+using Main;
 using UnityEngine;
 using Controllers;
 using Utilities;
@@ -23,8 +23,7 @@ namespace GraphicalUI
             }
             GUI.Label(
                 new Rect(Screen.width - 50, 0, 50, 30),
-                new GUIContent(Utils.TimeToString(_timeRunning)
-                )
+                new GUIContent(Utils.TimeToString(_timeRunning))
             );
         }
     }

@@ -1,6 +1,6 @@
-﻿using NetworkManager;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
+using Main;
 
 namespace GraphicalUI
 {

@@ -1,6 +1,6 @@
 using System;
+using Main;
 using UnityEngine;
-using NetworkManager;
 
 namespace GraphicalUI
 {

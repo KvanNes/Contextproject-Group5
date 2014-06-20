@@ -1,6 +1,6 @@
 using Cars;
 using Interfaces;
-using NetworkManager;
+using Main;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
@@ -10,7 +10,11 @@ using Wrappers;
 namespace Behaviours
 {
 
-    //TODO PIM
+    /*
+     * CarBehaviour is the MonoBehaviour attached to a car. This e.g. allows
+     * for adding event handlers for collision, and accessing the network view
+     * for RPC.
+     */
     public class CarBehaviour : MonoBehaviour
     {
 
@@ -130,9 +134,8 @@ namespace Behaviours
             }
         }
 
-        public int Initialized = 0;
-        public static readonly int PositionInitialized = 1 << 0;
-        public static readonly int RotationInitialized = 1 << 1;
+        public bool PositionInitialized = false;
+        public bool RotationInitialized = false;
 
         [RPC]
         public void ResetCar()
@@ -146,7 +149,7 @@ namespace Behaviours
             if (CarNumber != carNumber) return;
             transform.rotation = rot;
             RotationUpdated();
-            Initialized |= RotationInitialized;
+            RotationInitialized = true;
         }
 
         [RPC]
@@ -156,7 +159,7 @@ namespace Behaviours
             transform.position = pos;
             Speed = speed;
             PositionUpdated();
-            Initialized |= PositionInitialized;
+            PositionInitialized = true;
         }
 
         public void PositionUpdated()
@@ -201,11 +204,11 @@ namespace Behaviours
 
         public GameObject GetChild(string child)
         {
-            //Based on: http://answers.unity3d.com/questions/183649/how-to-find-a-child-gameobject-by-name.html
+            // Based on: http://answers.unity3d.com/questions/183649/how-to-find-a-child-gameobject-by-name.html
             Component[] components = transform.GetComponentsInChildren<Component>();
             foreach (Component component in components)
             {
-                if (component.name == GameData.NAME_SPHERE)
+                if (component.name == child)
                 {
                     return component.gameObject;
                 }

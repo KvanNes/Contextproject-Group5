@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using NetworkManager;
+using Main;
 
 namespace GraphicalUI
 {
@@ -12,9 +12,20 @@ namespace GraphicalUI
 
         private readonly List<string> _tutorialStrings = new List<string>
         {
-            "To play DuoDrive, pair up with a mate and sit back-to-back.\n\nPick either the driver or throttler job, and make sure to pick the same car number.",
-            "As a driver, say to your partner how fast to go. When your partner needs to slow down, you see a 'SLOW' warning." ,
-            "As a throttler, say to your partner how to control the steering wheel - you see arrows that signify this."
+            "To play DuoDrive, pair up with a mate and sit back-to-back.\n\nPick"
+              + " either the driver or throttler job, and make sure to pick the same"
+              + " car number.",
+
+            "As a driver, say to your partner how fast to go. When your partner needs"
+              + " to slow down, you see a 'SLOW' warning. You cannot control the"
+              + " throttle. Touch the left/right part of the screen to steer.",
+
+            "As a throttler, say to your partner how to control the steering wheel"
+              + " - you see arrows that signify this. You cannot control the steering"
+              + " wheel. Touch the left/right part of the screen to"
+              + "decelerate/accelerate.",
+
+            "Be the first team to reach the finish!"
         };
 
         private int _currentStringIndex;

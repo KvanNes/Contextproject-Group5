@@ -1,5 +1,5 @@
 using UnityEngine;
-using NetworkManager;
+using Main;
 
 namespace GraphicalUI
 {
