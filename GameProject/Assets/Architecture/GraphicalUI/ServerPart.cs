@@ -22,7 +22,7 @@ namespace GraphicalUI
             }
         }
         
-        public override void OnPush()
+        public override void BecomeVisible()
         {
             Camera.main.backgroundColor = Color.black;
         }

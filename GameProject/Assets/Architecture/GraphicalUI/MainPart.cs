@@ -95,14 +95,17 @@ namespace GraphicalUI
             return Application.platform == RuntimePlatform.Android;
         }
 
+        public override void BecomeVisible()
+        {
+            Camera.main.backgroundColor = Color.white;
+        }
+
         public override void DrawGraphicalUI()
         {
             if (Application.internetReachability != NetworkReachability.ReachableViaLocalAreaNetwork)
             {
                 return;
             }
-
-            Camera.main.backgroundColor = Color.white;
 
             //Based on: http://answers.unity3d.com/questions/296204/gui-font-size.html
             GUI.skin.label.fontSize = GUI.skin.button.fontSize = 20;

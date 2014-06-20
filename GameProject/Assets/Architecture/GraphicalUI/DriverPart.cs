@@ -17,7 +17,7 @@ namespace GraphicalUI
             TextureRightPressed = TextureUtils.LoadTexture("stuur-rechts-ingedrukt");
         }
         
-        public override void OnPush()
+        public override void BecomeVisible()
         {
             Camera.main.backgroundColor = Color.black;
         }

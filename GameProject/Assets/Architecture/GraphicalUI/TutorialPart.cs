@@ -47,7 +47,7 @@ namespace GraphicalUI
             GUI.Label(rect, content);
         }
         
-        public override void OnPush()
+        public override void BecomeVisible()
         {
             Camera.main.backgroundColor = Color.black;
         }
