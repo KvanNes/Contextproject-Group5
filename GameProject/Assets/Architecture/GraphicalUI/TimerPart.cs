@@ -8,6 +8,7 @@ namespace GraphicalUI
     public class TimerPart : GraphicalUIPart
     {
         private double _timeRunning;
+        private bool _gameStarted;
         private TimeController _timeController;
 
         public override void Initialize()
@@ -17,13 +18,18 @@ namespace GraphicalUI
 
         public override void DrawGraphicalUI()
         {
-            if (!MainScript.AllFinished())
+            if (!MainScript.AllFinished() && MainScript.CountdownController.AllowedToDrive())
             {
+                _gameStarted = true;
                 _timeRunning = _timeController.GetTime();
+            }
+            else
+            {
+                _gameStarted = false;
             }
             GUI.Label(
                 new Rect(Screen.width - 50, 0, 50, 30),
-                new GUIContent(Utils.TimeToString(_timeRunning))
+                new GUIContent(_gameStarted ? Utils.TimeToString(_timeRunning) : "")
             );
         }
     }

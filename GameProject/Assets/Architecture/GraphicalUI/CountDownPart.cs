@@ -1,19 +1,32 @@
-using System;
 using Main;
 using UnityEngine;
+using Utilities;
 
 namespace GraphicalUI
 {
 
     public class CountDownPart : GraphicalUIPart
     {
+        private GUISkin _countDownSkin;
+
+        private const float LeftMargin = 50;
+        private const float TopMargin = 100;
+
+        public override void Initialize()
+        {
+            _countDownSkin = Resources.Load("countDownSkin") as GUISkin;
+        }
 
         public override void DrawGraphicalUI()
         {
             int countdownValue = MainScript.CountdownController.CountDownValue;
-
             string text = null;
-            if (countdownValue > 0)
+
+            if (countdownValue > 3)
+            {
+                text = "GET READY!";
+            }
+            else if (countdownValue > 0)
             {
                 text = countdownValue.ToString();
             }
@@ -22,9 +35,14 @@ namespace GraphicalUI
                 text = "GO!";
             }
 
-            if (text != null)
+            if (text != null && MainScript.AmountPlayersConnected == GameData.PLAYERS_AMOUNT)
             {
-                GUI.Label(new Rect(Screen.width / 2 - 50, 75, 100, 60), new GUIContent(text));
+                Rect finishRect = new Rect(LeftMargin, TopMargin, Screen.width - (2*LeftMargin),
+                    Screen.height - (2*TopMargin));
+                Rect totalRect = new Rect(0, 0, Screen.width, Screen.height);
+
+                GUI.Box(totalRect, ""); // Make the background transparant
+                GUI.Box(finishRect, text, _countDownSkin.GetStyle("Label")); // Create the title
             }
         }
     }

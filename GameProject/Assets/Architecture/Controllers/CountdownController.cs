@@ -1,4 +1,7 @@
+using Main;
+using NetworkManager;
 using UnityEngine;
+using Utilities;
 
 namespace Controllers
 {
@@ -16,7 +19,7 @@ namespace Controllers
         public void StartCountdown()
         {
             StopCountdown();
-            CountDownValue = 3;
+            CountDownValue = 6;
             InvokeRepeating("DecrementCounter", 1f, 1f);
         }
 
@@ -33,11 +36,15 @@ namespace Controllers
             {
                 StopCountdown();
             }
+            if (CountDownValue == 0)
+            {
+                TimeController.GetInstance().Reset();
+            }
         }
 
         public bool AllowedToDrive()
         {
-            return CountDownValue <= 0;
+            return MainScript.AmountPlayersConnected == GameData.PLAYERS_AMOUNT && CountDownValue <= 0;
         }
     }
 }

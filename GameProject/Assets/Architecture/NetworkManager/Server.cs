@@ -1,3 +1,4 @@
+using System.Linq;
 using Behaviours;
 using Cars;
 using Controllers;
@@ -22,6 +23,8 @@ namespace NetworkManager
 
         public INetwork Network { get; set; }
         public INetworkView NetworkView { get; set; }
+
+        public int AmountPlayersConnected = 0;
 
         public void StartServer()
         {
@@ -91,6 +94,9 @@ namespace NetworkManager
             if (jobAvailable)
             {
                 NetworkView.RPC("chooseJobAvailable", info.sender);
+
+//                AmountPlayersConnected += 1;
+//                MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected);
             }
             else
             {
@@ -111,11 +117,13 @@ namespace NetworkManager
 
             Object obj = Network.Instantiate(_prefabGameObject, pos, Quaternion.identity, 0);
             CarBehaviour ab = (CarBehaviour)((GameObject)obj).GetComponent(typeof(CarBehaviour));
+            ab.NetworkView = new NetworkViewWrapper();
+            ab.NetworkView.SetNativeNetworkView(ab.GetComponent<NetworkView>());
             Car car = new Car(ab);
             car.Throttler = new Player(car, new Throttler());
             car.Driver = new Player(car, new Driver());
             Game.AddCar(car);
-            ab.networkView.RPC("setCarNumber", RPCMode.OthersBuffered, carNumber - 1);
+            ab.NetworkView.RPC("setCarNumber", RPCMode.OthersBuffered, carNumber - 1);
         }
 
         private void OnServerInitialized()
@@ -129,8 +137,18 @@ namespace NetworkManager
             MainScript.GUIController.Add(GraphicalUIController.ServerConfiguration);
         }
 
+        public void OnPlayerConnected(NetworkPlayer player)
+        {
+            AmountPlayersConnected += 1;
+            MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected, false);
+        }
+
         public void OnPlayerDisconnected(NetworkPlayer player)
         {
+            bool playerHasDisconnected = AmountPlayersConnected == 4;
+            AmountPlayersConnected -= 1;
+            MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected, playerHasDisconnected);
+
             Network.RemoveRPCs(player);
             Network.DestroyPlayerObjects(player);
 

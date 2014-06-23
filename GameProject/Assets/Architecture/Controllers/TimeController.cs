@@ -20,11 +20,7 @@ namespace Controllers
 
         public static TimeController GetInstance()
         {
-            if (_instance == null)
-            {
-                _instance = new TimeController();
-            }
-            return _instance;
+            return _instance ?? (_instance = new TimeController());
         }
 
         public void ResetTimer()
@@ -40,6 +36,11 @@ namespace Controllers
         public void ResetStopTime()
         {
             _stopTime = -1;
+        }
+
+        public void ResetStartTime()
+        {
+            _startTime = 0;
         }
 
         public void Reset()

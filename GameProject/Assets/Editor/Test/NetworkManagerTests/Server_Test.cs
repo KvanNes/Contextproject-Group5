@@ -1,5 +1,6 @@
 using Behaviours;
 using Cars;
+using Controllers;
 using Interfaces;
 using Main;
 using NetworkManager;
@@ -8,6 +9,7 @@ using NUnit.Framework;
 using Moq;
 using System.Collections.Generic;
 using Utilities;
+using Wrappers;
 
 namespace NetworkManagerTests
 {
@@ -215,6 +217,7 @@ namespace NetworkManagerTests
         public void Test_OnPlayerDisconnected()
         {
             NetworkPlayer networkPlayer = new NetworkPlayer();
+            MainScript.NetworkController = new NetworkController {NetworkView = NetworkView.Object};
 
             _testServer.OnPlayerDisconnected(networkPlayer);
 
@@ -226,6 +229,7 @@ namespace NetworkManagerTests
         public void Test_OnPlayerDisconnected_Driver()
         {
             NetworkPlayer networkPlayer = new NetworkPlayer();
+            MainScript.NetworkController = new NetworkController { NetworkView = NetworkView.Object };
             Car car = new Car { Driver = new Player { NetworkPlayer = networkPlayer }, CarObject = _carObject };
 
             _testServer.Game = new Game();
