@@ -21,9 +21,9 @@ namespace GraphicalUI
 
         public override void Initialize()
         {
-            _titleSkin = Resources.LoadAssetAtPath("Assets/GUISkins/finishTitleSkin.guiskin", typeof(GUISkin)) as GUISkin;
-            _textSkin = Resources.LoadAssetAtPath("Assets/GUISkins/finishTextSkin.guiskin", typeof(GUISkin)) as GUISkin;
-            _winSkin = Resources.LoadAssetAtPath("Assets/GUISkins/finishWinTextSkin.guiskin", typeof(GUISkin)) as GUISkin;
+            _titleSkin = Resources.Load("finishTitleSkin") as GUISkin;
+            _textSkin = Resources.Load("finishTextSkin") as GUISkin;
+            _winSkin = Resources.Load("finishWinTextSkin") as GUISkin;
         }
 
         public override void DrawGraphicalUI()
@@ -32,7 +32,7 @@ namespace GraphicalUI
             Rect totalRect = new Rect(0, 0, Screen.width, Screen.height);
 
 
-            if (MainScript.SelfCar.CarObject != null)
+            if (MainScript.SelfCar.CarObject != null && MainScript.AmountPlayersConnected == GameData.PLAYERS_AMOUNT)
             {
                 if (MainScript.SelfCar.CarObject.Finished)
                 {
@@ -60,18 +60,24 @@ namespace GraphicalUI
                         string firstPlace = "1.   " + Utils.TimeToString(MainScript.TimeAtPlace(true));
                         string secondPlace = "2.   " + Utils.TimeToString(MainScript.TimeAtPlace(false));
 
-                        GUIStyle style = Math.Abs(_personalFinishTime - MainScript.TimeAtPlace(true)) < 0.001f
+                        GUIStyle firstPlacestyle = Math.Abs(_personalFinishTime - MainScript.TimeAtPlace(true)) < 0.001f
                             ? _winSkin.GetStyle("Label")
                             : _textSkin.GetStyle("Label");
+                        GUIStyle secondPlacestyle = Math.Abs(_personalFinishTime - MainScript.TimeAtPlace(true)) < 0.001f
+                            ? _textSkin.GetStyle("Label")
+                            : _winSkin.GetStyle("Label");
+
 
                         GUI.Label(
                             new Rect(LeftPadding, 100 + TopPadding, finishRect.width - LeftPadding, 100),
-                            new GUIContent(firstPlace), style
+                            new GUIContent(firstPlace), firstPlacestyle
                         );
+
                         GUI.Label(
                             new Rect(LeftPadding, 100 + (2 * TopPadding), finishRect.width - LeftPadding, 100),
-                            new GUIContent(secondPlace), style
+                            new GUIContent(secondPlace), secondPlacestyle
                         );
+
                     }
 
                     // CLOSE GROUP

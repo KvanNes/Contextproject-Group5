@@ -77,11 +77,11 @@ namespace Controllers
             Camera.main.transform.rotation = Quaternion.Euler(0, MainScript.FixedCamera ? 180 : 0, 0);
         }
 
-        public void BroadcastAmountPlayers(int newAmount)
+        public void BroadcastAmountPlayers(int newAmount, bool playerHasDisconnected)
         {
             if (NetworkView.GetType() == typeof(NetworkViewWrapper) || NetworkView.GetType() == typeof(NetworkView))
             {
-                NetworkView.RPC("UpdateAmountPlayers", RPCMode.All, newAmount);
+                NetworkView.RPC("UpdateAmountPlayers", RPCMode.All, newAmount, playerHasDisconnected);
             }
             if (newAmount == 4)
             {
@@ -90,9 +90,10 @@ namespace Controllers
         }
 
         [RPC]
-        public void UpdateAmountPlayers(int amountPlayers)
+        public void UpdateAmountPlayers(int amountPlayers, bool playerHasDisconnected)
         {
             MainScript.AmountPlayersConnected = amountPlayers;
+            MainScript.PlayerHasDisconnected = playerHasDisconnected;
         }
 
     }

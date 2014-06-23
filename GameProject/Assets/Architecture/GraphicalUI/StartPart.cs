@@ -22,25 +22,37 @@ namespace GraphicalUI
 
         public override void DrawGraphicalUI()
         {
-            Rect finishRect = new Rect(LeftMargin, TopMargin, Screen.width - (2 * LeftMargin), Screen.height - (2 * TopMargin));
-            Rect totalRect = new Rect(0, 0, Screen.width, Screen.height);
+            if (MainScript.AmountPlayersConnected < GameData.PLAYERS_AMOUNT)
+            {
+                Rect finishRect = new Rect(LeftMargin, TopMargin, Screen.width - (2 * LeftMargin),
+                    Screen.height - (2 * TopMargin));
+                Rect totalRect = new Rect(0, 0, Screen.width, Screen.height);
 
-            GUI.Box(totalRect, ""); // Make the background transparant
-            GUI.Box(finishRect, "Waiting for other players", _titleSkin.GetStyle("Label")); // Create the title
+                GUI.Box(totalRect, ""); // Make the background transparant
+                GUI.Box(finishRect, "Waiting for other players", _titleSkin.GetStyle("Label")); // Create the title
 
-            // BEGIN GROUP
-            GUI.BeginGroup(finishRect);
+                // BEGIN GROUP
+                GUI.BeginGroup(finishRect);
 
-            // Set the text for waiting for players
-            if (_textSkin != null)
-                GUI.Label(
-                    new Rect(LeftPadding, TopMargin + TopPadding, finishRect.width - LeftPadding, Screen.height),
-                    new GUIContent("<size=45>" + (GameData.PLAYERS_AMOUNT - MainScript.AmountPlayersConnected) + "</size>   players left"), _textSkin.GetStyle("Label")
-                );
+                // Set the text for waiting for players
+                if (_textSkin != null)
+                {
+                    string textPlayerDisconnected = "";
+                    if (MainScript.PlayerHasDisconnected)
+                    {
+                        textPlayerDisconnected = "A player has just disconnected!\n";
+                    }
 
-            // END GROUP
-            GUI.EndGroup();
+                    GUI.Label(
+                        new Rect(LeftPadding, TopMargin + TopPadding, finishRect.width - LeftPadding, Screen.height),
+                        new GUIContent("<size=45>" + textPlayerDisconnected + (GameData.PLAYERS_AMOUNT - MainScript.AmountPlayersConnected) +
+                                       "</size>   player(s) left"), _textSkin.GetStyle("Label")
+                        );
+                }
 
+                // END GROUP
+                GUI.EndGroup();
+            }
         }
     }
 }

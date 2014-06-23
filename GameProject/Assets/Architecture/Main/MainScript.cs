@@ -34,6 +34,7 @@ namespace Main
 
         public static bool FixedCamera = false;
         public static int AmountPlayersConnected = 0;
+        public static bool PlayerHasDisconnected = false;
 
         public void Start()
         {

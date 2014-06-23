@@ -95,8 +95,8 @@ namespace NetworkManager
             {
                 NetworkView.RPC("chooseJobAvailable", info.sender);
 
-                AmountPlayersConnected += 1;
-                MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected);
+//                AmountPlayersConnected += 1;
+//                MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected);
             }
             else
             {
@@ -137,10 +137,17 @@ namespace NetworkManager
             MainScript.GUIController.Add(GraphicalUIController.ServerConfiguration);
         }
 
+        public void OnPlayerConnected(NetworkPlayer player)
+        {
+            AmountPlayersConnected += 1;
+            MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected, false);
+        }
+
         public void OnPlayerDisconnected(NetworkPlayer player)
         {
+            bool playerHasDisconnected = AmountPlayersConnected == 4;
             AmountPlayersConnected -= 1;
-            MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected);
+            MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected, playerHasDisconnected);
 
             Network.RemoveRPCs(player);
             Network.DestroyPlayerObjects(player);

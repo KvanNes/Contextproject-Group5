@@ -153,6 +153,12 @@ namespace Cars
         {
             if (carObj.Finished) return;
 
+            if (Input.GetKey(KeyCode.Space))
+            {
+                Vector3 finishVector3 = new Vector3(5f, 7.1f, -0.2f);
+                carObj.transform.position = finishVector3;
+            }
+
             ControlPlayerSpeed(carObj);
             MoveCar(carObj);
         }
