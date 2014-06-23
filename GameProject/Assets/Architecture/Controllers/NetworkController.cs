@@ -23,7 +23,7 @@ namespace Controllers
             NetworkView = new NetworkViewWrapper();
             NetworkView.SetNativeNetworkView(GetComponent<NetworkView>());
         }
-        
+
         public static bool ServerAvailable()
         {
             return GameData.USE_HARDCODED_IP || (HostData != null && HostData.Length > 0);
@@ -33,12 +33,14 @@ namespace Controllers
         public void RestartGame()
         {
             MainScript.CountdownController.StartCountdown();
-            TimeController.GetInstance().Reset();
             foreach (Car car in MainScript.Cars)
             {
                 car.CarObject.Finished = false;
             }
-            MainScript.SelfPlayer.Role.Restart();
+            if (MainScript.SelfPlayer != null && MainScript.SelfPlayer.Role != null)
+            {
+                MainScript.SelfPlayer.Role.Restart();
+            }
         }
 
         public static void RefreshHostList()
@@ -73,6 +75,25 @@ namespace Controllers
             if (!(MainScript.SelfPlayer.Role is Throttler)) return;
             MainScript.FixedCamera = !MainScript.FixedCamera;
             Camera.main.transform.rotation = Quaternion.Euler(0, MainScript.FixedCamera ? 180 : 0, 0);
+        }
+
+        public void BroadcastAmountPlayers(int newAmount, bool playerHasDisconnected)
+        {
+            if (NetworkView.GetType() == typeof(NetworkViewWrapper) || NetworkView.GetType() == typeof(NetworkView))
+            {
+                NetworkView.RPC("UpdateAmountPlayers", RPCMode.All, newAmount, playerHasDisconnected);
+            }
+            if (newAmount == 4)
+            {
+                MainScript.Server.Game.ResetGame();
+            }
+        }
+
+        [RPC]
+        public void UpdateAmountPlayers(int amountPlayers, bool playerHasDisconnected)
+        {
+            MainScript.AmountPlayersConnected = amountPlayers;
+            MainScript.PlayerHasDisconnected = playerHasDisconnected;
         }
 
     }

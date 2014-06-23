@@ -126,6 +126,7 @@ namespace CarsTests
         {
             _countdownController.CountDownValue = -1;
             MainScript.CountdownController = _countdownController;
+            MainScript.AmountPlayersConnected = GameData.PLAYERS_AMOUNT;
 
             InputWrapper.SetKey(KeyCode.DownArrow, true);
             var paNew = _throttler.GetPlayerAction();
@@ -138,6 +139,7 @@ namespace CarsTests
         {
             _countdownController.CountDownValue = -1;
             MainScript.CountdownController = _countdownController;
+            MainScript.AmountPlayersConnected = GameData.PLAYERS_AMOUNT;
 
             var paPrev = _throttler.GetPlayerAction();
             InputWrapper.SetTouchCount(1);
@@ -153,6 +155,7 @@ namespace CarsTests
         {
             _countdownController.CountDownValue = -1;
             MainScript.CountdownController = _countdownController;
+            MainScript.AmountPlayersConnected = GameData.PLAYERS_AMOUNT;
 
             var paPrev = _throttler.GetPlayerAction();
             InputWrapper.SetTouchCount(1);
@@ -169,6 +172,7 @@ namespace CarsTests
             // Variables used
             const float speed = -0.01f;
             const int backwardAccelarationFactor = 10;
+            MainScript.AmountPlayersConnected = GameData.PLAYERS_AMOUNT;
 
             InputWrapper.SetKey(KeyCode.UpArrow, true);
             _autoBehaviour.Speed = speed;
@@ -184,6 +188,7 @@ namespace CarsTests
         {
             _countdownController.CountDownValue = -1;
             MainScript.CountdownController = _countdownController;
+            MainScript.AmountPlayersConnected = GameData.PLAYERS_AMOUNT;
 
             // Variables used
             const float speed = 0.01f;

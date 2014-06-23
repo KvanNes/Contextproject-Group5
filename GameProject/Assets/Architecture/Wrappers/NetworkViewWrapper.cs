@@ -25,12 +25,14 @@ namespace Wrappers
 
         public void RPC(string name, NetworkPlayer target, params object[] args)
         {
-            _nativeNetworkView.RPC(name, target, args);
+            if (_nativeNetworkView != null)
+                _nativeNetworkView.RPC(name, target, args);
         }
 
         public void RPC(string name, RPCMode mode, params object[] args)
         {
-            _nativeNetworkView.RPC(name, mode, args);
+            if (_nativeNetworkView != null)
+                _nativeNetworkView.RPC(name, mode, args);
         }
     }
 
