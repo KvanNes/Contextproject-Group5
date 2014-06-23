@@ -116,6 +116,7 @@ namespace CarsTests
             MainScript.AmountPlayersConnected = GameData.PLAYERS_AMOUNT;
 
             InputWrapper.SetKey(KeyCode.LeftArrow, true);
+            InputWrapper.SetTouchCount(-1);
             PlayerAction paNew = _driver.GetPlayerAction();
 
             Assert.AreEqual(PlayerAction.SteerLeft, paNew);
