@@ -101,7 +101,7 @@ namespace GraphicalUI
 
         private void CreateTutorialButton()
         {
-            if (DrawTextureButton(new Rect(Screen.width / 2 - 1341 / 2, 20 + 64, 1341, 64), TextureTutorial))
+            if (DrawTextureButton(new Rect(Screen.width / 2 - 1341 / 2, 20 + 64, 1341, buttonHeight), TextureTutorial))
             {
                 MainScript.GUIController.Add(GraphicalUIController.TutorialConfiguration);
             }
