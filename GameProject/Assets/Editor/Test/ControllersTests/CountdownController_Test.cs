@@ -1,4 +1,5 @@
 ﻿using Controllers;
+using Main;
 using NUnit.Framework;
 using UnityEngine;
 using Utilities;
@@ -38,7 +39,7 @@ namespace ControllersTests
         [Test]
         public void Test_StartCountdown()
         {
-            const int expected = 3;
+            const int expected = 6;
 
             _countdownController.StartCountdown();
 
@@ -84,6 +85,7 @@ namespace ControllersTests
             const bool expected = true;
 
             _countdownController.CountDownValue = -1;
+            MainScript.AmountPlayersConnected = GameData.PLAYERS_AMOUNT;
 
             Assert.AreEqual(expected, _countdownController.AllowedToDrive());
         }
@@ -91,9 +93,10 @@ namespace ControllersTests
         [Test]
         public void Test_AllowedToDrive_False()
         {
-            const bool expected = true;
+            const bool expected = false;
 
             _countdownController.CountDownValue = -1;
+            MainScript.AmountPlayersConnected = 0;
 
             Assert.AreEqual(expected, _countdownController.AllowedToDrive());
         }

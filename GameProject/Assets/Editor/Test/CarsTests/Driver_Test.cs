@@ -113,6 +113,7 @@ namespace CarsTests
         {
             _countdownController.CountDownValue = -1;
             MainScript.CountdownController = _countdownController;
+            MainScript.AmountPlayersConnected = GameData.PLAYERS_AMOUNT;
 
             InputWrapper.SetKey(KeyCode.LeftArrow, true);
             PlayerAction paNew = _driver.GetPlayerAction();
@@ -125,6 +126,7 @@ namespace CarsTests
         {
             _countdownController.CountDownValue = -1;
             MainScript.CountdownController = _countdownController;
+            MainScript.AmountPlayersConnected = GameData.PLAYERS_AMOUNT;
 
             InputWrapper.SetKey(KeyCode.RightArrow, true);
             PlayerAction paNew = _driver.GetPlayerAction();
@@ -137,6 +139,7 @@ namespace CarsTests
         {
             _countdownController.CountDownValue = -1;
             MainScript.CountdownController = _countdownController;
+            MainScript.AmountPlayersConnected = GameData.PLAYERS_AMOUNT;
 
             PlayerAction paPrev = _driver.GetPlayerAction();
             InputWrapper.SetTouchCount(1);
@@ -152,6 +155,7 @@ namespace CarsTests
         {
             _countdownController.CountDownValue = -1;
             MainScript.CountdownController = _countdownController;
+            MainScript.AmountPlayersConnected = GameData.PLAYERS_AMOUNT;
 
             PlayerAction paPrev = _driver.GetPlayerAction();
             InputWrapper.SetTouchCount(1);
@@ -167,6 +171,7 @@ namespace CarsTests
         {
             _countdownController.CountDownValue = -1;
             MainScript.CountdownController = _countdownController;
+            MainScript.AmountPlayersConnected = GameData.PLAYERS_AMOUNT;
 
             InputWrapper.SetKey(KeyCode.LeftArrow, true);
 
@@ -183,6 +188,7 @@ namespace CarsTests
         {
             _countdownController.CountDownValue = -1;
             MainScript.CountdownController = _countdownController;
+            MainScript.AmountPlayersConnected = GameData.PLAYERS_AMOUNT;
 
             InputWrapper.SetKey(KeyCode.RightArrow, true);
 

@@ -1,6 +1,11 @@
-﻿using Cars;
+﻿using System.Collections.Generic;
+using Behaviours;
+using Cars;
 using Controllers;
+using Interfaces;
 using Main;
+using Moq;
+using NetworkManager;
 using NUnit.Framework;
 using UnityEngine;
 using Utilities;
@@ -12,14 +17,24 @@ namespace ControllersTests
     {
 
         private GameObject _gameObject;
+        private CarBehaviour _carBehaviour;
+        private Server _server;
 
         private NetworkController _networkController;
+        public Mock<INetworkView> NetworkView;
 
         [SetUp]
         public void SetUp()
         {
             _gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             _networkController = _gameObject.AddComponent<NetworkController>();
+            _carBehaviour = _gameObject.AddComponent<CarBehaviour>();
+            _server = _gameObject.AddComponent<Server>();
+            NetworkView = new Mock<INetworkView>();
+            _networkController.NetworkView = NetworkView.Object;
+            _carBehaviour.NetworkView = NetworkView.Object;
+
+            MainScript.NetworkController = _networkController;
         }
 
         [TearDown]
@@ -100,6 +115,30 @@ namespace ControllersTests
 
             // Assertion
             Assert.AreEqual(expectedQuaternion, Camera.main.transform.rotation);
+        }
+
+        [Test]
+        public void Test_BroadcastAmountPlayers()
+        {
+            const int newAmountPlayers = 4;
+
+            MainScript.Server = _server;
+            MainScript.Server.Game = new Game();
+            Car car1 = new Car { CarObject = _carBehaviour };
+            Car car2 = new Car { CarObject = _carBehaviour };
+            List<Car> carsList = new List<Car> { car1, car2 };
+            MainScript.Cars = carsList;
+
+            GameObject gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube); //GameObject.Find("SpawnPositionBase").GetComponent("Transform");
+            gameObject.name = "SpawnPositionBase";
+            gameObject.AddComponent<Transform>();
+
+            _networkController.BroadcastAmountPlayers(newAmountPlayers, false);
+
+            for (int i = 0; i < 4; i++)
+                NetworkView.Verify(net => net.RPC(It.IsAny<string>(), It.IsAny<RPCMode>()));
+
+            Utils.DestroyObject(gameObject);
         }
     }
 }
