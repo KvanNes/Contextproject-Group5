@@ -29,7 +29,7 @@ namespace Main
         public static ICar SelfCar { get; set; }
         public static PlayerType SelfType = PlayerType.None;
         public static bool SelectionIsFinal = false;
-        public static GraphicalUIController GUIController;
+        public static GraphicalUIController GuiController;
         public static CountdownController CountdownController;
 
         public static bool FixedCamera = false;
@@ -75,7 +75,7 @@ namespace Main
             }
 
             NetworkController = (NetworkController)GameObject.FindGameObjectWithTag("Network").GetComponent(typeof(NetworkController));
-            GUIController = (GraphicalUIController)GameObject.FindGameObjectWithTag("GUI").GetComponent(typeof(GraphicalUIController));
+            GuiController = (GraphicalUIController)GameObject.FindGameObjectWithTag("GUI").GetComponent(typeof(GraphicalUIController));
             CountdownController = (CountdownController)GameObject.FindGameObjectWithTag("CountdownController").GetComponent(typeof(CountdownController));
         }
 

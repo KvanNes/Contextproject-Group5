@@ -1,16 +1,11 @@
 using Interfaces;
+using Main;
 using UnityEngine;
+using Utilities;
+using Wrappers;
 
 namespace Cars
 {
-    public enum PlayerAction
-    {
-        SpeedUp,
-        SpeedDown,
-        SteerLeft,
-        SteerRight,
-        None
-    };
 
     public class Player
     {

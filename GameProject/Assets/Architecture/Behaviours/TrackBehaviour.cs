@@ -32,16 +32,11 @@ namespace Behaviours
         // Add the collision edges to this game object.
         protected void AddEdges(Vector2[] pointsAbove, Vector2[] pointsBelow)
         {
-            Rigidbody2D rigidbody = gameObject.AddComponent<Rigidbody2D>();
-            rigidbody.isKinematic = true;
-            rigidbody.gravityScale = 0;
+            Rigidbody2D rigidBody = gameObject.AddComponent<Rigidbody2D>();
+            rigidBody.isKinematic = true;
+            rigidBody.gravityScale = 0;
             AddEdgeCollider(pointsAbove);
             AddEdgeCollider(pointsBelow);
-        }
-
-        public virtual void Start()
-        {
-
         }
     }
 }

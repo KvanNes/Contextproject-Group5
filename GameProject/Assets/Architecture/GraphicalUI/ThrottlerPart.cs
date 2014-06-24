@@ -1,5 +1,4 @@
 using UnityEngine;
-using Main;
 using Cars;
 using Utilities;
 
@@ -14,7 +13,7 @@ namespace GraphicalUI
             TextureNormal = TextureUtils.LoadTexture("gaspedaal-normaal");
             TexturePressed = TextureUtils.LoadTexture("gaspedaal-ingedrukt");
         }
-        
+
         public override void BecomeVisible()
         {
             Camera.main.backgroundColor = Color.black;
@@ -22,7 +21,7 @@ namespace GraphicalUI
 
         public override void DrawGraphicalUI()
         {
-            PlayerAction currentAction = MainScript.SelfPlayer.Role.GetPlayerAction();
+            PlayerAction currentAction = Action.GetPlayerAction(PlayerType.Throttler); // MainScript.SelfPlayer.Role.GetPlayerAction();
 
             DrawControls(
                 currentAction == PlayerAction.SpeedDown ? TexturePressed : TextureNormal,

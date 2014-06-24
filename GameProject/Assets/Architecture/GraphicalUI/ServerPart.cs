@@ -21,7 +21,7 @@ namespace GraphicalUI
                 MainScript.NetworkController.NetworkView.RPC("ToggleOverview", RPCMode.Others);
             }
         }
-        
+
         public override void BecomeVisible()
         {
             Camera.main.backgroundColor = Color.black;

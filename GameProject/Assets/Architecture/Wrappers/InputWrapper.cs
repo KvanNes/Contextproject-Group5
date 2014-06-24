@@ -94,11 +94,20 @@ namespace Wrappers
                 case KeyCode.UpArrow:
                     return _upArrow || Input.GetKey(KeyCode.UpArrow);
                 case KeyCode.LeftArrow:
+                    Debug.Log(_leftArrow);
                     return _leftArrow || Input.GetKey(KeyCode.LeftArrow);
                 case KeyCode.RightArrow:
                     return _rightArrow || Input.GetKey(KeyCode.RightArrow);
             }
             return false;
+        }
+
+        public static void Reset()
+        {
+            _downArrow = false;
+            _upArrow = false;
+            _leftArrow = false;
+            _rightArrow = false;
         }
     }
 }

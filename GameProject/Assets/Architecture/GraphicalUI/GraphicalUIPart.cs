@@ -9,7 +9,8 @@ namespace GraphicalUI
         public virtual void Initialize() { }
         public virtual void BecomeVisible() { }
 
-        protected bool DrawTextureButton(Rect rect, Texture2D texture) {
+        protected bool DrawTextureButton(Rect rect, Texture2D texture)
+        {
             GUI.DrawTexture(rect, texture);
             return GUI.Button(rect, "", GUIStyle.none);
         }

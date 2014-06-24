@@ -19,7 +19,7 @@ namespace Behaviours
         // The outer curve.
         private Vector2[] _pointsBelow;
 
-        public override void Start()
+        public void Start()
         {
             Vector2[] pointsBelow = new Vector2[GameData.COLLISION_POINTS_AMOUNT];
             for (int i = 0; i < GameData.COLLISION_POINTS_AMOUNT; i++)

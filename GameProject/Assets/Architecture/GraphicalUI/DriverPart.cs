@@ -1,6 +1,5 @@
 using UnityEngine;
 using Cars;
-using Main;
 using Utilities;
 
 namespace GraphicalUI
@@ -24,7 +23,7 @@ namespace GraphicalUI
 
         public override void DrawGraphicalUI()
         {
-            PlayerAction currentAction = MainScript.SelfPlayer.Role.GetPlayerAction();
+            PlayerAction currentAction = Action.GetPlayerAction(PlayerType.Driver); //MainScript.SelfPlayer.Role.GetPlayerAction();
 
             DrawControls(
                 currentAction == PlayerAction.SteerLeft ? TextureLeftPressed : TextureLeftNormal,

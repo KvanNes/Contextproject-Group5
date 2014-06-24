@@ -49,7 +49,7 @@ namespace NetworkManager
             MainScript.SelfType = MainScript.PlayerType.None;
             MainScript.SelectionIsFinal = false;
             Camera.main.transform.position = Vector3.zero;
-            MainScript.GUIController.Remove();
+            MainScript.GuiController.Remove();
         }
 
         private CarBehaviour GetCarObjectByNumber(int carNumber)

@@ -34,7 +34,7 @@ namespace MainTests
             _gameObjectGui = GameObject.CreatePrimitive(PrimitiveType.Cube);
             _gameObjectGui.AddComponent<GraphicalUIController>();
             _gameObjectGui.tag = "GUI";
-            MainScript.GUIController = (GraphicalUIController)GameObject.FindGameObjectWithTag("GUI").GetComponent(typeof(GraphicalUIController));
+            MainScript.GuiController = (GraphicalUIController)GameObject.FindGameObjectWithTag("GUI").GetComponent(typeof(GraphicalUIController));
         }
 
         [TearDown]

@@ -1,7 +1,5 @@
-using System.Linq;
 using Behaviours;
 using Cars;
-using Controllers;
 using GraphicalUI;
 using Main;
 using Interfaces;
@@ -95,8 +93,8 @@ namespace NetworkManager
             {
                 NetworkView.RPC("chooseJobAvailable", info.sender);
 
-//                AmountPlayersConnected += 1;
-//                MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected);
+                //                AmountPlayersConnected += 1;
+                //                MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected);
             }
             else
             {
@@ -134,13 +132,14 @@ namespace NetworkManager
             {
                 SpawnPlayer(i);
             }
-            MainScript.GUIController.Add(GraphicalUIController.ServerConfiguration);
+            MainScript.GuiController.Add(GraphicalUIController.ServerConfiguration);
         }
 
         public void OnPlayerConnected(NetworkPlayer player)
         {
             AmountPlayersConnected += 1;
-            if (AmountPlayersConnected <= 4) {
+            if (AmountPlayersConnected <= 4)
+            {
                 MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected, false);
             }
         }
@@ -149,7 +148,8 @@ namespace NetworkManager
         {
             bool playerHasDisconnected = AmountPlayersConnected == 4;
             AmountPlayersConnected -= 1;
-            if (AmountPlayersConnected < 4) {
+            if (AmountPlayersConnected < 4)
+            {
                 MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected, playerHasDisconnected);
             }
 

@@ -16,7 +16,7 @@ namespace Behaviours
             new Vector2(1, 1 - BorderMargin)
         };
 
-        public override void Start()
+        public void Start()
         {
             AddEdges(pointsAbove, pointsBelow);
         }

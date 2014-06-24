@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using System.Collections.Generic;
 using Main;
 
@@ -41,23 +42,15 @@ namespace GraphicalUI
 
             Vector3 carPos = MainScript.SelfCar.CarObject.transform.position;
             Vector2 point = GetCenter(new Vector2(carPos.x, carPos.y));
-            Texture2D texture = null;
 
-            foreach (KeyValuePair<Vector2, Texture2D> k in Textures)
-            {
-                if (k.Key == point)
-                {
-                    texture = k.Value;
-                    break;
-                }
-            }
+            Texture2D texture = (from k in Textures where k.Key == point select k.Value).FirstOrDefault();
 
             if (texture == null)
             {
                 return;
             }
 
-            GUI.DrawTexture(new Rect(0, 0, Screen.width / 7 + 40f, Screen.height / 4 + 40f), texture);
+            GUI.DrawTexture(new Rect(0, 0, (float) Screen.width / 7 + 40f, (float) Screen.height / 4 + 40f), texture);
         }
     }
 }

@@ -11,29 +11,29 @@ namespace GraphicalUI
     public class MainPart : GraphicalUIPart
     {
 
-        private static readonly int buttonX = 10;
         private static readonly int buttonY = 20 + 64 * 2 + 20;
-        private static readonly float buttonWidth = Screen.width / 3;
-        private static readonly float buttonHeight = Screen.height / 9;
-        private Texture2D TextureStartServer;
-        private Texture2D TextureDriverRed;
-        private Texture2D TextureThrottlerRed;
-        private Texture2D TextureDriverBlue;
-        private Texture2D TextureThrottlerBlue;
-        private Texture2D TextureTutorial;
+        private static readonly float ButtonWidth = (float) Screen.width / 3;
+        private static readonly float ButtonHeight = (float) Screen.height / 9;
+        private Texture2D _textureStartServer;
+        private Texture2D _textureDriverRed;
+        private Texture2D _textureThrottlerRed;
+        private Texture2D _textureDriverBlue;
+        private Texture2D _textureThrottlerBlue;
+        private Texture2D _textureTutorial;
 
-        public override void Initialize() {
-            TextureStartServer = TextureUtils.LoadTexture("button-start-server");
-            TextureDriverRed = TextureUtils.LoadTexture("button-driver-red");
-            TextureThrottlerRed = TextureUtils.LoadTexture("button-throttler-red");
-            TextureDriverBlue = TextureUtils.LoadTexture("button-driver-blue");
-            TextureThrottlerBlue = TextureUtils.LoadTexture("button-throttler-blue");
-            TextureTutorial = TextureUtils.LoadTexture("button-tutorial");
+        public override void Initialize()
+        {
+            _textureStartServer = TextureUtils.LoadTexture("button-start-server");
+            _textureDriverRed = TextureUtils.LoadTexture("button-driver-red");
+            _textureThrottlerRed = TextureUtils.LoadTexture("button-throttler-red");
+            _textureDriverBlue = TextureUtils.LoadTexture("button-driver-blue");
+            _textureThrottlerBlue = TextureUtils.LoadTexture("button-throttler-blue");
+            _textureTutorial = TextureUtils.LoadTexture("button-tutorial");
         }
 
         private void CreateServerButton()
         {
-            if (DrawTextureButton(new Rect(Screen.width / 2 - 1341 / 2, 20, 1341, 64), TextureStartServer))
+            if (DrawTextureButton(new Rect(Screen.width / 2 - 1341 / 2, 20, 1341, 64), _textureStartServer))
             {
                 MainScript.SelfType = MainScript.PlayerType.Server;
                 MainScript.Server.StartServer();
@@ -44,13 +44,16 @@ namespace GraphicalUI
         private void CreateClientButton(Type type, HostData hostData, int carNumber, float x, float y)
         {
             Texture2D texture;
-            if (carNumber == 0) {
-                texture = type == typeof(Driver) ? TextureDriverRed : TextureThrottlerRed;
-            } else {
-                texture = type == typeof(Driver) ? TextureDriverBlue : TextureThrottlerBlue;
+            if (carNumber == 0)
+            {
+                texture = type == typeof(Driver) ? _textureDriverRed : _textureThrottlerRed;
+            }
+            else
+            {
+                texture = type == typeof(Driver) ? _textureDriverBlue : _textureThrottlerBlue;
             }
 
-            if (DrawTextureButton(new Rect(x, y, buttonWidth, buttonHeight), texture))
+            if (DrawTextureButton(new Rect(x, y, ButtonWidth, ButtonHeight), texture))
             {
                 MainScript.SelfType = MainScript.PlayerType.Client;
                 MainScript.SelfCar = new Car(carNumber);
@@ -60,9 +63,12 @@ namespace GraphicalUI
                 MainScript.SelfPlayer.Role.Initialize();
 
                 MainScript.Client.ChooseJobWhenConnected(type.Name, carNumber);
-                if(hostData == null) {
+                if (hostData == null)
+                {
                     Network.Connect(GameData.IP, GameData.PORT);
-                } else {
+                }
+                else
+                {
                     Network.Connect(hostData);
                 }
                 NetworkController.Connected = true;
@@ -73,11 +79,11 @@ namespace GraphicalUI
         {
             for (int j = 0; j < GameData.CARS_AMOUNT; j++)
             {
-                float y = startY + j * (buttonHeight + 10);
+                float y = startY + j * (ButtonHeight + 10);
                 Type[] roleTypes = { typeof(Driver), typeof(Throttler) };
                 foreach (Type role in roleTypes)
                 {
-                    CreateClientButton(role, hostData, j, role == typeof(Driver) ? 0 : Screen.width - buttonWidth, y);
+                    CreateClientButton(role, hostData, j, role == typeof(Driver) ? 0 : Screen.width - ButtonWidth, y);
                 }
             }
         }
@@ -87,13 +93,16 @@ namespace GraphicalUI
             float buttonY_ = buttonY;
             if (NetworkController.ServerAvailable() && !Network.isServer && !Network.isClient)
             {
-                if(GameData.USE_HARDCODED_IP) {
+                if (GameData.USE_HARDCODED_IP)
+                {
                     CreateClientButtons(buttonY_, null);
-                } else {
+                }
+                else
+                {
                     for (int i = 0; i < NetworkController.HostData.Length; i++)
                     {
                         CreateClientButtons(buttonY_, NetworkController.HostData[i]);
-                        buttonY_ += buttonHeight * GameData.CARS_AMOUNT + 30;
+                        buttonY_ += ButtonHeight * GameData.CARS_AMOUNT + 30;
                     }
                 }
             }
@@ -101,9 +110,9 @@ namespace GraphicalUI
 
         private void CreateTutorialButton()
         {
-            if (DrawTextureButton(new Rect(Screen.width / 2 - 1341 / 2, 20 + 64, 1341, 64), TextureTutorial))
+            if (DrawTextureButton(new Rect(Screen.width / 2 - 1341 / 2, 20 + 64, 1341, 64), _textureTutorial))
             {
-                MainScript.GUIController.Add(GraphicalUIController.TutorialConfiguration);
+                MainScript.GuiController.Add(GraphicalUIController.TutorialConfiguration);
             }
         }
 

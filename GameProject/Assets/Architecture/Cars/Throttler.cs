@@ -6,7 +6,6 @@ using Interfaces;
 using Main;
 using UnityEngine;
 using Utilities;
-using Wrappers;
 
 namespace Cars
 {
@@ -19,14 +18,19 @@ namespace Cars
             RenderSettings.ambientLight = Color.white;
             Camera.main.transform.position = new Vector3(27.5f, 3.5f, -8f);
             Camera.main.orthographicSize = 4.5f;
-            MainScript.GUIController.Add(GraphicalUIController.ThrottlerConfiguration);
+            MainScript.GuiController.Add(GraphicalUIController.ThrottlerConfiguration);
         }
-        
+
+        public PlayerAction GetPlayerAction()
+        {
+            return Action.GetPlayerAction(PlayerType.Throttler);
+        }
+
         public void Finished()
         {
             RenderSettings.ambientLight = new Color(0.5f, 0.5f, 0.5f, 0.5f);
         }
-        
+
         public void Restart()
         {
             RenderSettings.ambientLight = Color.white;
@@ -41,44 +45,6 @@ namespace Cars
                 car.CarObject.NetworkView.RPC("UpdatePosition", RPCMode.Others, currentPosition, car.CarObject.Speed,
                     car.CarNumber);
             }
-        }
-
-
-        private PlayerAction GetTouchAction()
-        {
-
-            // When touching with one finger: check whether on left/right half.
-            if (InputWrapper.GetTouchCount() >= 1)
-            {
-                var pos = InputWrapper.GetTouchPosition(0);
-                return pos.x > GameData.SCREEN_MIDDLE_COLUMN ? PlayerAction.SpeedUp : PlayerAction.SpeedDown;
-            }
-            return PlayerAction.None;
-        }
-
-        private PlayerAction GetKeyboardAction()
-        {
-            if (InputWrapper.GetKey(KeyCode.DownArrow))
-            {
-                return PlayerAction.SpeedDown;
-            }
-
-            if (InputWrapper.GetKey(KeyCode.UpArrow))
-            {
-                return PlayerAction.SpeedUp;
-            }
-            return PlayerAction.None;
-        }
-
-        public PlayerAction GetPlayerAction()
-        {
-            if (!MainScript.CountdownController.AllowedToDrive() || MainScript.SelfCar == null
-                || MainScript.SelfCar.CarObject == null || MainScript.SelfCar.CarObject.Finished)
-            {
-                return PlayerAction.None;
-            }
-
-            return (GetTouchAction() != PlayerAction.None) ? GetTouchAction() : GetKeyboardAction();
         }
 
         private void ApplySpeed(CarBehaviour carObj, float accelerationIncrease, float accelerationFactor)
@@ -130,21 +96,8 @@ namespace Cars
         {
             PlayerAction action = GetPlayerAction();
 
-            if (Input.GetKey(KeyCode.Space))
-            {
-                Vector3 finishVector3 = new Vector3(5f, 7.1f, 0f);
-                carObj.transform.position = finishVector3;
-            }
-
-            if (action == PlayerAction.SpeedUp)
-            {
-                ApplySpeed(carObj, GameData.ACCELERATION_INCREASE, carObj.Speed < 0 ? 10 : 5);
-            }
-            else if (action == PlayerAction.SpeedDown)
-            {
-                ApplySpeed(carObj, GameData.ACCELERATION_DECREASE, carObj.Speed < 0 ? 10 : 50);
-            }
-            else
+            ApplySpeed(carObj, Action.GetAccelerationIncrease(action), Action.GetAccelerationFactor(action, carObj));
+            if (action != PlayerAction.SpeedUp && action != PlayerAction.SpeedDown)
             {
                 HandleSpeed(carObj);
             }
@@ -169,7 +122,7 @@ namespace Cars
                 car.CarObject.NetworkView.RPC("notifyHasFinished", RPCMode.All, carObj.CarNumber, (float)TimeController.GetInstance().GetTime());
             }
         }
-        
+
         private void CollisionFinishEnd(CarBehaviour carObj)
         {
             carObj.Speed = 0;
