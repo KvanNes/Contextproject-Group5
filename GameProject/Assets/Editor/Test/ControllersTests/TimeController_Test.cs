@@ -36,7 +36,7 @@ namespace ControllersTests
         {
             _timeController.ResetTimer();
 
-            Assert.AreEqual(Network.time, _timeController.GetStartTime());
+            Assert.AreEqual(Network.time, _timeController.GetStartTime(), 0.1f);
         }
 
         [Test]
