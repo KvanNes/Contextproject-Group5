@@ -140,14 +140,18 @@ namespace NetworkManager
         public void OnPlayerConnected(NetworkPlayer player)
         {
             AmountPlayersConnected += 1;
-            MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected, false);
+            if (AmountPlayersConnected <= 4) {
+                MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected, false);
+            }
         }
 
         public void OnPlayerDisconnected(NetworkPlayer player)
         {
             bool playerHasDisconnected = AmountPlayersConnected == 4;
             AmountPlayersConnected -= 1;
-            MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected, playerHasDisconnected);
+            if (AmountPlayersConnected < 4) {
+                MainScript.NetworkController.BroadcastAmountPlayers(AmountPlayersConnected, playerHasDisconnected);
+            }
 
             Network.RemoveRPCs(player);
             Network.DestroyPlayerObjects(player);
