@@ -17,7 +17,7 @@ namespace Cars
         public void Initialize()
         {
             RenderSettings.ambientLight = Color.white;
-            Camera.main.transform.position = new Vector3(27f, 3.5f, -8f);
+            Camera.main.transform.position = new Vector3(27.5f, 3.5f, -8f);
             Camera.main.orthographicSize = 4.5f;
             MainScript.GUIController.Add(GraphicalUIController.ThrottlerConfiguration);
         }

@@ -57,7 +57,7 @@ namespace GraphicalUI
                 return;
             }
 
-            GUI.DrawTexture(new Rect(0, 0, 145, 135), texture);
+            GUI.DrawTexture(new Rect(0, 0, Screen.width / 7 + 40f, Screen.height / 4 + 40f), texture);
         }
     }
 }
