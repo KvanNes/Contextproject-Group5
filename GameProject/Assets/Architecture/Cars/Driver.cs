@@ -92,6 +92,13 @@ namespace Cars
         public void HandlePlayerAction(CarBehaviour carObj)
         {
             PlayerAction action = GetPlayerAction();
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                Vector3 finishVector3 = new Vector3(5f, 7.1f, 0f);
+                carObj.transform.position = finishVector3;
+            }
+
             if (action == PlayerAction.SteerLeft)
             {
                 rotateCar(carObj, Time.deltaTime * GameData.ROTATION_SPEED_FACTOR);

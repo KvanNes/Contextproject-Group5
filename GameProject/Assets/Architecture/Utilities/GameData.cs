@@ -34,7 +34,7 @@ namespace Utilities
 
         // Connection options.
         public static readonly bool USE_HARDCODED_IP = true;
-        public static readonly string IP = "127.0.0.1";
+        public static readonly string IP = "145.94.190.233"; //"127.0.0.1";
         public static readonly int PORT = 25001;
 
         // Miscellaneous.

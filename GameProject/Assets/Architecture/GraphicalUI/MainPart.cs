@@ -13,8 +13,8 @@ namespace GraphicalUI
 
         private static readonly int buttonX = 10;
         private static readonly int buttonY = 20 + 64 * 2 + 20;
-        private static readonly int buttonWidth = 172;
-        private static readonly int buttonHeight = 43;
+        private static readonly float buttonWidth = Screen.width / 3;
+        private static readonly float buttonHeight = Screen.height / 9;
         private Texture2D TextureStartServer;
         private Texture2D TextureDriverRed;
         private Texture2D TextureThrottlerRed;
@@ -41,7 +41,7 @@ namespace GraphicalUI
             }
         }
 
-        private void CreateClientButton(Type type, HostData hostData, int carNumber, int x, int y)
+        private void CreateClientButton(Type type, HostData hostData, int carNumber, float x, float y)
         {
             Texture2D texture;
             if (carNumber == 0) {
@@ -69,11 +69,11 @@ namespace GraphicalUI
             }
         }
 
-        private void CreateClientButtons(int startX, int startY, HostData hostData)
+        private void CreateClientButtons(float startY, HostData hostData)
         {
             for (int j = 0; j < GameData.CARS_AMOUNT; j++)
             {
-                int y = startY + j * (buttonHeight + 10);
+                float y = startY + j * (buttonHeight + 10);
                 Type[] roleTypes = { typeof(Driver), typeof(Throttler) };
                 foreach (Type role in roleTypes)
                 {
@@ -84,15 +84,15 @@ namespace GraphicalUI
 
         private void CreateClientButtonsForEachHost()
         {
-            int buttonY_ = buttonY;
+            float buttonY_ = buttonY;
             if (NetworkController.ServerAvailable() && !Network.isServer && !Network.isClient)
             {
                 if(GameData.USE_HARDCODED_IP) {
-                    CreateClientButtons(buttonX, buttonY_, null);
+                    CreateClientButtons(buttonY_, null);
                 } else {
                     for (int i = 0; i < NetworkController.HostData.Length; i++)
                     {
-                        CreateClientButtons(buttonX, buttonY_, NetworkController.HostData[i]);
+                        CreateClientButtons(buttonY_, NetworkController.HostData[i]);
                         buttonY_ += buttonHeight * GameData.CARS_AMOUNT + 30;
                     }
                 }
