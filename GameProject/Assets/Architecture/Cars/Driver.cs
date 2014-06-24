@@ -74,7 +74,7 @@ namespace Cars
 
         public PlayerAction GetPlayerAction()
         {
-            if (!MainScript.CountdownController.AllowedToDrive())
+            if (!MainScript.CountdownController.AllowedToDrive() || MainScript.SelfCar.CarObject.Finished)
             {
                 return PlayerAction.None;
             }

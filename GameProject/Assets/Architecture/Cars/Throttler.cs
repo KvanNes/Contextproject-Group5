@@ -72,7 +72,7 @@ namespace Cars
 
         public PlayerAction GetPlayerAction()
         {
-            if (!MainScript.CountdownController.AllowedToDrive())
+            if (!MainScript.CountdownController.AllowedToDrive() || MainScript.SelfCar.CarObject.Finished)
             {
                 return PlayerAction.None;
             }
@@ -157,8 +157,6 @@ namespace Cars
 
         public void HandlePlayerAction(CarBehaviour carObj)
         {
-            if (carObj.Finished) return;
-
             ControlPlayerSpeed(carObj);
             MoveCar(carObj);
         }
@@ -169,6 +167,10 @@ namespace Cars
             {
                 car.CarObject.NetworkView.RPC("notifyHasFinished", RPCMode.All, carObj.CarNumber, (float)TimeController.GetInstance().GetTime());
             }
+        }
+        
+        private void CollisionFinishEnd(CarBehaviour carObj)
+        {
             carObj.Speed = 0;
             carObj.Acceleration = 0;
         }
@@ -225,9 +227,9 @@ namespace Cars
 
         public void HandleCollision(CarBehaviour carObj, Collision2D collision)
         {
-            if (collision.gameObject.tag == "Finish")
+            if (collision.gameObject.tag == GameData.TAG_FINISH)
             {
-                CollisionFinish(carObj);
+                CollisionFinishEnd(carObj);
             }
             else
             {
@@ -237,7 +239,11 @@ namespace Cars
 
         public void HandleTrigger(CarBehaviour carObj, Collider2D collider)
         {
-            if (collider.tag == GameData.TAG_MUD)
+            if (collider.tag == GameData.TAG_FINISH)
+            {
+                CollisionFinish(carObj);
+            }
+            else if (collider.tag == GameData.TAG_MUD)
             {
                 CollisionMud(carObj);
             }
@@ -251,7 +257,7 @@ namespace Cars
             GameObject child = carObj.GetChild(GameData.NAME_SPHERE);
             Transform carTransform = carObj.transform;
             float angle = Mathf.Deg2Rad * carTransform.rotation.eulerAngles.z;
-            Vector3 normalizedVec = MathUtils.Vector2To3(MathUtils.Rotate(new Vector2(25f / 0.3f, 0f), Vector2.zero, -angle));
+            Vector3 normalizedVec = MathUtils.Vector2To3(MathUtils.Rotate(new Vector2(25f / 0.2f, 0f), Vector2.zero, -angle));
             normalizedVec.y *= 2f;
             normalizedVec.z = -0.3f;
             child.transform.localPosition = normalizedVec;

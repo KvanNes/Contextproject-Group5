@@ -20,7 +20,7 @@ namespace Utilities
         public static readonly float COLLISION_FACTOR = 0.8f;
         public static readonly float SLIDE_SLOWDOWN = 0.08f;
         public static readonly float BOUNCE_AMOUNT = 0.05f;
-        public static readonly float ROTATION_SPEED_FACTOR = 150f;
+        public static readonly float ROTATION_SPEED_FACTOR = 200f;
         public static readonly float MUD_SLOWDOWN_FACTOR = 0.5f;
         public static readonly float MINIMUM_SLIDE_ANGLE = 60f;
 
