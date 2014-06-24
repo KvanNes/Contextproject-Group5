@@ -64,7 +64,8 @@ namespace CarsTests
             _gameObjectCountDownController = GameObject.CreatePrimitive(PrimitiveType.Cube);
             _countdownController = _gameObjectCountDownController.AddComponent<CountdownController>();
 
-            MainScript.SelfPlayer = new Player { Role = new Driver() };
+			MainScript.SelfPlayer = new Player { Role = new Driver() };
+			MainScript.SelfCar = _carDriver;
         }
 
         [TearDown]

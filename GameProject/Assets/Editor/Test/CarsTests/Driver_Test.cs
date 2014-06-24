@@ -66,6 +66,7 @@ namespace CarsTests
             _countdownController = _gameObjectCountDownController.AddComponent<CountdownController>();
 
             MainScript.SelfPlayer = new Player { Role = new Driver() };
+			MainScript.SelfCar = _carDriver;
         }
 
         [TearDown]
